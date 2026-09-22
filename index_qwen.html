@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบแสดงโมเดลสามมิติอุปกรณ์ AV</title>
+    <!-- นำเข้า Model Viewer จาก Google -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 1rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .model-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .model-btn:hover {
+            background-color: #2980b9;
+        }
+        .model-btn:active {
+            transform: scale(0.98);
+        }
+        .model-btn.active {
+            background-color: #2c3e50;
+            font-weight: bold;
+        }
+        #viewer-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            background: radial-gradient(circle, #e0e0e0 0%, #bdbdbd 100%);
+        }
+        model-viewer {
+            width: 100%;
+            height: 100%;
+        }
+        /* สไตล์ของจุด Hotspot */
+        .hotspot {
+            display: block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background-color: rgba(231, 76, 60, 0.9);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            cursor: pointer;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        .hotspot-annotation {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .hotspot:hover .hotspot-annotation {
+            opacity: 1;
+        }
+        /* แผงแสดงรายละเอียด */
+        #detail-panel {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            display: none;
+            max-width: 80%;
+            text-align: center;
+            border-left: 5px solid #e74c3c;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        #detail-panel h3 {
+            margin: 0 0 8px 0;
+            color: #2c3e50;
+        }
+        #detail-panel p {
+            margin: 0;
+            color: #555;
+            line-height: 1.5;
+        }
+        #close-detail {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #999;
+        }
+        #close-detail:hover {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ระบบแสดงโมเดลสามมิติอุปกรณ์ AV</h1>
+        <p>🖱️ คลิกและลากเพื่อหมุน | เลื่อนลูกกลิ้งเพื่อซูม | คลิกที่จุดสีแดงเพื่อดูรายละเอียดช่องต่อสัญญาณ</p>
+    </header>
+
+    <div class="controls">
+        <button class="model-btn active" onclick="loadModel('DellG7-Laptop', this)">Dell G7 Laptop</button>
+        <button class="model-btn" onclick="loadModel('Epson-Projector', this)">Epson Projector</button>
+        <button class="model-btn" onclick="loadModel('Sony-Blu-ray', this)">Sony Blu-ray</button>
+        <button class="model-btn" onclick="loadModel('Sony-SmartTV', this)">Sony Smart TV</button>
+        <button class="model-btn" onclick="loadModel('Vertex-Visualizer', this)">Vertex Visualizer</button>
+    </div>
+
+    <div id="viewer-container">
+        <model-viewer 
+            id="model-viewer"
+            src="https://raw.githubusercontent.com/khanchaisaetae/avmodel/main/DellG7-Laptop.gltf"
+            alt="3D Model"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            exposure="1"
+            environment-image="neutral"
+            interaction-prompt="auto"
+        >
+            <!-- Hotspots เริ่มต้นสำหรับ Dell G7 Laptop (ตัวอย่าง) -->
+            <button class="hotspot" slot="hotspot-1" data-position="0.5 0 0.5" data-normal="0 1 0" onclick="showDetail('พอร์ต HDMI', 'รองรับการแสดงผลความละเอียดสูง 4K @ 60Hz สำหรับต่อออกจอภายนอกหรือโปรเจคเตอร์')">
+                <span class="hotspot-annotation">HDMI</span>
+            </button>
+            <button class="hotspot" slot="hotspot-2" data-position="0.3 0 0.8" data-normal="0 1 0" onclick="showDetail('พอร์ต USB Type-A', 'มี 3 พอร์ต รองรับ USB 3.2 Gen 1 สำหรับเชื่อมต่ออุปกรณ์ต่อพ่วงต่างๆ')">
+                <span class="hotspot-annotation">USB 3.2</span>
+            </button>
+            <button class="hotspot" slot="hotspot-3" data-position="-0.5 0 0.5" data-normal="0 1 0" onclick="showDetail('พอร์ต LAN (RJ45)', 'ช่องต่อเครือข่ายแบบมีสาย ความเร็ว Gigabit Ethernet')">
+                <span class="hotspot-annotation">LAN</span>
+            </button>
+        </model-viewer>
+
+        <div id="detail-panel">
+            <span id="close-detail" onclick="hideDetail()">×</span>
+            <h3 id="detail-title">รายละเอียด</h3>
+            <p id="detail-desc">คำอธิบาย</p>
+        </div>
+    </div>
+
+    <script>
+        const baseUrl = 'https://raw.githubusercontent.com/khanchaisaetae/avmodel/main/';
+        const modelViewer = document.querySelector('#model-viewer');
+        const detailPanel = document.getElementById('detail-panel');
+        const detailTitle = document.getElementById('detail-title');
+        const detailDesc = document.getElementById('detail-desc');
+
+        // ข้อมูล Hotspots สำหรับแต่ละโมเดล (คุณสามารถปรับค่า data-position ให้ตรงกับตำแหน่งจริง)
+        // ค่า data-position เป็นพิกัด X Y Z ในช่วง -1 ถึง 1 (0 0 0 คือจุดกึ่งกลางโมเดล)
+        const hotspotsData = {
+            'DellG7-Laptop': [
+                { slot: 'hotspot-1', pos: '0.5 0 0.5', normal: '0 1 0', title: 'พอร์ต HDMI', desc: 'รองรับการแสดงผลความละเอียดสูง 4K @ 60Hz' },
+                { slot: 'hotspot-2', pos: '0.3 0 0.8', normal: '0 1 0', title: 'พอร์ต USB Type-A', desc: 'มี 3 พอร์ต รองรับ USB 3.2 Gen 1' },
+                { slot: 'hotspot-3', pos: '-0.5 0 0.5', normal: '0 1 0', title: 'พอร์ต LAN (RJ45)', desc: 'ช่องต่อเครือข่ายแบบมีสาย ความเร็ว Gigabit' }
+            ],
+            'Epson-Projector': [
+                { slot: 'hotspot-1', pos: '0.4 -0.2 0.5', normal: '0 0 1', title: 'พอร์ต HDMI IN', desc: 'รองรับสัญญาณภาพและเสียงดิจิทัล' },
+                { slot: 'hotspot-2', pos: '-0.4 -0.2 0.5', normal: '0 0 1', title: 'พอร์ต VGA (Computer In)', desc: 'สำหรับเชื่อมต่อคอมพิวเตอร์' },
+                { slot: 'hotspot-3', pos: '0.0 -0.2 0.8', normal: '0 0 1', title: 'ช่องต่อไฟ AC', desc: 'สายไฟหลักของเครื่องโปรเจคเตอร์' }
+            ],
+            'Sony-Blu-ray': [
+                { slot: 'hotspot-1', pos: '0.5 0 0', normal: '0 0 1', title: 'พอร์ต HDMI OUT', desc: 'ส่งสัญญาณภาพ 4K HDR ไปยังทีวี' },
+                { slot: 'hotspot-2', pos: '-0.5 0 0', normal: '0 0 1', title: 'พอร์ต LAN', desc: 'เชื่อมต่ออินเทอร์เน็ตสำหรับอัปเดตเฟิร์มแวร์' }
+            ],
+            'Sony-SmartTV': [
+                { slot: 'hotspot-1', pos: '0.8 -0.5 0', normal: '0 0 -1', title: 'พอร์ต HDMI 1 (ARC)', desc: 'รองรับ Audio Return Channel สำหรับ Soundbar' },
+                { slot: 'hotspot-2', pos: '0.8 -0.2 0', normal: '0 0 -1', title: 'พอร์ต HDMI 2/3', desc: 'สำหรับต่อเครื่องเล่นเกมหรือกล่องทีวี' },
+                { slot: 'hotspot-3', pos: '0.5 -0.8 0', normal: '0 0 -1', title: 'พอร์ต USB', desc: 'สำหรับเล่นไฟล์มัลติมีเดียจาก Flash Drive' }
+            ],
+            'Vertex-Visualizer': [
+                { slot: 'hotspot-1', pos: '0 0.5 0', normal: '0 1 0', title: 'จุดเชื่อมต่อหลัก', desc: 'ข้อมูลตัวอย่างสำหรับโมเดล Visualizer' }
+            ]
+        };
+
+        function loadModel(modelName, btnElement) {
+            // เปลี่ยนสถานะปุ่ม active
+            document.querySelectorAll('.model-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // ซ่อนแผงรายละเอียด
+            hideDetail();
+
+            // เปลี่ยนแหล่งที่มาของโมเดล
+            modelViewer.src = `${baseUrl}${modelName}.gltf`;
+            modelViewer.alt = `${modelName} 3D Model`;
+
+            // ลบ hotspots เก่าออก
+            const oldHotspots = modelViewer.querySelectorAll('button[slot^="hotspot-"]');
+            oldHotspots.forEach(h => h.remove());
+
+            // เพิ่ม hotspots ใหม่ตามข้อมูลของโมเดลที่เลือก
+            const spots = hotspotsData[modelName] || [];
+            spots.forEach(spot => {
+                const btn = document.createElement('button');
+                btn.className = 'hotspot';
+                btn.setAttribute('slot', spot.slot);
+                btn.setAttribute('data-position', spot.pos);
+                btn.setAttribute('data-normal', spot.normal);
+                btn.onclick = () => showDetail(spot.title, spot.desc);
+                
+                const annotation = document.createElement('span');
+                annotation.className = 'hotspot-annotation';
+                annotation.textContent = spot.title;
+                
+                btn.appendChild(annotation);
+                modelViewer.appendChild(btn);
+            });
+        }
+
+        function showDetail(title, desc) {
+            detailTitle.textContent = title;
+            detailDesc.textContent = desc;
+            detailPanel.style.display = 'block';
+        }
+
+        function hideDetail() {
+            detailPanel.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
