@@ -36,14 +36,14 @@ scenario('topology compatibility does not imply visible image',f=>{f.scope='topo
 const catalog=JSON.parse(readFileSync(new URL('../data/port-catalog.json',import.meta.url)));
 const ports=Object.fromEntries(catalog.devices.flatMap(d=>d.ports.map(p=>[p.id,p])));
 test('v1 decisions replaced by v2 ref-only evidence',()=>{
- assert.equal(catalog.schema_version,'2.0.0');assert.equal(catalog.authority,'user_supplied_files_in_ref_only');assert.equal(catalog.devices.length,5);assert.equal(Object.keys(ports).length,54);
+ assert.equal(catalog.schema_version,'2.1.0');assert.equal(catalog.authority,'ref_files_with_user_authorized_dell_official_supplement');assert.equal(catalog.devices.length,5);assert.equal(Object.keys(ports).length,54);
  for (const [id,s] of Object.entries(catalog.sources)){
   assert.ok(s.path.startsWith('ref/'));
   const bytes=readFileSync(new URL('../'+s.path,import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),s.sha256);
  }
  for (const p of Object.values(ports)){
   assert.ok(p.evidence.length>0);assert.equal(p.model_mapping.node_index,null);assert.equal(p.model_mapping.status,'pending_new_calibration');
-  for(const e of p.evidence){assert.ok(catalog.sources[e.source_id]);assert.ok(e.pdf_pages?.length || e.pixel_region_xyxy?.length===4);}
+  for(const e of p.evidence){assert.ok(catalog.sources[e.source_id]);assert.ok(e.pdf_pages?.length || e.pixel_region_xyxy?.length===4 || e.section);}
  }
 });
 test('reference confirms Blu-ray audio-only HDMI must reject video',()=>{
@@ -56,8 +56,15 @@ test('reference confirms Blu-ray primary HDMI to Epson topology',()=>{
 test('TV references contain exactly two HDMI inputs, no guessed ARC assignment',()=>{
  const d=catalog.devices.find(d=>d.id==='tv');assert.equal(d.ports.filter(p=>p.connector==='hdmi').length,2);assert.equal(d.documented_features.find(f=>f.name==='ARC').port_assignment,null);
 });
-test('Dell screenshot is not upgraded into confirmed USB-C video',()=>{
- assert.equal(ports['dell:usb-c'].video_capable,null);assert.equal(ports['dell:usb-c'].assessment_enabled,false);assert.equal(ports['dell:hdmi'].capability_status,'inferred_function');
+test('Dell USB-C video confirmed by model-specific official supplement',()=>{
+ const p=ports['dell:usb-c'];assert.equal(p.video_capable,true);assert.equal(p.video_direction,'out');assert.equal(p.direction,'bidirectional');assert.equal(p.location,'right');assert.equal(p.capability_status,'verified_reference');assert.ok(p.features.includes('DisplayPort 1.2'));assert.equal(p.evidence[0].source_id,'dell_official');assert.equal(p.power_delivery_charging_supported,null);
+ assert.equal(p.display_routes.length,3);assert.equal(p.display_routes.find(r=>r.sink_connector==='hdmi').conversion,'displayport_to_hdmi');
+});
+test('confirmed USB-C needs its own video adapter route, not ordinary USB wiring',()=>{
+ const f=fixture();f.source=ports['dell:usb-c'];assert.equal(check({...f,scope:'topology'}).code,'SPECIAL_ROUTE_REQUIRED');
+});
+test('Dell HDMI OUT is also confirmed by the same official manual',()=>{
+ const f=fixture();f.source=ports['dell:hdmi'];f.sink=ports['tv:hdmi-rear'];assert.equal(check({...f,scope:'topology'}).status,'compatible');
 });
 test('Vertex image-only ports and software-dependent USB are retained',()=>{
  for(const id of ['vertex:rgb-out2','vertex:svideo-in','vertex:svideo-out'])assert.equal(ports[id].evidence[0].basis,'diagram_only');

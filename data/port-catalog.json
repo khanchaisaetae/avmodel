@@ -1,14 +1,29 @@
 {
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "review_date_local": "2026-10-23",
   "timezone": "Asia/Bangkok",
-  "authority": "user_supplied_files_in_ref_only",
+  "authority": "ref_files_with_user_authorized_dell_official_supplement",
   "supersedes": {
     "catalog_schema": "1.0.0",
     "decision": "revoked_all_prior_port_confirmations",
     "legacy_geometry_and_hotspots": "not_imported"
   },
   "sources": {
+    "dell_official": {
+      "path": "ref/Dell_G7_7588_Official_Port_Confirmation.md",
+      "kind": "manufacturer_manual_web_summary",
+      "model": "Dell G7 15 7588",
+      "reviewed_sections": [
+        "Model-specific manual: Right",
+        "General DisplayPort-over-USB-C guidance",
+        "Connection guidance"
+      ],
+      "limitations": [
+        "ไม่กำหนดความละเอียดสูงสุดจากบทความทั่วไป",
+        "ยังไม่ยืนยันการรับชาร์จผ่าน USB-C หรือรูปแบบภาพของอะแดปเตอร์แต่ละรุ่น"
+      ],
+      "sha256": "7560c759ad36737d995ba669db9083f7d8b0d72e6eb155956983b03b0f1eca7b"
+    },
     "dell": {
       "path": "ref/Dell_G7_7588-gaming-w56791901th.png",
       "kind": "retailer_spec_screenshot",
@@ -150,25 +165,21 @@
           "video_capable": true,
           "signal": "hdmi_video",
           "connection_kind": "native_video",
-          "capability_status": "inferred_function",
-          "assessment_enabled": false,
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
           "supported_modes_complete": false,
           "evidence": [
             {
-              "source_id": "dell",
-              "basis": "text",
-              "detail_th": "ภาพระบุ HDMI 1 ช่อง; OUT เป็นการอนุมานจากบทบาทโน้ตบุ๊ก ไม่ได้เขียนในภาพ",
-              "pixel_region_xyxy": [
-                100,
-                3550,
-                1150,
-                4070
-              ]
+              "source_id": "dell_official",
+              "basis": "manufacturer_manual_web",
+              "section": "Model-specific manual: Right",
+              "url": "https://www.dell.com/support/manuals/en-us/g-series-15-7588-laptop/g7-7588-setupandspecs/right?guid=guid-ebc6a569-b280-494d-a638-06234dcc596d&lang=en-us",
+              "detail_th": "คู่มือเฉพาะรุ่น G7 7588 ระบุ Thunderbolt 3 / USB 3.1 Gen 2 Type-C / DisplayPort 1.2 และ HDMI video/audio output"
             }
           ],
           "notes_th": [
-            "ยืนยันจำนวนและหัวต่อจากภาพ; ทิศทาง OUT และการส่งภาพเป็นการอนุมาน จึงยังไม่ใช้ตัดสินคะแนน"
+            "ยืนยัน OUT จากคู่มือเฉพาะรุ่น ไม่ใช้การอนุมานเดิม"
           ],
           "model_mapping": {
             "status": "pending_new_calibration",
@@ -287,37 +298,71 @@
           "id": "dell:usb-a-3"
         },
         {
-          "label": "USB 3.1 Type-C",
+          "label": "Thunderbolt 3 / USB 3.1 Gen 2 Type-C / DisplayPort 1.2",
           "count": 1,
           "connector": "usb_c",
           "direction": "bidirectional",
-          "video_capable": null,
-          "signal": "usb_data",
-          "connection_kind": "usb_data",
+          "video_capable": true,
+          "signal": "displayport",
+          "connection_kind": "dp_alt_mode_video",
           "capability_status": "verified_reference",
           "assessment_enabled": false,
           "supported_modes": null,
           "supported_modes_complete": false,
           "evidence": [
             {
-              "source_id": "dell",
-              "basis": "text",
-              "detail_th": "ภาพระบุ USB 3.1 Type C 1 ช่อง และ Thunderbolt Yes แต่ไม่ผูกกับช่องหรือยืนยัน DisplayPort Alt Mode",
-              "pixel_region_xyxy": [
-                100,
-                3550,
-                1150,
-                4070
-              ]
+              "source_id": "dell_official",
+              "basis": "manufacturer_manual_web",
+              "section": "Model-specific manual: Right",
+              "url": "https://www.dell.com/support/manuals/en-us/g-series-15-7588-laptop/g7-7588-setupandspecs/right?guid=guid-ebc6a569-b280-494d-a638-06234dcc596d&lang=en-us",
+              "detail_th": "คู่มือเฉพาะรุ่น G7 7588 ระบุ Thunderbolt 3 / USB 3.1 Gen 2 Type-C / DisplayPort 1.2 และ HDMI video/audio output"
             }
           ],
-          "notes_th": [],
+          "notes_th": [
+            "direction=bidirectional เป็นข้อมูล USB; video_direction=out เป็นทิศทางภาพ",
+            "ยืนยันความสามารถส่งภาพแล้ว แต่ตัวตรวจสายภาพตรงยังไม่จำลองเส้นทาง USB-C/อะแดปเตอร์"
+          ],
           "model_mapping": {
             "status": "pending_new_calibration",
             "node_index": null,
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "video_direction": "out",
+          "location": "right",
+          "features": [
+            "Thunderbolt 3",
+            "USB 3.1 Gen 2",
+            "DisplayPort 1.2",
+            "DisplayPort over USB-C"
+          ],
+          "power_delivery_charging_supported": null,
+          "display_routes": [
+            {
+              "sink_connector": "usb_c",
+              "requirements": [
+                "display supports DisplayPort over USB-C",
+                "video-capable USB-C cable"
+              ],
+              "conversion": "none_for_DP_Alt_Mode"
+            },
+            {
+              "sink_connector": "displayport",
+              "requirements": [
+                "compatible USB-C to DisplayPort cable/adapter",
+                "laptop-to-display direction"
+              ],
+              "conversion": "connector_adapter"
+            },
+            {
+              "sink_connector": "hdmi",
+              "requirements": [
+                "compatible DisplayPort-over-USB-C to HDMI cable/adapter",
+                "laptop-to-display direction"
+              ],
+              "conversion": "displayport_to_hdmi"
+            }
+          ],
           "id": "dell:usb-c"
         },
         {
@@ -392,27 +437,24 @@
       "documented_features": [
         {
           "name": "thunderbolt",
+          "version": 3,
           "supported": true,
-          "port_assignment": null,
+          "port_assignment": "dell:usb-c",
           "evidence": [
             {
-              "source_id": "dell",
-              "basis": "text",
-              "detail_th": "Thunderbolt Yes; ไม่ระบุเวอร์ชันและช่องที่รองรับ",
-              "pixel_region_xyxy": [
-                100,
-                3550,
-                1150,
-                4070
-              ]
+              "source_id": "dell_official",
+              "basis": "manufacturer_manual_web",
+              "section": "Model-specific manual: Right",
+              "url": "https://www.dell.com/support/manuals/en-us/g-series-15-7588-laptop/g7-7588-setupandspecs/right?guid=guid-ebc6a569-b280-494d-a638-06234dcc596d&lang=en-us",
+              "detail_th": "คู่มือเฉพาะรุ่น G7 7588 ระบุ Thunderbolt 3 / USB 3.1 Gen 2 Type-C / DisplayPort 1.2 และ HDMI video/audio output"
             }
           ]
         }
       ],
       "unresolved": [
-        "หน้าที่ส่งภาพผ่าน USB-C",
-        "เวอร์ชัน HDMI และรายการรูปแบบภาพ",
-        "พอร์ตเสียง/ไฟเลี้ยงที่ตารางนี้ไม่ได้ให้รายละเอียด"
+        "เวอร์ชัน HDMI และรายการรูปแบบภาพ/ความถี่ของสายและอะแดปเตอร์แต่ละแบบ",
+        "การรับชาร์จผ่าน USB-C",
+        "พอร์ตอื่นที่อยู่นอกขอบเขตการแก้ไข USB-C/HDMI ครั้งนี้"
       ]
     },
     {

@@ -4,7 +4,7 @@
 
 ## สถานะข้อมูล
 
-**ยกเลิกผลยืนยันพอร์ตชุดเดิมทั้งหมดแล้ว** ฐานข้อมูล schema 1.0.0 และข้อสรุปจากชื่อ node, สีขั้วต่อ, hotspot เดิม หรือคู่มือที่ค้นจากเว็บ ไม่ใช่ฐานยืนยันพอร์ตของงานนี้อีกต่อไป รายงานนี้และ data/port-catalog.json schema 2.0.0 ใช้แทนชุดเดิม โดยอ้างอิงเฉพาะไฟล์ที่ผู้ใช้จัดไว้ใน ref
+**ยกเลิกผลยืนยันพอร์ตชุดเดิมทั้งหมดแล้ว** ฐานข้อมูล schema 1.0.0 และข้อสรุปจากชื่อ node, สีขั้วต่อ และ hotspot เดิมไม่ใช่ฐานยืนยันพอร์ตของงานนี้อีกต่อไป ส่วนแหล่งเว็บใช้เฉพาะหลักฐาน Dell ที่ตรวจใหม่และผู้ใช้อนุญาตเพิ่มเติม รายงานนี้และ data/port-catalog.json schema 2.1.0 ใช้แทนชุดเดิม โดยใช้ไฟล์ใน ref เป็นฐาน และเพิ่มหลักฐาน Dell อย่างเป็นทางการตามข้อมูลใหม่ที่ผู้ใช้ส่งมา บันทึกสรุปพร้อม URL ใน ref/Dell_G7_7588_Official_Port_Confirmation.md การเพิ่มเติมนี้ไม่ฟื้นข้อสรุปจาก hotspot/geometry ชุดเดิม
 
 การยืนยันครั้งนี้หมายถึงยืนยันสิ่งที่เอกสารหรือภาพที่แนบระบุ ไม่ใช่การตรวจเครื่องจริง และไม่ได้รับรองว่า geometry ของ glTF ตรงกับรุ่นในเอกสารทุกช่อง การจับคู่ชื่อรุ่นกับไฟล์โมเดลยึดตามชุด ref ที่ผู้ใช้จัดให้ ส่วน node และตำแหน่งคลิกของพอร์ตทั้งหมดถูกล้างกลับเป็นรอปรับเทียบใหม่ ไม่ใช้พิกัดจากงานเดิม
 
@@ -15,6 +15,7 @@
 | รหัส | ไฟล์ใน ref | หลักฐานที่อ่านและตรวจภาพ | ข้อจำกัด |
 |---|---|---|---|
 | dell | Dell_G7_7588-gaming-w56791901th.png | ชื่อรุ่น Dell G7 15 7588/W56791901TH; ตาราง Ports and Connectivity | ภาพสเปกร้านค้า ไม่มีคำอธิบายทิศทาง HDMI/Alt Mode และไม่มีตารางรูปแบบภาพ |
+| dell_official | Dell_G7_7588_Official_Port_Confirmation.md | คู่มือ G7 7588 > Right ข้อ 3/4 และบทความ Dell ที่ผู้ใช้ให้ | ยืนยัน USB-C video/HDMI OUT; ยังไม่กำหนดโหมดภาพหรือความสามารถชาร์จ |
 | epson | EB-2165W_Epson_Projector_User Guide.pdf | หน้า 14-15, 23-25, 27-31, 204-208 | คู่มือหลายรุ่น ต้องอ่านเฉพาะเงื่อนไข EB-2165W |
 | bluray | Sony_Ultra_HD_Blueray_UBP-X700.pdf | หน้า 1, 8, 11-12, 15, 19, 23, 30 | บางความสามารถ เช่น 4K ต้องเป็นไปตามเงื่อนไขจอ สาย และ HDCP |
 | tv | Sony_Smart_TV_KDL-40W650D_specifications.png | ตารางอินเทอร์เฟซและความละเอียดจอของ KDL-40W650D | แถบลอยบังแถวบนของตาราง; ไม่ยืนยัน USB และไม่ยืนยันเลขช่อง ARC |
@@ -26,11 +27,19 @@
 
 ### Dell G7 7588
 
-- ตารางระบุ HDMI 1, USB 3.1 Type-A 3 และ USB 3.1 Type-C 1 ช่อง; Ethernet LAN ระบุ Yes แต่ไม่ได้ให้จำนวน
-- แถว DisplayPort และ D-Sub/VGA ระบุ No จึงไม่สร้างช่อง DisplayPort/VGA แยกในโปรไฟล์นี้
-- แถว Thunderbolt ระบุ Yes แต่ไม่ผูกกับตำแหน่งพอร์ต ไม่ระบุเวอร์ชัน และไม่ได้อธิบาย DisplayPort Alt Mode จึงไม่ใช้ยืนยันเส้นทาง USB-C ไปจอ
-- HDMI OUT เป็นข้ออนุมานจากบทบาทโน้ตบุ๊ก ไม่ใช่ข้อความที่ระบุในภาพ จึงบันทึกเป็น inferred_function และยังไม่ใช้ตัดสินคะแนนการส่งภาพ
-- ไม่มีการสืบทอดข้ออ้าง 4K60, HDMI 2.0, การชาร์จ หรือ USB-C video จากข้อมูลเดิม
+- ยืนยันพอร์ตด้านขวาเป็น Thunderbolt 3 (USB 3.1 Gen 2 Type-C) / DisplayPort 1.2 จากคู่มือเฉพาะรุ่นหัวข้อ Right ข้อ 3 ไม่ใช้ภาพร้านค้าเพียงอย่างเดียว
+- USB-C ส่งภาพและเสียงผ่าน DisplayPort over USB-C ได้: วิดีโอเป็น OUT ส่วนข้อมูล USB รับ/ส่งสองทิศทาง จึงเก็บ direction และ video_direction แยกกัน
+- ต่อ USB-C ไปจอ USB-C ได้เมื่อจอและสายรองรับ DisplayPort video; ต่อ DisplayPort ผ่านสาย/อะแดปเตอร์ที่เหมาะสม; ต่อ HDMI ผ่านสาย/อะแดปเตอร์ USB-C DisplayPort-to-HDMI ที่รองรับและใช้ถูกทิศทาง
+- ไม่ถือว่าสาย USB-C สำหรับชาร์จหรือข้อมูลทุกเส้นส่งภาพได้ และไม่ใช้ค่าความละเอียด/กำลังไฟสูงสุดจากบทความทั่วไปเป็นสเปกของ G7 7588
+- HDMI ยืนยันเป็น OUT ส่งภาพ/เสียงจากคู่มือ Right ข้อ 4 เช่นกัน จึงเปลี่ยนสถานะจาก inferred_function เป็น verified_reference
+- “DisplayPort No” ในภาพร้านค้าหมายถึงไม่มีช่อง DisplayPort แยก ไม่ใช้ลบล้าง DisplayPort ผ่าน Type-C ที่คู่มือยืนยัน
+- การรับชาร์จผ่าน USB-C และรายการความละเอียด/ความถี่ของสายหรืออะแดปเตอร์แต่ละรุ่นยังไม่ยืนยัน ตัวตรวจสายตรงจึงส่งเส้นทาง USB-C ไปใช้กฎเฉพาะ ไม่จำลองเป็น HDMI OUT โดยตรง
+
+แหล่งเฉพาะรุ่น: https://www.dell.com/support/manuals/en-us/g-series-15-7588-laptop/g7-7588-setupandspecs/right?guid=guid-ebc6a569-b280-494d-a638-06234dcc596d&lang=en-us
+
+แหล่งประกอบที่ผู้ใช้ส่ง:
+https://www.dell.com/support/kbdoc/en-th/000141328/displayport-over-usb-type-c
+https://www.dell.com/support/contents/en-th/article/product-support/self-support-knowledgebase/monitor-screen-video/connect-laptop-to-display
 
 ### Epson EB-2165W
 
@@ -77,7 +86,7 @@
 - model_mapping.pending_new_calibration: ยังไม่มี node/ตำแหน่งเสียบสายที่อนุมัติหลังการตรวจใหม่
 - assessment_enabled: อนุญาตเฉพาะการตรวจความสัมพันธ์เชิงตรรกะของพอร์ต native ที่มีข้อมูลพอ ไม่ใช่การยืนยันตำแหน่งคลิกหรือการรับรองว่าภาพจริงจะขึ้น
 
-ค่าที่ไม่ทราบคงเป็น null ไม่ตีความเป็นไม่รองรับ ไม่สร้างพอร์ต USB-C, HDMI ช่องเพิ่มเติม หรือความสามารถส่งผ่านจากข้อมูลเก่า
+ค่าที่ไม่ทราบคงเป็น null ไม่ตีความเป็นไม่รองรับ ไม่สร้างพอร์ตเพิ่มเติมหรือความสามารถส่งผ่านจากข้อมูลเก่า USB-C ของ Dell ยืนยันด้วยหลักฐานใหม่ข้างต้นโดยเฉพาะ
 
 ## กฎการเชื่อมต่อที่ปรับใหม่
 
@@ -107,15 +116,16 @@ node --test tests/connection-rules.test.mjs
 จำนวนที่ไม่ทราบไม่เท่ากับศูนย์; ทิศทางของ Ethernet/USB เป็นทิศทางข้อมูล ไม่ใช่ OUT/IN ของภาพเสมอไป “ต้องใช้กฎเฉพาะ” หมายถึงยังใช้ตัวตรวจสายภาพตรงไม่ได้
 
 
+
 ### Dell G7 15 7588 / W56791901TH
 
 | พอร์ต | หัวต่อ | ทิศทาง | เส้นทาง | หลักฐาน |
 |---|---|---|---|---|
-| HDMI | hdmi | out (อนุมาน) | native_video | dell ตารางในภาพ |
+| HDMI | hdmi | out | native_video | dell_official Model-specific manual: Right |
 | USB 3.1 Type-A #1 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
 | USB 3.1 Type-A #2 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
 | USB 3.1 Type-A #3 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
-| USB 3.1 Type-C | usb_c | bidirectional | usb_data | dell ตารางในภาพ |
+| Thunderbolt 3 / USB 3.1 Gen 2 Type-C / DisplayPort 1.2 | usb_c | bidirectional; video out | dp_alt_mode_video | dell_official Model-specific manual: Right |
 | Ethernet LAN | rj45 | bidirectional | network | dell ตารางในภาพ |
 
 ### Epson EB-2165W
