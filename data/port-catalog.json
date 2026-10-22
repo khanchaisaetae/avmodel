@@ -1,0 +1,1380 @@
+{
+  "schema_version": "1.0.0",
+  "audit_date_local": "2026-10-22",
+  "audit_timezone": "Asia/Bangkok",
+  "source_repository": "https://github.com/khanchaisaetae/avmodel",
+  "source_commit": "e07fe56ba406fb70c058def70b794b24d4b204e8",
+  "policy": {
+    "unknown_is_not_incorrect": true,
+    "unverified_ports_are_not_gradable": true,
+    "connector_shape_does_not_prove_video_or_direction": true,
+    "geometry_center_is_not_socket_anchor": true
+  },
+  "devices": [
+    {
+      "id": "DellG7-Laptop",
+      "asset_path": "DellG7-Laptop.gltf",
+      "sha256": "15ef65b56ed043e822f6411e05c16055d4a67210481f0dec3d405f6287b635e2",
+      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
+      "node_count": 151,
+      "mesh_count": 135,
+      "hardware_model_number": null,
+      "hardware_identity_status": "unresolved",
+      "manual_match_status": "not_confirmed",
+      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "ports": [
+        {
+          "id": "DellG7-Laptop:hdmi-a",
+          "node_index": 101,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.8173999786376953,
+              0.08786997199058533,
+              -0.7182375192642212
+            ],
+            "max": [
+              1.942497968673706,
+              0.1529703587293625,
+              -0.5637956261634827
+            ]
+          },
+          "geometry_center_scene": [
+            1.8799489736557007,
+            0.12042016535997391,
+            -0.6410165727138519
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "DellG7-Laptop.gltf#/nodes/101"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "DellG7-Laptop:usb-c",
+          "node_index": 50,
+          "node_name": "USB Type C Port",
+          "connector_candidate": "usb_c",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.8563042879104614,
+              0.10634934157133102,
+              -0.46614041924476624
+            ],
+            "max": [
+              1.942497968673706,
+              0.1495552659034729,
+              -0.3685997724533081
+            ]
+          },
+          "geometry_center_scene": [
+            1.8994011282920837,
+            0.12795230373740196,
+            -0.41737009584903717
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "DellG7-Laptop.gltf#/nodes/50"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "DellG7-Laptop:usb-a-a",
+          "node_index": 10,
+          "node_name": "USB",
+          "connector_candidate": "usb_a_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.8039605617523193,
+              0.0897703543305397,
+              -0.2722734212875366
+            ],
+            "max": [
+              1.942497968673706,
+              0.1493101567029953,
+              -0.13396836817264557
+            ]
+          },
+          "geometry_center_scene": [
+            1.8732292652130127,
+            0.1195402555167675,
+            -0.2031208947300911
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "DellG7-Laptop.gltf#/nodes/10"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "DellG7-Laptop:usb-a-b",
+          "node_index": 37,
+          "node_name": "USB",
+          "connector_candidate": "usb_a_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.8039605617523193,
+              0.0897703543305397,
+              -0.06157341226935387
+            ],
+            "max": [
+              1.942497968673706,
+              0.1493101567029953,
+              0.07673163712024689
+            ]
+          },
+          "geometry_center_scene": [
+            1.8732292652130127,
+            0.1195402555167675,
+            0.00757911242544651
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "DellG7-Laptop.gltf#/nodes/37"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "DellG7-Laptop:usb-a-c",
+          "node_index": 123,
+          "node_name": "USB",
+          "connector_candidate": "usb_a_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -1.9133598804473877,
+              0.09158612042665482,
+              -0.45673295855522156
+            ],
+            "max": [
+              -1.774822473526001,
+              0.1511259227991104,
+              -0.3184278905391693
+            ]
+          },
+          "geometry_center_scene": [
+            -1.8440911769866943,
+            0.12135602161288261,
+            -0.38758042454719543
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "DellG7-Laptop.gltf#/nodes/123"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "DellG7-Laptop:network",
+          "node_index": 23,
+          "node_name": "Xport",
+          "connector_candidate": "rj45_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -1.8793598413467407,
+              0.04201531410217285,
+              -0.6838703155517578
+            ],
+            "max": [
+              -1.7897462844848633,
+              0.15804770588874817,
+              -0.5415716171264648
+            ]
+          },
+          "geometry_center_scene": [
+            -1.834553062915802,
+            0.10003150999546051,
+            -0.6127209663391113
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "DellG7-Laptop.gltf#/nodes/23"
+          ],
+          "assessment_enabled": false
+        }
+      ]
+    },
+    {
+      "id": "Epson-Projector",
+      "asset_path": "Epson-Projector.gltf",
+      "sha256": "d63656246e1c4fd00eecfb341231f166e7849452aba7d54fee998015aad99e68",
+      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
+      "node_count": 53,
+      "mesh_count": 47,
+      "hardware_model_number": null,
+      "hardware_identity_status": "unresolved",
+      "manual_match_status": "not_confirmed",
+      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "ports": [
+        {
+          "id": "Epson-Projector:hdmi-a",
+          "node_index": 23,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.35726457834243774,
+              0.999019980430603,
+              -1.707391619682312
+            ],
+            "max": [
+              0.5631871223449707,
+              1.0858204364776611,
+              -1.5405943393707275
+            ]
+          },
+          "geometry_center_scene": [
+            0.4602258503437042,
+            1.042420208454132,
+            -1.6239929795265198
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Epson-Projector.gltf#/nodes/23"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Epson-Projector:hdmi-b",
+          "node_index": 24,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.6512646079063416,
+              0.999019980430603,
+              -1.707391619682312
+            ],
+            "max": [
+              0.8571870923042297,
+              1.0858204364776611,
+              -1.5405943393707275
+            ]
+          },
+          "geometry_center_scene": [
+            0.7542258501052856,
+            1.042420208454132,
+            -1.6239929795265198
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Epson-Projector.gltf#/nodes/24"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Epson-Projector:usb",
+          "node_index": 33,
+          "node_name": "USB",
+          "connector_candidate": "usb_unknown",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.5098556280136108,
+              0.9014929533004761,
+              -1.707391619682312
+            ],
+            "max": [
+              1.5810755491256714,
+              1.0669296979904175,
+              -1.487849235534668
+            ]
+          },
+          "geometry_center_scene": [
+            1.5454655885696411,
+            0.9842113256454468,
+            -1.59762042760849
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Epson-Projector.gltf#/nodes/33"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Epson-Projector:rca-a",
+          "node_index": 25,
+          "node_name": "Phono_Jack_Yellow#1",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.5997976660728455,
+              0.6398225426673889,
+              -1.8143359422683716
+            ],
+            "max": [
+              0.7525752186775208,
+              0.7926000952720642,
+              -1.6768360137939453
+            ]
+          },
+          "geometry_center_scene": [
+            0.6761864423751831,
+            0.7162113189697266,
+            -1.7455859780311584
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Epson-Projector.gltf#/nodes/25"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Epson-Projector:rca-b",
+          "node_index": 34,
+          "node_name": "Phono_Jack_Yellow#3",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.9247976541519165,
+              0.9206745624542236,
+              -1.8143359422683716
+            ],
+            "max": [
+              1.0775752067565918,
+              1.073452115058899,
+              -1.6768360137939453
+            ]
+          },
+          "geometry_center_scene": [
+            1.0011864304542542,
+            0.9970633387565613,
+            -1.7455859780311584
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Epson-Projector.gltf#/nodes/34"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Epson-Projector:rca-c",
+          "node_index": 35,
+          "node_name": "Phono_Jack_Yellow#2",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.42679765820503235,
+              0.6398225426673889,
+              -1.8143359422683716
+            ],
+            "max": [
+              0.57957524061203,
+              0.7926000952720642,
+              -1.6768360137939453
+            ]
+          },
+          "geometry_center_scene": [
+            0.5031864494085312,
+            0.7162113189697266,
+            -1.7455859780311584
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Epson-Projector.gltf#/nodes/35"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Epson-Projector:unidentified-connector",
+          "node_index": 28,
+          "node_name": "1734354-1",
+          "connector_candidate": "unknown",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.4268444776535034,
+              0.36711177229881287,
+              -1.7907545566558838
+            ],
+            "max": [
+              1.8547735214233398,
+              0.5977405309677124,
+              -1.5351084470748901
+            ]
+          },
+          "geometry_center_scene": [
+            1.6408089995384216,
+            0.48242615163326263,
+            -1.662931501865387
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Epson-Projector.gltf#/nodes/28"
+          ],
+          "assessment_enabled": false
+        }
+      ]
+    },
+    {
+      "id": "Sony-Blu-ray",
+      "asset_path": "Sony-Blu-ray.gltf",
+      "sha256": "9f5b0043eb0739edf05bb8c303528bdfd16a11fc682e3f4b2eef41716ba7ece5",
+      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
+      "node_count": 90,
+      "mesh_count": 81,
+      "hardware_model_number": null,
+      "hardware_identity_status": "unresolved",
+      "manual_match_status": "not_confirmed",
+      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "ports": [
+        {
+          "id": "Sony-Blu-ray:hdmi-a",
+          "node_index": 4,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.9897661209106445,
+              0.11027925461530685,
+              -1.0020999908447266
+            ],
+            "max": [
+              1.1442079544067383,
+              0.17537963390350342,
+              -0.8770020604133606
+            ]
+          },
+          "geometry_center_scene": [
+            1.0669870376586914,
+            0.14282944425940514,
+            -0.9395510256290436
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-Blu-ray.gltf#/nodes/4"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-Blu-ray:hdmi-b",
+          "node_index": 26,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.7357661128044128,
+              0.11027925461530685,
+              -1.0020999908447266
+            ],
+            "max": [
+              0.8902080059051514,
+              0.17537963390350342,
+              -0.8770020604133606
+            ]
+          },
+          "geometry_center_scene": [
+            0.8129870593547821,
+            0.14282944425940514,
+            -0.9395510256290436
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-Blu-ray.gltf#/nodes/26"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-Blu-ray:network",
+          "node_index": 49,
+          "node_name": "RJ45 Connections",
+          "connector_candidate": "rj45_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.2725560665130615,
+              0.14590755105018616,
+              -0.9792380332946777
+            ],
+            "max": [
+              1.3361719846725464,
+              0.16578751802444458,
+              -0.879838228225708
+            ]
+          },
+          "geometry_center_scene": [
+            1.304364025592804,
+            0.15584753453731537,
+            -0.9295381307601929
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-Blu-ray.gltf#/nodes/49"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-Blu-ray:usb-a",
+          "node_index": 77,
+          "node_name": "USB",
+          "connector_candidate": "usb_a_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.32433021068573,
+              0.08926674723625183,
+              0.840362548828125
+            ],
+            "max": [
+              1.4626352787017822,
+              0.14880654215812683,
+              1.023900032043457
+            ]
+          },
+          "geometry_center_scene": [
+            1.393482744693756,
+            0.11903664469718933,
+            0.932131290435791
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-Blu-ray.gltf#/nodes/77"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-Blu-ray:rca",
+          "node_index": 72,
+          "node_name": "Phono_Jack_Yellow#3",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.4543561637401581,
+              0.11769818514585495,
+              -1.0804580450057983
+            ],
+            "max": [
+              0.575371265411377,
+              0.2387133091688156,
+              -0.9715445041656494
+            ]
+          },
+          "geometry_center_scene": [
+            0.5148637145757675,
+            0.17820574715733528,
+            -1.0260012745857239
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-Blu-ray.gltf#/nodes/72"
+          ],
+          "assessment_enabled": false
+        }
+      ]
+    },
+    {
+      "id": "Sony-SmartTV",
+      "asset_path": "Sony-SmartTV.gltf",
+      "sha256": "dbe8d94b1b3e95e6be659004710888df34f92b525da8c949c1663803df1986ea",
+      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
+      "node_count": 179,
+      "mesh_count": 158,
+      "hardware_model_number": null,
+      "hardware_identity_status": "unresolved",
+      "manual_match_status": "not_confirmed",
+      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "ports": [
+        {
+          "id": "Sony-SmartTV:hdmi-a",
+          "node_index": 109,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -1.8300952911376953,
+              1.6904258728027344,
+              -1.627156376838684
+            ],
+            "max": [
+              -1.6241728067398071,
+              1.777226448059082,
+              -1.4603592157363892
+            ]
+          },
+          "geometry_center_scene": [
+            -1.7271340489387512,
+            1.7338261604309082,
+            -1.5437577962875366
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/109"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:hdmi-b",
+          "node_index": 131,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -2.6362786293029785,
+              1.672562599182129,
+              -1.6368190050125122
+            ],
+            "max": [
+              -2.4694812297821045,
+              1.878485083580017,
+              -1.5500184297561646
+            ]
+          },
+          "geometry_center_scene": [
+            -2.5528799295425415,
+            1.775523841381073,
+            -1.5934187173843384
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/131"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:usb-a-a",
+          "node_index": 96,
+          "node_name": "USB",
+          "connector_candidate": "usb_a_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -2.6362786293029785,
+              2.0710678100585938,
+              -1.603505253791809
+            ],
+            "max": [
+              -2.4527411460876465,
+              2.2093729972839355,
+              -1.543965458869934
+            ]
+          },
+          "geometry_center_scene": [
+            -2.5445098876953125,
+            2.1402204036712646,
+            -1.5737353563308716
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/96"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:usb-a-b",
+          "node_index": 163,
+          "node_name": "USB",
+          "connector_candidate": "usb_a_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -2.6362786293029785,
+              2.0710678100585938,
+              -1.704505205154419
+            ],
+            "max": [
+              -2.4527411460876465,
+              2.2093729972839355,
+              -1.644965410232544
+            ]
+          },
+          "geometry_center_scene": [
+            -2.5445098876953125,
+            2.1402204036712646,
+            -1.6747353076934814
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/163"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:network",
+          "node_index": 7,
+          "node_name": "RJ45 Connections",
+          "connector_candidate": "rj45_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.10970880836248398,
+              1.1034499406814575,
+              -1.5131471157073975
+            ],
+            "max": [
+              0.1874009668827057,
+              1.224843978881836,
+              -1.4888683557510376
+            ]
+          },
+          "geometry_center_scene": [
+            0.14855488762259483,
+            1.1641469597816467,
+            -1.5010077357292175
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/7"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:rca-a",
+          "node_index": 30,
+          "node_name": "Phono_Jack_Yellow#3",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -0.9438338875770569,
+              0.9685850143432617,
+              -1.6132078170776367
+            ],
+            "max": [
+              -0.7910563349723816,
+              1.1060848236083984,
+              -1.4604301452636719
+            ]
+          },
+          "geometry_center_scene": [
+            -0.8674451112747192,
+            1.03733491897583,
+            -1.5368189811706543
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/30"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:rca-b",
+          "node_index": 32,
+          "node_name": "Phono_Jack_Yellow#2",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -0.6498339176177979,
+              0.9685850143432617,
+              -1.6132078170776367
+            ],
+            "max": [
+              -0.49705633521080017,
+              1.1060848236083984,
+              -1.4604301452636719
+            ]
+          },
+          "geometry_center_scene": [
+            -0.573445126414299,
+            1.03733491897583,
+            -1.5368189811706543
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/32"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:rca-c",
+          "node_index": 34,
+          "node_name": "Phono_Jack_Yellow#1",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -0.36083391308784485,
+              0.9685850143432617,
+              -1.6132078170776367
+            ],
+            "max": [
+              -0.20805631577968597,
+              1.1060848236083984,
+              -1.4604301452636719
+            ]
+          },
+          "geometry_center_scene": [
+            -0.2844451144337654,
+            1.03733491897583,
+            -1.5368189811706543
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/34"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:coax",
+          "node_index": 36,
+          "node_name": "Coax Connection threaded",
+          "connector_candidate": "coax_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.9213797450065613,
+              0.9118984341621399,
+              -1.6238775253295898
+            ],
+            "max": [
+              1.072169542312622,
+              1.1939483880996704,
+              -1.4497604370117188
+            ]
+          },
+          "geometry_center_scene": [
+            0.9967746436595917,
+            1.0529234111309052,
+            -1.5368189811706543
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/36"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Sony-SmartTV:optical",
+          "node_index": 56,
+          "node_name": "Fiber port",
+          "connector_candidate": "optical_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -1.8027660846710205,
+              1.8972264528274536,
+              -1.634774088859558
+            ],
+            "max": [
+              -1.651502013206482,
+              2.059372901916504,
+              -1.5303038358688354
+            ]
+          },
+          "geometry_center_scene": [
+            -1.7271340489387512,
+            1.9782996773719788,
+            -1.5825389623641968
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Sony-SmartTV.gltf#/nodes/56"
+          ],
+          "assessment_enabled": false
+        }
+      ]
+    },
+    {
+      "id": "Vertex-Visualizer",
+      "asset_path": "Vertex-Visualizer.gltf",
+      "sha256": "a6fe19988df61bd073c6c708e7c8b664a6462378bffaa62e258aeb3307763640",
+      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
+      "node_count": 190,
+      "mesh_count": 161,
+      "hardware_model_number": null,
+      "hardware_identity_status": "unresolved",
+      "manual_match_status": "not_confirmed",
+      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "ports": [
+        {
+          "id": "Vertex-Visualizer:hdmi-a",
+          "node_index": 6,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              2.4612913131713867,
+              0.0878111943602562,
+              1.2381935119628906
+            ],
+            "max": [
+              2.7863969802856445,
+              0.2531833052635193,
+              1.636344313621521
+            ]
+          },
+          "geometry_center_scene": [
+            2.6238441467285156,
+            0.17049724981188774,
+            1.4372689127922058
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Vertex-Visualizer.gltf#/nodes/6"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Vertex-Visualizer:hdmi-b",
+          "node_index": 45,
+          "node_name": "HDMI Port",
+          "connector_candidate": "hdmi",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              2.4718620777130127,
+              0.0878111943602562,
+              0.6972967982292175
+            ],
+            "max": [
+              2.7969677448272705,
+              0.2531833052635193,
+              1.0954475402832031
+            ]
+          },
+          "geometry_center_scene": [
+            2.6344149112701416,
+            0.17049724981188774,
+            0.8963721692562103
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Vertex-Visualizer.gltf#/nodes/45"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Vertex-Visualizer:usb-b",
+          "node_index": 72,
+          "node_name": "USB Type B",
+          "connector_candidate": "usb_b",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              2.594184637069702,
+              0.14837804436683655,
+              0.38440343737602234
+            ],
+            "max": [
+              2.7863833904266357,
+              0.21411246061325073,
+              0.5035732388496399
+            ]
+          },
+          "geometry_center_scene": [
+            2.690284013748169,
+            0.18124525249004364,
+            0.4439883381128311
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Vertex-Visualizer.gltf#/nodes/72"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Vertex-Visualizer:rca-a",
+          "node_index": 100,
+          "node_name": "Phono_Jack_White",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              1.1023931503295898,
+              0.23892542719841003,
+              -3.634680986404419
+            ],
+            "max": [
+              1.255738615989685,
+              0.3917030096054077,
+              -3.4945952892303467
+            ]
+          },
+          "geometry_center_scene": [
+            1.1790658831596375,
+            0.3153142184019089,
+            -3.564638137817383
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Vertex-Visualizer.gltf#/nodes/100"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Vertex-Visualizer:rca-b",
+          "node_index": 102,
+          "node_name": "Phono_Jack_Yellow",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.8637961149215698,
+              0.23892542719841003,
+              -3.6393439769744873
+            ],
+            "max": [
+              1.017141580581665,
+              0.3917030096054077,
+              -3.499258279800415
+            ]
+          },
+          "geometry_center_scene": [
+            0.9404688477516174,
+            0.3153142184019089,
+            -3.569301128387451
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Vertex-Visualizer.gltf#/nodes/102"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Vertex-Visualizer:rca-c",
+          "node_index": 105,
+          "node_name": "Phono_Jack_Yellow",
+          "connector_candidate": "rca_candidate",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              0.6198427081108093,
+              0.23892542719841003,
+              -3.6441116333007812
+            ],
+            "max": [
+              0.7731881737709045,
+              0.3917030096054077,
+              -3.504025936126709
+            ]
+          },
+          "geometry_center_scene": [
+            0.6965154409408569,
+            0.3153142184019089,
+            -3.574068784713745
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Vertex-Visualizer.gltf#/nodes/105"
+          ],
+          "assessment_enabled": false
+        },
+        {
+          "id": "Vertex-Visualizer:unidentified-connector",
+          "node_index": 104,
+          "node_name": "1734354-1",
+          "connector_candidate": "unknown",
+          "evidence_status": "model_node_observed",
+          "geometry_bounds_scene": {
+            "min": [
+              -0.11802016943693161,
+              0.1259920597076416,
+              -3.666081428527832
+            ],
+            "max": [
+              0.4015144109725952,
+              0.4038580358028412,
+              -3.348240375518799
+            ]
+          },
+          "geometry_center_scene": [
+            0.1417471207678318,
+            0.2649250477552414,
+            -3.5071609020233154
+          ],
+          "socket_anchor_scene": null,
+          "socket_normal_scene": null,
+          "anchor_status": "requires_visual_calibration",
+          "direction": null,
+          "video_capable": null,
+          "signal": null,
+          "supported_modes": null,
+          "input_selector": null,
+          "capability_status": "unverified",
+          "evidence_refs": [
+            "Vertex-Visualizer.gltf#/nodes/104"
+          ],
+          "assessment_enabled": false
+        }
+      ]
+    }
+  ]
+}
