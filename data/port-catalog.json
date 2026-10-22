@@ -1,1379 +1,2488 @@
 {
-  "schema_version": "1.0.0",
-  "audit_date_local": "2026-10-22",
-  "audit_timezone": "Asia/Bangkok",
-  "source_repository": "https://github.com/khanchaisaetae/avmodel",
-  "source_commit": "e07fe56ba406fb70c058def70b794b24d4b204e8",
+  "schema_version": "2.0.0",
+  "review_date_local": "2026-10-23",
+  "timezone": "Asia/Bangkok",
+  "authority": "user_supplied_files_in_ref_only",
+  "supersedes": {
+    "catalog_schema": "1.0.0",
+    "decision": "revoked_all_prior_port_confirmations",
+    "legacy_geometry_and_hotspots": "not_imported"
+  },
+  "sources": {
+    "dell": {
+      "path": "ref/Dell_G7_7588-gaming-w56791901th.png",
+      "kind": "retailer_spec_screenshot",
+      "model": "Dell G7 15 7588 / W56791901TH",
+      "reviewed_regions": {
+        "model": [
+          120,
+          180,
+          1050,
+          400
+        ],
+        "ports": [
+          100,
+          3550,
+          1150,
+          4070
+        ]
+      },
+      "limitations": [
+        "ภาพสเปกร้านค้า ไม่ใช่คู่มือผู้ผลิต",
+        "ไม่มีคำอธิบายทิศทาง HDMI หรือการส่งภาพผ่าน USB-C",
+        "DisplayPort No ไม่ใช่ข้อพิสูจน์ว่า USB-C ส่งภาพไม่ได้"
+      ],
+      "sha256": "490a7d20deca3cefdb78d132635efc8b12f9a41800db50934af5469b3fe32d19"
+    },
+    "epson": {
+      "path": "ref/EB-2165W_Epson_Projector_User Guide.pdf",
+      "kind": "manufacturer_manual",
+      "model": "Epson EB-2165W",
+      "reviewed_pdf_pages": [
+        14,
+        15,
+        23,
+        24,
+        25,
+        27,
+        28,
+        29,
+        30,
+        31,
+        204,
+        205,
+        206,
+        207,
+        208
+      ],
+      "limitations": [
+        "คู่มือหลายรุ่น: ใช้เฉพาะแถวและภาพที่ครอบคลุม EB-2165W",
+        "ความละเอียดแผง 1280x800 แยกจากความละเอียดสัญญาณที่รับได้"
+      ],
+      "sha256": "fb078dd7b2281266c7fe6a7332b33070cf07f459593efcef199a88168f5c3de0"
+    },
+    "bluray": {
+      "path": "ref/Sony_Ultra_HD_Blueray_UBP-X700.pdf",
+      "kind": "manufacturer_manual",
+      "model": "Sony UBP-X700",
+      "reviewed_pdf_pages": [
+        1,
+        8,
+        11,
+        12,
+        15,
+        19,
+        23,
+        30
+      ],
+      "limitations": [
+        "HDMI OUT 2 ส่งเฉพาะเสียง",
+        "4K มีเงื่อนไขจอ สาย และ HDCP ตามหน้า 11"
+      ],
+      "sha256": "ace180c3d89e61141a02b90a5dde3f4508a190d6096ee09484f6922d02381687"
+    },
+    "tv": {
+      "path": "ref/Sony_Smart_TV_KDL-40W650D_specifications.png",
+      "kind": "manufacturer_spec_screenshot",
+      "model": "Sony KDL-40W650D",
+      "reviewed_regions": {
+        "interfaces": [
+          60,
+          800,
+          1100,
+          1530
+        ],
+        "display": [
+          60,
+          1530,
+          1100,
+          1850
+        ]
+      },
+      "limitations": [
+        "แถบลอยบังแถวบนของหัวข้อการเชื่อมต่อ: ไม่ยืนยัน USB จากส่วนที่อ่านไม่ได้",
+        "ระบุรองรับ ARC แต่ไม่ระบุว่าช่อง HDMI ใด",
+        "ความละเอียดแผง 1920x1080 ไม่ใช่ตารางรูปแบบอินพุต"
+      ],
+      "sha256": "38802e2fcc4f8f001cabf9d71e330dcdfddc2d733e23f4c46d4753c71b2cb6da"
+    },
+    "vertex": {
+      "path": "ref/Vertex_Visualizer_D-1420HW.pdf",
+      "kind": "manufacturer_manual",
+      "model": "Vertex D-1420HW",
+      "reviewed_pdf_pages": [
+        1,
+        6,
+        8,
+        9,
+        11,
+        14,
+        15,
+        16
+      ],
+      "limitations": [
+        "หน้า 6 ภาพแผงพอร์ตมีรายการมากกว่าข้อความบรรยาย",
+        "การเห็น IN/OUT ไม่ยืนยันการแปลงข้ามสัญญาณทุกคู่",
+        "USB camera ต้องใช้ซอฟต์แวร์/ไดรเวอร์ตามหน้า 14-16"
+      ],
+      "sha256": "37f0150ef55ee0b43698900d21084341aef5d92e9364a9be93e59e0050b2aede"
+    }
+  },
   "policy": {
     "unknown_is_not_incorrect": true,
-    "unverified_ports_are_not_gradable": true,
-    "connector_shape_does_not_prove_video_or_direction": true,
-    "geometry_center_is_not_socket_anchor": true
+    "inference_is_not_reference_confirmation": true,
+    "reference_confirmation_is_not_geometry_calibration": true,
+    "partial_mode_lists_are_not_exhaustive": true
   },
   "devices": [
     {
-      "id": "DellG7-Laptop",
+      "id": "dell",
       "asset_path": "DellG7-Laptop.gltf",
-      "sha256": "15ef65b56ed043e822f6411e05c16055d4a67210481f0dec3d405f6287b635e2",
-      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
-      "node_count": 151,
-      "mesh_count": 135,
-      "hardware_model_number": null,
-      "hardware_identity_status": "unresolved",
-      "manual_match_status": "not_confirmed",
-      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "model_name": "Dell G7 15 7588 / W56791901TH",
+      "identity_basis": "user_supplied_ref_assignment",
+      "model_geometry_match_status": "not_reverified",
       "ports": [
         {
-          "id": "DellG7-Laptop:hdmi-a",
-          "node_index": 101,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.8173999786376953,
-              0.08786997199058533,
-              -0.7182375192642212
-            ],
-            "max": [
-              1.942497968673706,
-              0.1529703587293625,
-              -0.5637956261634827
-            ]
-          },
-          "geometry_center_scene": [
-            1.8799489736557007,
-            0.12042016535997391,
-            -0.6410165727138519
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "HDMI",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "out",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "inferred_function",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "DellG7-Laptop.gltf#/nodes/101"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "ภาพระบุ HDMI 1 ช่อง; OUT เป็นการอนุมานจากบทบาทโน้ตบุ๊ก ไม่ได้เขียนในภาพ",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [
+            "ยืนยันจำนวนและหัวต่อจากภาพ; ทิศทาง OUT และการส่งภาพเป็นการอนุมาน จึงยังไม่ใช้ตัดสินคะแนน"
+          ],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "dell:hdmi"
         },
         {
-          "id": "DellG7-Laptop:usb-c",
-          "node_index": 50,
-          "node_name": "USB Type C Port",
-          "connector_candidate": "usb_c",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.8563042879104614,
-              0.10634934157133102,
-              -0.46614041924476624
-            ],
-            "max": [
-              1.942497968673706,
-              0.1495552659034729,
-              -0.3685997724533081
-            ]
-          },
-          "geometry_center_scene": [
-            1.8994011282920837,
-            0.12795230373740196,
-            -0.41737009584903717
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "USB 3.1 Type-A #1",
+          "count": 1,
+          "connector": "usb_a",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "usb_data",
+          "connection_kind": "usb_data",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "DellG7-Laptop.gltf#/nodes/50"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "ภาพระบุ 3 x USB 3.1 Type A",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [
+            "เลข # เป็นรหัสภายใน ไม่ใช่ตำแหน่งหรือเลขบนเครื่อง"
+          ],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "dell:usb-a-1"
         },
         {
-          "id": "DellG7-Laptop:usb-a-a",
-          "node_index": 10,
-          "node_name": "USB",
-          "connector_candidate": "usb_a_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.8039605617523193,
-              0.0897703543305397,
-              -0.2722734212875366
-            ],
-            "max": [
-              1.942497968673706,
-              0.1493101567029953,
-              -0.13396836817264557
-            ]
-          },
-          "geometry_center_scene": [
-            1.8732292652130127,
-            0.1195402555167675,
-            -0.2031208947300911
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "USB 3.1 Type-A #2",
+          "count": 1,
+          "connector": "usb_a",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "usb_data",
+          "connection_kind": "usb_data",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "DellG7-Laptop.gltf#/nodes/10"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "ภาพระบุ 3 x USB 3.1 Type A",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [
+            "เลข # เป็นรหัสภายใน ไม่ใช่ตำแหน่งหรือเลขบนเครื่อง"
+          ],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "dell:usb-a-2"
         },
         {
-          "id": "DellG7-Laptop:usb-a-b",
-          "node_index": 37,
-          "node_name": "USB",
-          "connector_candidate": "usb_a_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.8039605617523193,
-              0.0897703543305397,
-              -0.06157341226935387
-            ],
-            "max": [
-              1.942497968673706,
-              0.1493101567029953,
-              0.07673163712024689
-            ]
-          },
-          "geometry_center_scene": [
-            1.8732292652130127,
-            0.1195402555167675,
-            0.00757911242544651
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "USB 3.1 Type-A #3",
+          "count": 1,
+          "connector": "usb_a",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "usb_data",
+          "connection_kind": "usb_data",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "DellG7-Laptop.gltf#/nodes/37"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "ภาพระบุ 3 x USB 3.1 Type A",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [
+            "เลข # เป็นรหัสภายใน ไม่ใช่ตำแหน่งหรือเลขบนเครื่อง"
+          ],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "dell:usb-a-3"
         },
         {
-          "id": "DellG7-Laptop:usb-a-c",
-          "node_index": 123,
-          "node_name": "USB",
-          "connector_candidate": "usb_a_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -1.9133598804473877,
-              0.09158612042665482,
-              -0.45673295855522156
-            ],
-            "max": [
-              -1.774822473526001,
-              0.1511259227991104,
-              -0.3184278905391693
-            ]
-          },
-          "geometry_center_scene": [
-            -1.8440911769866943,
-            0.12135602161288261,
-            -0.38758042454719543
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "USB 3.1 Type-C",
+          "count": 1,
+          "connector": "usb_c",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "usb_data",
+          "connection_kind": "usb_data",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "DellG7-Laptop.gltf#/nodes/123"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "ภาพระบุ USB 3.1 Type C 1 ช่อง และ Thunderbolt Yes แต่ไม่ผูกกับช่องหรือยืนยัน DisplayPort Alt Mode",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "dell:usb-c"
         },
         {
-          "id": "DellG7-Laptop:network",
-          "node_index": 23,
-          "node_name": "Xport",
-          "connector_candidate": "rj45_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -1.8793598413467407,
-              0.04201531410217285,
-              -0.6838703155517578
-            ],
-            "max": [
-              -1.7897462844848633,
-              0.15804770588874817,
-              -0.5415716171264648
-            ]
-          },
-          "geometry_center_scene": [
-            -1.834553062915802,
-            0.10003150999546051,
-            -0.6127209663391113
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "Ethernet LAN",
+          "count": null,
+          "connector": "rj45",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "ethernet",
+          "connection_kind": "network",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "DellG7-Laptop.gltf#/nodes/23"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "ภาพระบุ Ethernet LAN Yes; จำนวน 1 เป็นจำนวนอินเทอร์เฟซที่ลงบัญชี ไม่ยืนยันจากภาพแผงจริง",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "dell:lan"
         }
+      ],
+      "documented_absences": [
+        {
+          "interface": "dedicated_displayport",
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "ช่อง DisplayPort ระบุ No",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
+          ]
+        },
+        {
+          "interface": "vga",
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "D-Sub/VGA ระบุ No",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
+          ]
+        }
+      ],
+      "documented_features": [
+        {
+          "name": "thunderbolt",
+          "supported": true,
+          "port_assignment": null,
+          "evidence": [
+            {
+              "source_id": "dell",
+              "basis": "text",
+              "detail_th": "Thunderbolt Yes; ไม่ระบุเวอร์ชันและช่องที่รองรับ",
+              "pixel_region_xyxy": [
+                100,
+                3550,
+                1150,
+                4070
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved": [
+        "หน้าที่ส่งภาพผ่าน USB-C",
+        "เวอร์ชัน HDMI และรายการรูปแบบภาพ",
+        "พอร์ตเสียง/ไฟเลี้ยงที่ตารางนี้ไม่ได้ให้รายละเอียด"
       ]
     },
     {
-      "id": "Epson-Projector",
+      "id": "epson",
       "asset_path": "Epson-Projector.gltf",
-      "sha256": "d63656246e1c4fd00eecfb341231f166e7849452aba7d54fee998015aad99e68",
-      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
-      "node_count": 53,
-      "mesh_count": 47,
-      "hardware_model_number": null,
-      "hardware_identity_status": "unresolved",
-      "manual_match_status": "not_confirmed",
-      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "model_name": "Epson EB-2165W",
+      "identity_basis": "user_supplied_ref_assignment",
+      "model_geometry_match_status": "not_reverified",
       "ports": [
         {
-          "id": "Epson-Projector:hdmi-a",
-          "node_index": 23,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.35726457834243774,
-              0.999019980430603,
-              -1.707391619682312
-            ],
-            "max": [
-              0.5631871223449707,
-              1.0858204364776611,
-              -1.5405943393707275
-            ]
+          "label": "HDMI1/MHL",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
+          "supported_modes": [
+            "640x480@60",
+            "800x600@60",
+            "1024x768@60",
+            "1280x800@60",
+            "1366x768@60",
+            "1440x900@60",
+            "1600x900@60",
+            "1600x1200@60",
+            "1680x1050@60",
+            "1280x960@60",
+            "1280x1024@60",
+            "1400x1050@60",
+            "1280x720@50",
+            "1280x720@60",
+            "1920x1080@24",
+            "1920x1080@30",
+            "1920x1080@50",
+            "1920x1080@60"
+          ],
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "รับภาพจาก HDMI หรืออุปกรณ์ MHL ที่รองรับ",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
           },
-          "geometry_center_scene": [
-            0.4602258503437042,
-            1.042420208454132,
-            -1.6239929795265198
+          "supported_modes_evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "รายการรูปแบบ HDMI/HDBaseT; เก็บเฉพาะ progressive subset และรหัสไม่ครอบคลุม interlaced",
+              "pdf_pages": [
+                204,
+                205
+              ],
+              "printed_pages": [
+                204,
+                205
+              ]
+            }
           ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
-          "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Epson-Projector.gltf#/nodes/23"
+          "features": [
+            "MHL"
           ],
-          "assessment_enabled": false
+          "id": "epson:hdmi1"
         },
         {
-          "id": "Epson-Projector:hdmi-b",
-          "node_index": 24,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.6512646079063416,
-              0.999019980430603,
-              -1.707391619682312
-            ],
-            "max": [
-              0.8571870923042297,
-              1.0858204364776611,
-              -1.5405943393707275
-            ]
+          "label": "HDMI2",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
+          "supported_modes": [
+            "640x480@60",
+            "800x600@60",
+            "1024x768@60",
+            "1280x800@60",
+            "1366x768@60",
+            "1440x900@60",
+            "1600x900@60",
+            "1600x1200@60",
+            "1680x1050@60",
+            "1280x960@60",
+            "1280x1024@60",
+            "1400x1050@60",
+            "1280x720@50",
+            "1280x720@60",
+            "1920x1080@24",
+            "1920x1080@30",
+            "1920x1080@50",
+            "1920x1080@60"
+          ],
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "รับภาพจาก HDMI",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
           },
-          "geometry_center_scene": [
-            0.7542258501052856,
-            1.042420208454132,
-            -1.6239929795265198
+          "supported_modes_evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "progressive subset",
+              "pdf_pages": [
+                204,
+                205
+              ],
+              "printed_pages": [
+                204,
+                205
+              ]
+            }
           ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
-          "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Epson-Projector.gltf#/nodes/24"
-          ],
-          "assessment_enabled": false
+          "id": "epson:hdmi2"
         },
         {
-          "id": "Epson-Projector:usb",
-          "node_index": 33,
-          "node_name": "USB",
-          "connector_candidate": "usb_unknown",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.5098556280136108,
-              0.9014929533004761,
-              -1.707391619682312
-            ],
-            "max": [
-              1.5810755491256714,
-              1.0669296979904175,
-              -1.487849235534668
-            ]
-          },
-          "geometry_center_scene": [
-            1.5454655885696411,
-            0.9842113256454468,
-            -1.59762042760849
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "Computer1",
+          "count": 1,
+          "connector": "vga",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "analog_rgb",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Epson-Projector.gltf#/nodes/33"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "รับ Analog RGB และ Component ผ่านขั้ว D-Sub 15",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "additional_signals": [
+            "component_ypbpr"
+          ],
+          "id": "epson:computer1"
         },
         {
-          "id": "Epson-Projector:rca-a",
-          "node_index": 25,
-          "node_name": "Phono_Jack_Yellow#1",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.5997976660728455,
-              0.6398225426673889,
-              -1.8143359422683716
-            ],
-            "max": [
-              0.7525752186775208,
-              0.7926000952720642,
-              -1.6768360137939453
-            ]
-          },
-          "geometry_center_scene": [
-            0.6761864423751831,
-            0.7162113189697266,
-            -1.7455859780311584
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
+          "label": "Computer2/Monitor Out",
+          "count": 1,
+          "connector": "vga",
           "direction": null,
-          "video_capable": null,
+          "video_capable": true,
           "signal": null,
+          "connection_kind": "configurable_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Epson-Projector.gltf#/nodes/25"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "ช่องเดียวเลือกเป็น Computer2 IN หรือ Monitor Out ได้",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "modes": [
+            {
+              "setting": "Monitor Out Port=Computer2",
+              "direction": "in",
+              "signals": [
+                "analog_rgb",
+                "component_ypbpr"
+              ]
+            },
+            {
+              "setting": "Monitor Out Port=Monitor Out",
+              "direction": "out",
+              "signals": [
+                "analog_rgb"
+              ],
+              "only_source": "epson:computer1",
+              "blocked_sources": [
+                "HDMI1",
+                "HDMI2",
+                "HDBaseT",
+                "Video",
+                "USB",
+                "Component"
+              ]
+            }
+          ],
+          "id": "epson:computer2-monitor"
         },
         {
-          "id": "Epson-Projector:rca-b",
-          "node_index": 34,
-          "node_name": "Phono_Jack_Yellow#3",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.9247976541519165,
-              0.9206745624542236,
-              -1.8143359422683716
-            ],
-            "max": [
-              1.0775752067565918,
-              1.073452115058899,
-              -1.6768360137939453
-            ]
-          },
-          "geometry_center_scene": [
-            1.0011864304542542,
-            0.9970633387565613,
-            -1.7455859780311584
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "Video",
+          "count": 1,
+          "connector": "rca",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "composite_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Epson-Projector.gltf#/nodes/34"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "รับ Composite Video",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:video"
         },
         {
-          "id": "Epson-Projector:rca-c",
-          "node_index": 35,
-          "node_name": "Phono_Jack_Yellow#2",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.42679765820503235,
-              0.6398225426673889,
-              -1.8143359422683716
-            ],
-            "max": [
-              0.57957524061203,
-              0.7926000952720642,
-              -1.6768360137939453
-            ]
-          },
-          "geometry_center_scene": [
-            0.5031864494085312,
-            0.7162113189697266,
-            -1.7455859780311584
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "Audio 1",
+          "count": 1,
+          "connector": "mini_jack_3_5",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Epson-Projector.gltf#/nodes/35"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "พอร์ตเสียง ไม่ใช่เส้นทางภาพ",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:audio1"
         },
         {
-          "id": "Epson-Projector:unidentified-connector",
-          "node_index": 28,
-          "node_name": "1734354-1",
-          "connector_candidate": "unknown",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.4268444776535034,
-              0.36711177229881287,
-              -1.7907545566558838
-            ],
-            "max": [
-              1.8547735214233398,
-              0.5977405309677124,
-              -1.5351084470748901
-            ]
-          },
-          "geometry_center_scene": [
-            1.6408089995384216,
-            0.48242615163326263,
-            -1.662931501865387
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "Audio 2",
+          "count": 1,
+          "connector": "mini_jack_3_5",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Epson-Projector.gltf#/nodes/28"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "พอร์ตเสียง ไม่ใช่เส้นทางภาพ",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:audio2"
+        },
+        {
+          "label": "Audio Out",
+          "count": 1,
+          "connector": "mini_jack_3_5",
+          "direction": "out",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "พอร์ตเสียง ไม่ใช่เส้นทางภาพ",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:audio-out"
+        },
+        {
+          "label": "L-Audio",
+          "count": 1,
+          "connector": "rca",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "พอร์ตเสียง ไม่ใช่เส้นทางภาพ",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:audio-l"
+        },
+        {
+          "label": "R-Audio",
+          "count": 1,
+          "connector": "rca",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "พอร์ตเสียง ไม่ใช่เส้นทางภาพ",
+              "pdf_pages": [
+                15,
+                207
+              ],
+              "printed_pages": [
+                15,
+                207
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:audio-r"
+        },
+        {
+          "label": "USB-B",
+          "count": 1,
+          "connector": "usb_b",
+          "direction": "bidirectional",
+          "video_capable": true,
+          "signal": "epson_usb_display",
+          "connection_kind": "software_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "USB Display รับภาพ/เสียงจากคอมพิวเตอร์ผ่านซอฟต์แวร์; มีฟังก์ชันควบคุมด้วย",
+              "pdf_pages": [
+                15,
+                23,
+                24,
+                207
+              ],
+              "printed_pages": [
+                15,
+                23,
+                24,
+                207
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "video_flow": "computer_to_projector",
+          "requirements": [
+            "compatible_computer",
+            "Epson USB Display software",
+            "USB-B cable"
+          ],
+          "id": "epson:usb-b"
+        },
+        {
+          "label": "USB-A",
+          "count": 1,
+          "connector": "usb_a",
+          "direction": "bidirectional",
+          "video_capable": null,
+          "signal": "usb_host",
+          "connection_kind": "usb_media",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "อ่านไฟล์จาก USB/กล้อง และต่อ Document Camera ที่รองรับ ไม่ใช่ HDMI IN",
+              "pdf_pages": [
+                15,
+                28,
+                29,
+                207
+              ],
+              "printed_pages": [
+                15,
+                28,
+                29,
+                207
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:usb-a"
+        },
+        {
+          "label": "USB-A for wireless LAN module",
+          "count": 1,
+          "connector": "usb_a",
+          "direction": "bidirectional",
+          "video_capable": null,
+          "signal": "wireless_lan_module",
+          "connection_kind": "accessory",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "USB Type A สำหรับโมดูล Wireless LAN ของรุ่นกลุ่มที่มี EB-2165W",
+              "pdf_pages": [
+                208
+              ],
+              "printed_pages": [
+                208
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:usb-wlan"
+        },
+        {
+          "label": "LAN",
+          "count": 1,
+          "connector": "rj45",
+          "direction": "bidirectional",
+          "video_capable": null,
+          "signal": "ethernet",
+          "connection_kind": "network",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "LAN network; คนละช่องและคนละหน้าที่กับ HDBaseT",
+              "pdf_pages": [
+                15,
+                208
+              ],
+              "printed_pages": [
+                15,
+                208
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:lan"
+        },
+        {
+          "label": "HDBaseT",
+          "count": 1,
+          "connector": "rj45",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "hdbaset",
+          "connection_kind": "hdbaset_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "มีใน EB-2165W ต่อ HDBaseT Transmitter ไม่ใช่ Ethernet LAN ธรรมดา",
+              "pdf_pages": [
+                15,
+                30,
+                208
+              ],
+              "printed_pages": [
+                15,
+                30,
+                208
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "requirements": [
+            "compatible_HDBaseT_transmitter"
+          ],
+          "id": "epson:hdbaset"
+        },
+        {
+          "label": "RS-232C",
+          "count": 1,
+          "connector": "dsub9",
+          "direction": "bidirectional",
+          "video_capable": false,
+          "signal": "rs232",
+          "connection_kind": "control",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "ใช้ควบคุมโปรเจกเตอร์ ไม่ใช่พอร์ตภาพ",
+              "pdf_pages": [
+                15,
+                208
+              ],
+              "printed_pages": [
+                15,
+                208
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:rs232"
+        },
+        {
+          "label": "Power inlet",
+          "count": 1,
+          "connector": "ac_inlet",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "ac_power",
+          "connection_kind": "power",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "epson",
+              "basis": "text",
+              "detail_th": "ช่องต่อสายไฟ",
+              "pdf_pages": [
+                15
+              ],
+              "printed_pages": [
+                15
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "epson:power"
         }
-      ]
+      ],
+      "native_panel_resolution": {
+        "width": 1280,
+        "height": 800,
+        "evidence": [
+          {
+            "source_id": "epson",
+            "basis": "text",
+            "detail_th": "แผง WXGA ของ EB-2165W",
+            "pdf_pages": [
+              206
+            ],
+            "printed_pages": [
+              206
+            ]
+          }
+        ]
+      }
     },
     {
-      "id": "Sony-Blu-ray",
+      "id": "bluray",
       "asset_path": "Sony-Blu-ray.gltf",
-      "sha256": "9f5b0043eb0739edf05bb8c303528bdfd16a11fc682e3f4b2eef41716ba7ece5",
-      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
-      "node_count": 90,
-      "mesh_count": 81,
-      "hardware_model_number": null,
-      "hardware_identity_status": "unresolved",
-      "manual_match_status": "not_confirmed",
-      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "model_name": "Sony UBP-X700",
+      "identity_basis": "user_supplied_ref_assignment",
+      "model_geometry_match_status": "not_reverified",
       "ports": [
         {
-          "id": "Sony-Blu-ray:hdmi-a",
-          "node_index": 4,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.9897661209106445,
-              0.11027925461530685,
-              -1.0020999908447266
-            ],
-            "max": [
-              1.1442079544067383,
-              0.17537963390350342,
-              -0.8770020604133606
-            ]
-          },
-          "geometry_center_scene": [
-            1.0669870376586914,
-            0.14282944425940514,
-            -0.9395510256290436
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "HDMI OUT 1 (VIDEO/AUDIO)",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "out",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-Blu-ray.gltf#/nodes/4"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "bluray",
+              "basis": "text",
+              "detail_th": "ส่งวิดีโอและเสียงดิจิทัล",
+              "pdf_pages": [
+                8,
+                30
+              ],
+              "printed_pages": [
+                8,
+                30
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "bluray:hdmi1"
         },
         {
-          "id": "Sony-Blu-ray:hdmi-b",
-          "node_index": 26,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.7357661128044128,
-              0.11027925461530685,
-              -1.0020999908447266
-            ],
-            "max": [
-              0.8902080059051514,
-              0.17537963390350342,
-              -0.8770020604133606
-            ]
-          },
-          "geometry_center_scene": [
-            0.8129870593547821,
-            0.14282944425940514,
-            -0.9395510256290436
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "HDMI OUT 2 (AUDIO ONLY)",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "out",
+          "video_capable": false,
+          "signal": "hdmi_audio",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-Blu-ray.gltf#/nodes/26"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "bluray",
+              "basis": "text",
+              "detail_th": "ส่งเฉพาะเสียง ไม่มีวิดีโอ",
+              "pdf_pages": [
+                8,
+                30
+              ],
+              "printed_pages": [
+                8,
+                30
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "bluray:hdmi2"
         },
         {
-          "id": "Sony-Blu-ray:network",
-          "node_index": 49,
-          "node_name": "RJ45 Connections",
-          "connector_candidate": "rj45_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.2725560665130615,
-              0.14590755105018616,
-              -0.9792380332946777
-            ],
-            "max": [
-              1.3361719846725464,
-              0.16578751802444458,
-              -0.879838228225708
-            ]
-          },
-          "geometry_center_scene": [
-            1.304364025592804,
-            0.15584753453731537,
-            -0.9295381307601929
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "DIGITAL OUT (COAXIAL)",
+          "count": 1,
+          "connector": "rca",
+          "direction": "out",
+          "video_capable": false,
+          "signal": "spdif_coaxial",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-Blu-ray.gltf#/nodes/49"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "bluray",
+              "basis": "text",
+              "detail_th": "Digital coaxial audio; ไม่ใช่ Composite Video",
+              "pdf_pages": [
+                8,
+                30
+              ],
+              "printed_pages": [
+                8,
+                30
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "bluray:coax"
         },
         {
-          "id": "Sony-Blu-ray:usb-a",
-          "node_index": 77,
-          "node_name": "USB",
-          "connector_candidate": "usb_a_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.32433021068573,
-              0.08926674723625183,
-              0.840362548828125
-            ],
-            "max": [
-              1.4626352787017822,
-              0.14880654215812683,
-              1.023900032043457
-            ]
-          },
-          "geometry_center_scene": [
-            1.393482744693756,
-            0.11903664469718933,
-            0.932131290435791
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "USB (front)",
+          "count": 1,
+          "connector": "usb_a",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "usb_host",
+          "connection_kind": "usb_media",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-Blu-ray.gltf#/nodes/77"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "bluray",
+              "basis": "text",
+              "detail_th": "USB-A อ่านสื่อ ไม่ใช่พอร์ตรับภาพจากโน้ตบุ๊ก และไม่ใช้ชาร์จไฟ",
+              "pdf_pages": [
+                8,
+                15,
+                30
+              ],
+              "printed_pages": [
+                8,
+                15,
+                30
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "bluray:usb-a"
         },
         {
-          "id": "Sony-Blu-ray:rca",
-          "node_index": 72,
-          "node_name": "Phono_Jack_Yellow#3",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.4543561637401581,
-              0.11769818514585495,
-              -1.0804580450057983
-            ],
-            "max": [
-              0.575371265411377,
-              0.2387133091688156,
-              -0.9715445041656494
-            ]
-          },
-          "geometry_center_scene": [
-            0.5148637145757675,
-            0.17820574715733528,
-            -1.0260012745857239
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "LAN (100)",
+          "count": 1,
+          "connector": "rj45",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "ethernet",
+          "connection_kind": "network",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-Blu-ray.gltf#/nodes/72"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "bluray",
+              "basis": "text",
+              "detail_th": "100BASE-TX",
+              "pdf_pages": [
+                8,
+                30
+              ],
+              "printed_pages": [
+                8,
+                30
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "bluray:lan"
+        },
+        {
+          "label": "DC IN 12 V",
+          "count": 1,
+          "connector": "dc_barrel",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "dc_power",
+          "connection_kind": "power",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "bluray",
+              "basis": "text",
+              "detail_th": "อินพุตอะแดปเตอร์ 12V DC",
+              "pdf_pages": [
+                8,
+                30
+              ],
+              "printed_pages": [
+                8,
+                30
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "bluray:power"
+        }
+      ],
+      "conditional_capabilities": [
+        {
+          "name": "4K60_video",
+          "requirements": [
+            "4K display",
+            "HDCP 2.2 compatible HDMI input",
+            "Premium High Speed HDMI or High Speed HDMI 18Gbps"
+          ],
+          "evidence": [
+            {
+              "source_id": "bluray",
+              "basis": "text",
+              "detail_th": "ไม่ยืนยันว่าอุปกรณ์ปลายทางอื่นในชุดรับ 4K ได้",
+              "pdf_pages": [
+                11
+              ],
+              "printed_pages": [
+                11
+              ]
+            }
+          ]
         }
       ]
     },
     {
-      "id": "Sony-SmartTV",
+      "id": "tv",
       "asset_path": "Sony-SmartTV.gltf",
-      "sha256": "dbe8d94b1b3e95e6be659004710888df34f92b525da8c949c1663803df1986ea",
-      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
-      "node_count": 179,
-      "mesh_count": 158,
-      "hardware_model_number": null,
-      "hardware_identity_status": "unresolved",
-      "manual_match_status": "not_confirmed",
-      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "model_name": "Sony KDL-40W650D",
+      "identity_basis": "user_supplied_ref_assignment",
+      "model_geometry_match_status": "not_reverified",
       "ports": [
         {
-          "id": "Sony-SmartTV:hdmi-a",
-          "node_index": 109,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -1.8300952911376953,
-              1.6904258728027344,
-              -1.627156376838684
-            ],
-            "max": [
-              -1.6241728067398071,
-              1.777226448059082,
-              -1.4603592157363892
-            ]
-          },
-          "geometry_center_scene": [
-            -1.7271340489387512,
-            1.7338261604309082,
-            -1.5437577962875366
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "HDMI IN (rear)",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/109"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "อินพุต HDMI รวม 2: หลัง 1 / ข้าง 1; ไม่ระบุเลขช่อง",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "tv:hdmi-rear"
         },
         {
-          "id": "Sony-SmartTV:hdmi-b",
-          "node_index": 131,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -2.6362786293029785,
-              1.672562599182129,
-              -1.6368190050125122
-            ],
-            "max": [
-              -2.4694812297821045,
-              1.878485083580017,
-              -1.5500184297561646
-            ]
-          },
-          "geometry_center_scene": [
-            -2.5528799295425415,
-            1.775523841381073,
-            -1.5934187173843384
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "HDMI IN (side)",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/131"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "อินพุต HDMI รวม 2: หลัง 1 / ข้าง 1; ไม่ระบุเลขช่อง",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "tv:hdmi-side"
         },
         {
-          "id": "Sony-SmartTV:usb-a-a",
-          "node_index": 96,
-          "node_name": "USB",
-          "connector_candidate": "usb_a_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -2.6362786293029785,
-              2.0710678100585938,
-              -1.603505253791809
-            ],
-            "max": [
-              -2.4527411460876465,
-              2.2093729972839355,
-              -1.543965458869934
-            ]
-          },
-          "geometry_center_scene": [
-            -2.5445098876953125,
-            2.1402204036712646,
-            -1.5737353563308716
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "Composite Video IN (bottom)",
+          "count": 1,
+          "connector": "rca",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "composite_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/96"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "อินพุต Composite Video 1 ด้านล่าง",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [
+            "ชนิดหัว RCA เป็นการอนุมานมาตรฐาน Composite; ภาพเป็นตารางไม่มีภาพหัวต่อ"
+          ],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "connector_status": "inferred_standard",
+          "id": "tv:composite"
         },
         {
-          "id": "Sony-SmartTV:usb-a-b",
-          "node_index": 163,
-          "node_name": "USB",
-          "connector_candidate": "usb_a_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -2.6362786293029785,
-              2.0710678100585938,
-              -1.704505205154419
-            ],
-            "max": [
-              -2.4527411460876465,
-              2.2093729972839355,
-              -1.644965410232544
-            ]
-          },
-          "geometry_center_scene": [
-            -2.5445098876953125,
-            2.1402204036712646,
-            -1.6747353076934814
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "RF IN (bottom)",
+          "count": 1,
+          "connector": "rf_unknown",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "rf_tv",
+          "connection_kind": "rf_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/163"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "RF input 1 ด้านล่าง",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "tv:rf"
         },
         {
-          "id": "Sony-SmartTV:network",
-          "node_index": 7,
-          "node_name": "RJ45 Connections",
-          "connector_candidate": "rj45_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.10970880836248398,
-              1.1034499406814575,
-              -1.5131471157073975
-            ],
-            "max": [
-              0.1874009668827057,
-              1.224843978881836,
-              -1.4888683557510376
-            ]
-          },
-          "geometry_center_scene": [
-            0.14855488762259483,
-            1.1641469597816467,
-            -1.5010077357292175
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "Digital audio OUT (rear)",
+          "count": 1,
+          "connector": null,
+          "direction": "out",
+          "video_capable": false,
+          "signal": "digital_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/7"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "เอาต์พุตเสียงดิจิทัล 1 ด้านหลัง; ไม่ระบุ Optical/Coaxial ในข้อความที่อ่านได้",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "tv:digital-audio"
         },
         {
-          "id": "Sony-SmartTV:rca-a",
-          "node_index": 30,
-          "node_name": "Phono_Jack_Yellow#3",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -0.9438338875770569,
-              0.9685850143432617,
-              -1.6132078170776367
-            ],
-            "max": [
-              -0.7910563349723816,
-              1.1060848236083984,
-              -1.4604301452636719
-            ]
-          },
-          "geometry_center_scene": [
-            -0.8674451112747192,
-            1.03733491897583,
-            -1.5368189811706543
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "Audio / Headphone OUT (side)",
+          "count": 1,
+          "connector": null,
+          "direction": "out",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/30"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "เอาต์พุตเสียง/หูฟัง 1 ด้านข้าง พร้อม SubWoofer Out แบบไฮบริด",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "tv:headphone"
         },
         {
-          "id": "Sony-SmartTV:rca-b",
-          "node_index": 32,
-          "node_name": "Phono_Jack_Yellow#2",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -0.6498339176177979,
-              0.9685850143432617,
-              -1.6132078170776367
-            ],
-            "max": [
-              -0.49705633521080017,
-              1.1060848236083984,
-              -1.4604301452636719
-            ]
-          },
-          "geometry_center_scene": [
-            -0.573445126414299,
-            1.03733491897583,
-            -1.5368189811706543
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
+          "label": "Ethernet IN (bottom)",
+          "count": 1,
+          "connector": "rj45",
+          "direction": "bidirectional",
           "video_capable": null,
-          "signal": null,
+          "signal": "ethernet",
+          "connection_kind": "network",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/32"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "Ethernet 1 ด้านล่าง; bidirectional เป็นทิศทางข้อมูลเครือข่าย ไม่ใช่ทิศทางภาพ",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
           ],
-          "assessment_enabled": false
-        },
-        {
-          "id": "Sony-SmartTV:rca-c",
-          "node_index": 34,
-          "node_name": "Phono_Jack_Yellow#1",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -0.36083391308784485,
-              0.9685850143432617,
-              -1.6132078170776367
-            ],
-            "max": [
-              -0.20805631577968597,
-              1.1060848236083984,
-              -1.4604301452636719
-            ]
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
           },
-          "geometry_center_scene": [
-            -0.2844451144337654,
-            1.03733491897583,
-            -1.5368189811706543
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
-          "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/34"
-          ],
-          "assessment_enabled": false
-        },
-        {
-          "id": "Sony-SmartTV:coax",
-          "node_index": 36,
-          "node_name": "Coax Connection threaded",
-          "connector_candidate": "coax_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.9213797450065613,
-              0.9118984341621399,
-              -1.6238775253295898
-            ],
-            "max": [
-              1.072169542312622,
-              1.1939483880996704,
-              -1.4497604370117188
-            ]
-          },
-          "geometry_center_scene": [
-            0.9967746436595917,
-            1.0529234111309052,
-            -1.5368189811706543
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
-          "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/36"
-          ],
-          "assessment_enabled": false
-        },
-        {
-          "id": "Sony-SmartTV:optical",
-          "node_index": 56,
-          "node_name": "Fiber port",
-          "connector_candidate": "optical_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -1.8027660846710205,
-              1.8972264528274536,
-              -1.634774088859558
-            ],
-            "max": [
-              -1.651502013206482,
-              2.059372901916504,
-              -1.5303038358688354
-            ]
-          },
-          "geometry_center_scene": [
-            -1.7271340489387512,
-            1.9782996773719788,
-            -1.5825389623641968
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
-          "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Sony-SmartTV.gltf#/nodes/56"
-          ],
-          "assessment_enabled": false
+          "id": "tv:lan"
         }
-      ]
+      ],
+      "documented_features": [
+        {
+          "name": "ARC",
+          "supported": true,
+          "port_assignment": null,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "รองรับ ARC แต่ไม่ระบุช่อง; ARC เป็นเสียงย้อนกลับ ไม่เปลี่ยน HDMI เป็น VIDEO OUT",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
+          ]
+        },
+        {
+          "name": "HDMI_CEC",
+          "supported": true,
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "BRAVIA Sync รองรับ HDMI-CEC",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
+          ]
+        }
+      ],
+      "documented_absences": [
+        {
+          "interface": "component_video",
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "Component Video ไม่มี",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
+          ]
+        },
+        {
+          "interface": "mhl",
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "MHL ไม่มี",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
+          ]
+        },
+        {
+          "interface": "rs232",
+          "evidence": [
+            {
+              "source_id": "tv",
+              "basis": "text",
+              "detail_th": "RS-232C ไม่มี",
+              "pixel_region_xyxy": [
+                60,
+                800,
+                1100,
+                1530
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved": [
+        "จำนวน/ชนิด/หน้าที่ USB: ส่วนบนของตารางถูกแถบลอยบัง ไม่ใช้ข้อมูล geometry มาเติม",
+        "HDMI ช่องที่รองรับ ARC และเลขช่องบนเครื่อง",
+        "ชนิดหัวต่อ Digital Audio OUT/Headphone/RF",
+        "ตารางรูปแบบสัญญาณ HDMI ที่รับได้"
+      ],
+      "native_panel_resolution": {
+        "width": 1920,
+        "height": 1080,
+        "evidence": [
+          {
+            "source_id": "tv",
+            "basis": "text",
+            "detail_th": "Full HD panel ไม่ใช่ตารางอินพุต",
+            "pixel_region_xyxy": [
+              60,
+              1530,
+              1100,
+              1850
+            ]
+          }
+        ]
+      }
     },
     {
-      "id": "Vertex-Visualizer",
+      "id": "vertex",
       "asset_path": "Vertex-Visualizer.gltf",
-      "sha256": "a6fe19988df61bd073c6c708e7c8b664a6462378bffaa62e258aeb3307763640",
-      "asset_generator": "Sketchup glTF Exporter v1.2.6 by Centaur",
-      "node_count": 190,
-      "mesh_count": 161,
-      "hardware_model_number": null,
-      "hardware_identity_status": "unresolved",
-      "manual_match_status": "not_confirmed",
-      "inventory_scope": "named connector candidates only; unnamed geometry may contain other ports",
+      "model_name": "Vertex D-1420HW",
+      "identity_basis": "user_supplied_ref_assignment",
+      "model_geometry_match_status": "not_reverified",
       "ports": [
         {
-          "id": "Vertex-Visualizer:hdmi-a",
-          "node_index": 6,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              2.4612913131713867,
-              0.0878111943602562,
-              1.2381935119628906
-            ],
-            "max": [
-              2.7863969802856445,
-              0.2531833052635193,
-              1.636344313621521
-            ]
-          },
-          "geometry_center_scene": [
-            2.6238441467285156,
-            0.17049724981188774,
-            1.4372689127922058
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "HDMI IN",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Vertex-Visualizer.gltf#/nodes/6"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "รับ HDMI; เลือก SOURCE=HDMI IN",
+              "pdf_pages": [
+                6,
+                8,
+                11
+              ],
+              "printed_pages": [
+                6,
+                8,
+                11
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:hdmi-in"
         },
         {
-          "id": "Vertex-Visualizer:hdmi-b",
-          "node_index": 45,
-          "node_name": "HDMI Port",
-          "connector_candidate": "hdmi",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              2.4718620777130127,
-              0.0878111943602562,
-              0.6972967982292175
-            ],
-            "max": [
-              2.7969677448272705,
-              0.2531833052635193,
-              1.0954475402832031
-            ]
-          },
-          "geometry_center_scene": [
-            2.6344149112701416,
-            0.17049724981188774,
-            0.8963721692562103
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "HDMI OUT",
+          "count": 1,
+          "connector": "hdmi",
+          "direction": "out",
+          "video_capable": true,
+          "signal": "hdmi_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Vertex-Visualizer.gltf#/nodes/45"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "ส่ง HDMI; เส้นทางขึ้นกับ SOURCE",
+              "pdf_pages": [
+                6,
+                8,
+                11
+              ],
+              "printed_pages": [
+                6,
+                8,
+                11
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:hdmi-out"
         },
         {
-          "id": "Vertex-Visualizer:usb-b",
-          "node_index": 72,
-          "node_name": "USB Type B",
-          "connector_candidate": "usb_b",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              2.594184637069702,
-              0.14837804436683655,
-              0.38440343737602234
-            ],
-            "max": [
-              2.7863833904266357,
-              0.21411246061325073,
-              0.5035732388496399
-            ]
-          },
-          "geometry_center_scene": [
-            2.690284013748169,
-            0.18124525249004364,
-            0.4439883381128311
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "RGB IN 1",
+          "count": 1,
+          "connector": "vga",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "analog_rgb",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Vertex-Visualizer.gltf#/nodes/72"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "15-pin D-SUB; PC1 หลัง / PC2 ข้าง",
+              "pdf_pages": [
+                6,
+                11
+              ],
+              "printed_pages": [
+                6,
+                11
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "input_selector": "PC1",
+          "id": "vertex:rgb-in1"
         },
         {
-          "id": "Vertex-Visualizer:rca-a",
-          "node_index": 100,
-          "node_name": "Phono_Jack_White",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              1.1023931503295898,
-              0.23892542719841003,
-              -3.634680986404419
-            ],
-            "max": [
-              1.255738615989685,
-              0.3917030096054077,
-              -3.4945952892303467
-            ]
-          },
-          "geometry_center_scene": [
-            1.1790658831596375,
-            0.3153142184019089,
-            -3.564638137817383
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "RGB IN 2",
+          "count": 1,
+          "connector": "vga",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "analog_rgb",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Vertex-Visualizer.gltf#/nodes/100"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "15-pin D-SUB; PC1 หลัง / PC2 ข้าง",
+              "pdf_pages": [
+                6,
+                11
+              ],
+              "printed_pages": [
+                6,
+                11
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "input_selector": "PC2",
+          "id": "vertex:rgb-in2"
         },
         {
-          "id": "Vertex-Visualizer:rca-b",
-          "node_index": 102,
-          "node_name": "Phono_Jack_Yellow",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.8637961149215698,
-              0.23892542719841003,
-              -3.6393439769744873
-            ],
-            "max": [
-              1.017141580581665,
-              0.3917030096054077,
-              -3.499258279800415
-            ]
-          },
-          "geometry_center_scene": [
-            0.9404688477516174,
-            0.3153142184019089,
-            -3.569301128387451
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "RGB OUT 1",
+          "count": 1,
+          "connector": "vga",
+          "direction": "out",
+          "video_capable": true,
+          "signal": "analog_rgb",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Vertex-Visualizer.gltf#/nodes/102"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "15-pin D-SUB; PC1 หลัง / PC2 ข้าง",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "input_selector": null,
+          "id": "vertex:rgb-out1"
         },
         {
-          "id": "Vertex-Visualizer:rca-c",
-          "node_index": 105,
-          "node_name": "Phono_Jack_Yellow",
-          "connector_candidate": "rca_candidate",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              0.6198427081108093,
-              0.23892542719841003,
-              -3.6441116333007812
-            ],
-            "max": [
-              0.7731881737709045,
-              0.3917030096054077,
-              -3.504025936126709
-            ]
-          },
-          "geometry_center_scene": [
-            0.6965154409408569,
-            0.3153142184019089,
-            -3.574068784713745
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "RGB OUT 2",
+          "count": 1,
+          "connector": "vga",
+          "direction": "out",
+          "video_capable": true,
+          "signal": "analog_rgb",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Vertex-Visualizer.gltf#/nodes/105"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "diagram_only",
+              "detail_th": "RGB OUT 2 ยืนยันจากภาพ ไม่อยู่ในรายการข้อความ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "input_selector": null,
+          "id": "vertex:rgb-out2"
         },
         {
-          "id": "Vertex-Visualizer:unidentified-connector",
-          "node_index": 104,
-          "node_name": "1734354-1",
-          "connector_candidate": "unknown",
-          "evidence_status": "model_node_observed",
-          "geometry_bounds_scene": {
-            "min": [
-              -0.11802016943693161,
-              0.1259920597076416,
-              -3.666081428527832
-            ],
-            "max": [
-              0.4015144109725952,
-              0.4038580358028412,
-              -3.348240375518799
-            ]
-          },
-          "geometry_center_scene": [
-            0.1417471207678318,
-            0.2649250477552414,
-            -3.5071609020233154
-          ],
-          "socket_anchor_scene": null,
-          "socket_normal_scene": null,
-          "anchor_status": "requires_visual_calibration",
-          "direction": null,
-          "video_capable": null,
-          "signal": null,
+          "label": "V-OUT",
+          "count": 1,
+          "connector": "rca",
+          "direction": "out",
+          "video_capable": true,
+          "signal": "composite_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
           "supported_modes": null,
-          "input_selector": null,
-          "capability_status": "unverified",
-          "evidence_refs": [
-            "Vertex-Visualizer.gltf#/nodes/104"
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "ฉลากและรูปร่างในภาพหน้า 6; ไม่สมมติการแปลงข้ามสัญญาณ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
           ],
-          "assessment_enabled": false
+          "notes_th": [
+            "ยืนยันฉลาก Video IN/V-OUT และหัว RCA จากภาพ; Composite เป็นการอนุมานชนิดสัญญาณ"
+          ],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "signal_status": "inferred_from_video_label_and_rca_diagram",
+          "id": "vertex:v-out"
+        },
+        {
+          "label": "Video IN",
+          "count": 1,
+          "connector": "rca",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "composite_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "diagram_only",
+              "detail_th": "ฉลากและรูปร่างในภาพหน้า 6; ไม่สมมติการแปลงข้ามสัญญาณ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [
+            "ยืนยันฉลาก Video IN/V-OUT และหัว RCA จากภาพ; Composite เป็นการอนุมานชนิดสัญญาณ"
+          ],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "signal_status": "inferred_from_video_label_and_rca_diagram",
+          "id": "vertex:video-in"
+        },
+        {
+          "label": "S-VIDEO IN",
+          "count": 1,
+          "connector": "mini_din4",
+          "direction": "in",
+          "video_capable": true,
+          "signal": "s_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "diagram_only",
+              "detail_th": "ฉลากและรูปร่างในภาพหน้า 6; ไม่สมมติการแปลงข้ามสัญญาณ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:svideo-in"
+        },
+        {
+          "label": "S-VIDEO OUT",
+          "count": 1,
+          "connector": "mini_din4",
+          "direction": "out",
+          "video_capable": true,
+          "signal": "s_video",
+          "connection_kind": "native_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": true,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "diagram_only",
+              "detail_th": "ฉลากและรูปร่างในภาพหน้า 6; ไม่สมมติการแปลงข้ามสัญญาณ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:svideo-out"
+        },
+        {
+          "label": "USB B",
+          "count": 1,
+          "connector": "usb_b",
+          "direction": "bidirectional",
+          "video_capable": true,
+          "signal": "usb_camera",
+          "connection_kind": "software_video",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "ต่อคอมพิวเตอร์แล้วเลือก UVC CAMERA ใน amcap903 หลังติดตั้งไดรเวอร์",
+              "pdf_pages": [
+                6,
+                14,
+                15,
+                16
+              ],
+              "printed_pages": [
+                6,
+                14,
+                15,
+                16
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "video_flow": "visualizer_camera_to_computer",
+          "requirements": [
+            "USB cable",
+            "documented driver/software",
+            "select UVC CAMERA"
+          ],
+          "id": "vertex:usb-b"
+        },
+        {
+          "label": "Audio IN 1 (rear mini jack)",
+          "count": 1,
+          "connector": "mini_jack_3_5",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "พอร์ตเสียงตามฉลากในภาพ/ข้อความ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:audio-in1"
+        },
+        {
+          "label": "Audio IN 2 (side)",
+          "count": 1,
+          "connector": "mini_jack_3_5",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "พอร์ตเสียงตามฉลากในภาพ/ข้อความ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:audio-in2"
+        },
+        {
+          "label": "Audio IN (rear RCA)",
+          "count": 1,
+          "connector": "rca",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "diagram_only",
+              "detail_th": "พอร์ตเสียงตามฉลากในภาพ/ข้อความ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:audio-in-rca"
+        },
+        {
+          "label": "Audio OUT (rear)",
+          "count": 1,
+          "connector": "mini_jack_unknown",
+          "direction": "out",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "diagram_only",
+              "detail_th": "พอร์ตเสียงตามฉลากในภาพ/ข้อความ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:audio-out"
+        },
+        {
+          "label": "MIC",
+          "count": 1,
+          "connector": "jack_unknown",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "analog_audio",
+          "connection_kind": "audio",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "พอร์ตเสียงตามฉลากในภาพ/ข้อความ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:mic"
+        },
+        {
+          "label": "RS-232",
+          "count": 1,
+          "connector": "dsub9",
+          "direction": "bidirectional",
+          "video_capable": false,
+          "signal": "rs232",
+          "connection_kind": "control",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "ควบคุมผ่านคอมพิวเตอร์ ไม่ใช่ภาพ",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:rs232"
+        },
+        {
+          "label": "POWER DC 12V 2A",
+          "count": 1,
+          "connector": "dc_barrel",
+          "direction": "in",
+          "video_capable": false,
+          "signal": "dc_power",
+          "connection_kind": "power",
+          "capability_status": "verified_reference",
+          "assessment_enabled": false,
+          "supported_modes": null,
+          "supported_modes_complete": false,
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "อินพุตไฟ 12V 2A",
+              "pdf_pages": [
+                6
+              ],
+              "printed_pages": [
+                6
+              ]
+            }
+          ],
+          "notes_th": [],
+          "model_mapping": {
+            "status": "pending_new_calibration",
+            "node_index": null,
+            "socket_anchor_scene": null,
+            "socket_normal_scene": null
+          },
+          "id": "vertex:power"
         }
+      ],
+      "source_modes": [
+        "CAMERA",
+        "PC1",
+        "PC2",
+        "WIRELESS IN",
+        "HDMI IN"
+      ],
+      "source_modes_evidence": [
+        {
+          "source_id": "vertex",
+          "basis": "text_and_diagram",
+          "detail_th": "SOURCE เลือก CAMERA/PC1/PC2/WIRELESS IN/HDMI IN",
+          "pdf_pages": [
+            8,
+            11
+          ],
+          "printed_pages": [
+            8,
+            11
+          ]
+        }
+      ],
+      "routing_constraints": [
+        {
+          "from": "vertex:hdmi-in",
+          "to": "vertex:hdmi-out",
+          "required_setting": "SOURCE=HDMI IN",
+          "status": "verified_reference",
+          "evidence": [
+            {
+              "source_id": "vertex",
+              "basis": "text_and_diagram",
+              "detail_th": "เอกสารอธิบายส่งภาพ HDMI ผ่าน Visualizer ออกไปยังจอ",
+              "pdf_pages": [
+                6,
+                8,
+                11
+              ],
+              "printed_pages": [
+                6,
+                8,
+                11
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved": [
+        "ตาราง cross-conversion ระหว่าง HDMI/RGB/Composite/S-Video ไม่ได้ยืนยันครบ",
+        "รายละเอียดรูปแบบภาพ/ความถี่แต่ละพอร์ต",
+        "RGB OUT 2 และ S-Video พบเฉพาะภาพ; ควรตรวจบนเครื่องก่อนฝึกกับฮาร์ดแวร์"
       ]
     }
   ]

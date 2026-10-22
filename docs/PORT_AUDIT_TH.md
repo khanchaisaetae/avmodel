@@ -1,124 +1,187 @@
-# รายงานตรวจสอบโมเดลและฐานข้อมูลพอร์ต ระยะที่ 1
+# ผลตรวจยืนยันพอร์ตใหม่จาก ref เท่านั้น
 
-วันที่ 22 ตุลาคม 2026 (Asia/Bangkok)
-Repository: https://github.com/khanchaisaetae/avmodel
-โมเดลต้นทาง ณ commit e07fe56ba406fb70c058def70b794b24d4b204e8
+วันที่ตรวจ: 23 ตุลาคม 2026 (Asia/Bangkok)
 
-## ผลที่ทำได้แล้ว
+## สถานะข้อมูล
 
-อ่านไฟล์ glTF ทั้ง 5 ไฟล์จริง ตรวจชื่อกลุ่มและโครงสร้าง geometry รวมถึงภาพพื้นผิวที่ฝังในไฟล์ และเปรียบเทียบกับข้อความพอร์ตใน index_qwen.html และ indexqwen38.html พบผู้สมัครชิ้นส่วนช่องต่อ 35 รายการ (ไม่ได้หมายความว่าทุกชิ้นเป็นพอร์ตภาพ และไม่รับรองว่าครบทุกช่องของเครื่องจริง) ทั้งหมดมี node index และค่าขอบเขต geometry สำหรับใช้ตรวจสอบตำแหน่งต่อไป
+**ยกเลิกผลยืนยันพอร์ตชุดเดิมทั้งหมดแล้ว** ฐานข้อมูล schema 1.0.0 และข้อสรุปจากชื่อ node, สีขั้วต่อ, hotspot เดิม หรือคู่มือที่ค้นจากเว็บ ไม่ใช่ฐานยืนยันพอร์ตของงานนี้อีกต่อไป รายงานนี้และ data/port-catalog.json schema 2.0.0 ใช้แทนชุดเดิม โดยอ้างอิงเฉพาะไฟล์ที่ผู้ใช้จัดไว้ใน ref
 
-พบกลุ่มที่ใช้ชื่อ HDMI Port รวม 9 กลุ่ม: Laptop 1, Projector 2, Blu-ray 2, TV 2, Visualizer 2 กลุ่ม จำนวนนี้เป็นหลักฐานโครงสร้างโมเดล ไม่ใช่การยืนยันจำนวนช่องหรือหน้าที่ของรุ่นสินค้า
+การยืนยันครั้งนี้หมายถึงยืนยันสิ่งที่เอกสารหรือภาพที่แนบระบุ ไม่ใช่การตรวจเครื่องจริง และไม่ได้รับรองว่า geometry ของ glTF ตรงกับรุ่นในเอกสารทุกช่อง การจับคู่ชื่อรุ่นกับไฟล์โมเดลยึดตามชุด ref ที่ผู้ใช้จัดให้ ส่วน node และตำแหน่งคลิกของพอร์ตทั้งหมดถูกล้างกลับเป็นรอปรับเทียบใหม่ ไม่ใช้พิกัดจากงานเดิม
 
-ยังระบุหมายเลขรุ่นย่อยของอุปกรณ์ทั้ง 5 ไม่ได้จากข้อมูลใน repository ภาพพื้นผิวไม่มีป้ายรุ่นอุปกรณ์ที่ยืนยันได้ ป้าย XPort ใน Laptop เป็นป้ายชิ้นส่วนช่องต่อ ไม่ใช่หมายเลขรุ่นโน้ตบุ๊ก จึงยังไม่จับคู่คู่มือใดเป็นคู่มือเฉพาะโมเดลเหล่านี้
+บันทึก 54 รายการอินเทอร์เฟซ: Dell 6, Epson 17, Blu-ray 6, TV 7 และ Vertex 18 รายการ ตัวเลขนี้เป็นจำนวนระเบียนในฐานข้อมูล ไม่ใช่การรับรองว่ามีหัวต่อรวม 54 ช่องจริง เพราะบางแหล่งยืนยันเพียงการมีอินเทอร์เฟซแต่ไม่ระบุจำนวน และภาพสเปกบางส่วนอ่านข้อมูลได้ไม่ครบ
 
-## ข้อขัดแย้งที่ต้องแก้ก่อนใช้เป็นเฉลย
+## แหล่งอ้างอิงที่ใช้จริง
 
-| อุปกรณ์ | หลักฐานจากโมเดล | ข้อความเดิมในเว็บ | การจัดการในฐานข้อมูล |
+| รหัส | ไฟล์ใน ref | หลักฐานที่อ่านและตรวจภาพ | ข้อจำกัด |
 |---|---|---|---|
-| Dell G7 | กลุ่ม HDMI 1, USB Type C 1 และ USB 3 กลุ่ม | ระบุเวอร์ชัน HDMI/USB, Thunderbolt, ความละเอียด และการชาร์จ | ไม่รับรองเวอร์ชัน ความละเอียด หรือความสามารถ USB-C จนกว่าจะยืนยันรุ่น |
-| Epson | กลุ่ม HDMI 2 กลุ่ม, USB และ Phono Jack | ระบุ HDMI1/MHL, HDMI2, VGA และความละเอียด | เก็บ HDMI เป็น a/b ตาม node ไม่กำหนดลำดับฉลากหรือ MHL; VGA ยังไม่ยืนยัน |
-| Sony Blu-ray | กลุ่ม HDMI 2 กลุ่ม และ Phono Jack | เว็บอธิบาย HDMI Out จุดเดียว พร้อม Optical/Analog Audio | ตรวจหน้าที่ HDMI แต่ละจุดจากรุ่นจริง; ไม่แปลง Phono Jack เป็นวิดีโอหรือเสียงโดยเดา |
-| Sony TV | กลุ่ม HDMI 2 กลุ่ม | ระบุ HDMI 4 ช่อง, eARC และ 4K/120Hz | ไม่สร้างพอร์ต HDMI ช่อง 3/4 จากข้อความเดิม และไม่รับรอง eARC/รูปแบบภาพ |
-| Vertex | กลุ่ม HDMI 2 กลุ่ม และชิ้นส่วนชื่อ USB Type B | ระบุ USB Type-C และ HDMI loop-through | บันทึก Type-B ตามชื่อชิ้นส่วนเป็นหลักฐาน; ทิศทาง HDMI/การส่งผ่าน/หน้าที่ USB ยังไม่ยืนยัน |
+| dell | Dell_G7_7588-gaming-w56791901th.png | ชื่อรุ่น Dell G7 15 7588/W56791901TH; ตาราง Ports and Connectivity | ภาพสเปกร้านค้า ไม่มีคำอธิบายทิศทาง HDMI/Alt Mode และไม่มีตารางรูปแบบภาพ |
+| epson | EB-2165W_Epson_Projector_User Guide.pdf | หน้า 14-15, 23-25, 27-31, 204-208 | คู่มือหลายรุ่น ต้องอ่านเฉพาะเงื่อนไข EB-2165W |
+| bluray | Sony_Ultra_HD_Blueray_UBP-X700.pdf | หน้า 1, 8, 11-12, 15, 19, 23, 30 | บางความสามารถ เช่น 4K ต้องเป็นไปตามเงื่อนไขจอ สาย และ HDCP |
+| tv | Sony_Smart_TV_KDL-40W650D_specifications.png | ตารางอินเทอร์เฟซและความละเอียดจอของ KDL-40W650D | แถบลอยบังแถวบนของตาราง; ไม่ยืนยัน USB และไม่ยืนยันเลขช่อง ARC |
+| vertex | Vertex_Visualizer_D-1420HW.pdf | หน้า 1, 6, 8-9, 11, 14-16 | ภาพหน้า 6 มีช่องต่อมากกว่ารายการบรรยาย ต้องแยกหลักฐานภาพกับข้อความ |
 
-ชื่อ Phono_Jack_Yellow ไม่เพียงพอจะตัดสินว่าเป็น Composite Video: บาง geometry ใช้ซ้ำกับขั้ว RCA ที่มีหน้าที่อื่นได้ เช่น Digital Coaxial Audio ต้องตรวจฉลากและคู่มือ
+เลขหน้าที่ระบุเป็นลำดับหน้า PDF แบบเริ่มที่ 1 และตรงกับเลขหน้าพิมพ์ที่ใช้อ้างในคู่มือส่วนนี้ ภาพ PNG ใช้กรอบพิกเซลในพิกัดภาพต้นฉบับ (x0,y0,x1,y1) เป็นจุดอ้างอิง ทั้งเส้นทางไฟล์และ SHA-256 เก็บในฐานข้อมูลและตรวจซ้ำในชุดทดสอบ
 
-## แหล่งผู้ผลิตที่ตรวจประกอบ
+## ข้อสรุปสำคัญแยกตามอุปกรณ์
 
-เอกสารต่อไปนี้ใช้ยืนยันว่าความสามารถขึ้นกับรุ่นและหน้าที่ช่องต่อเท่านั้น **ยังไม่มีรายการใดได้รับการจับคู่เป็นคู่มือของไฟล์โมเดลใน repository**
+### Dell G7 7588
 
-1. Dell G7 15 7588, Right: ระบุ HDMI ส่งภาพ/เสียง และ USB-C/Thunderbolt/DisplayPort สำหรับรุ่นนี้
-   https://www.dell.com/support/manuals/en-us/g-series-15-7588-laptop/g7-7588-setupandspecs/right?guid=guid-ebc6a569-b280-494d-a638-06234dcc596d&lang=en-us
-2. Sony คู่มือเลข 50458701M หน้า PDF 8 (หน้าพิมพ์ 8): แยก HDMI OUT 1 VIDEO/AUDIO และ HDMI OUT 2 AUDIO ONLY แสดงว่าพอร์ตหน้าตาเหมือนกันไม่จำเป็นต้องส่งภาพได้ทั้งคู่
-   https://www.sony.com/electronics/support/res/manuals/5045/489debf396781025061ca564f0f4a649/50458701M.pdf
-3. Epson PowerLite 1284 Quick Setup หน้า PDF 1: แยก HDMI, VGA, USB-B Display ผ่านซอฟต์แวร์ และ USB-A สำหรับอุปกรณ์จัดเก็บ/กล้องบางชนิด จึงไม่ใช้กฎว่า USB ทุกช่องส่งภาพเหมือนกัน หรือ USB ส่งภาพไม่ได้ทั้งหมด
-   https://files.support.epson.com/docid/cpd4/cpd42655.pdf
-4. Vertex หน้า Download เป็นจุดเริ่มค้นคู่มือเมื่อทราบรุ่น; ยังไม่ยืนยันรุ่น Visualizer และยังไม่ใช้สเปก D-1408TH เป็นเฉลยของโมเดลนี้
-   https://www.vertex.co.th/download/
+- ตารางระบุ HDMI 1, USB 3.1 Type-A 3 และ USB 3.1 Type-C 1 ช่อง; Ethernet LAN ระบุ Yes แต่ไม่ได้ให้จำนวน
+- แถว DisplayPort และ D-Sub/VGA ระบุ No จึงไม่สร้างช่อง DisplayPort/VGA แยกในโปรไฟล์นี้
+- แถว Thunderbolt ระบุ Yes แต่ไม่ผูกกับตำแหน่งพอร์ต ไม่ระบุเวอร์ชัน และไม่ได้อธิบาย DisplayPort Alt Mode จึงไม่ใช้ยืนยันเส้นทาง USB-C ไปจอ
+- HDMI OUT เป็นข้ออนุมานจากบทบาทโน้ตบุ๊ก ไม่ใช่ข้อความที่ระบุในภาพ จึงบันทึกเป็น inferred_function และยังไม่ใช้ตัดสินคะแนนการส่งภาพ
+- ไม่มีการสืบทอดข้ออ้าง 4K60, HDMI 2.0, การชาร์จ หรือ USB-C video จากข้อมูลเดิม
 
-## ไฟล์สำหรับพัฒนาต่อ
+### Epson EB-2165W
 
-- data/port-catalog.json: รายการอุปกรณ์ 5 รายการ ผู้สมัครช่องต่อ 35 รายการ หลักฐาน node, SHA-256 ของไฟล์, geometry bounds/center และสถานะการยืนยันแต่ละรายการ
-- scripts/audit_models.py: สร้างบัญชีจากโมเดลซ้ำได้ด้วย Python 3 โดยไม่ติดตั้ง dependency
-- src/connection-rules.mjs: กฎตรวจเส้นทางภาพแบบสายตรง native signal หนึ่งเส้น
-- tests/connection-rules.test.mjs: ทดสอบสถานการณ์สำคัญด้วย Node built-in test runner; fixture เป็นอุปกรณ์สมมติ ไม่ใช่สเปกที่รับรองแล้วของโมเดล
+- HDMI1/MHL และ HDMI2 เป็นอินพุตภาพตามหน้า 15
+- Computer1 รับ Analog RGB และ Component Video ผ่าน Mini D-Sub 15 ตามหน้า 15/207; Component ต้องใช้เส้นทางและสายที่เหมาะสม ไม่ตีความว่าสาย VGA ปกติแปลงสัญญาณให้ได้
+- Computer2/Monitor Out เป็นช่องเดียวที่สลับหน้าที่ใน Extended > Operation > Monitor Out Port จึงไม่บันทึกเป็นสองช่องเสียบ
+- เมื่อเป็น Monitor Out จะส่งออกได้เฉพาะ Analog RGB ที่เข้าทาง Computer1 ไม่ส่งออก HDMI, HDBaseT, USB, Composite หรือ Component โดยอัตโนมัติ (หน้า 15/31)
+- Video รับ Composite; HDBaseT เป็นช่องรับจาก transmitter ที่รองรับ แม้หัวเป็น RJ-45 ก็ไม่ใช่ Ethernet LAN ธรรมดา (หน้า 15/30/208)
+- USB-B รองรับ Epson USB Display เมื่อมีซอฟต์แวร์/คอมพิวเตอร์ตามข้อกำหนด (หน้า 23-24); USB-A สำหรับสื่อ/กล้องที่รองรับ ไม่ถือว่าเป็น HDMI IN
+- มี USB Type-A สำหรับโมดูล Wireless LAN เพิ่มอีกอินเทอร์เฟซตามหน้า 208 แยกจาก USB-A ที่ใช้กับสื่อ
+- แผงจอเป็น 1280x800 ตามหน้า 206 แต่รับ HDMI 1080p ได้ตามหน้า 204-205 ห้ามใช้ความละเอียดแผงเป็นความละเอียดอินพุตสูงสุด
 
-ข้อมูล geometry_center_scene เป็นจุดกึ่งกลางขอบเขตชิ้นส่วนในพิกัด scene ดั้งเดิม **ไม่ใช่ตำแหน่งเสียบสายบนพื้นผิว และไม่ใช่พิกัดหลังจัดโมเดลให้อยู่กลางจอ** ต้องปรับเทียบ socket_anchor_scene และ socket_normal_scene ด้วยภาพโมเดลก่อนใช้ลากสาย
+### Sony UBP-X700
 
-glTF ชุดนี้ใช้ POSITION accessor ร่วมทั้งโมเดล ดังนั้นการอ่าน accessor.min/max ของแต่ละ mesh จะได้ขอบเขตทั้งเครื่องซ้ำกัน สคริปต์จึงอ่าน indices ของ primitive แล้วคำนวณจาก vertex ที่ชิ้นส่วนนั้นใช้จริง รวม transform ของบรรพบุรุษก่อนบันทึกตำแหน่ง
+- **HDMI OUT 1 (VIDEO/AUDIO)** ส่งภาพและเสียง ส่วน **HDMI OUT 2 (AUDIO ONLY)** ไม่ส่งภาพ (หน้า 8/30)
+- DIGITAL OUT (COAXIAL) เป็นเสียงดิจิทัล ไม่ใช่ Composite Video แม้เป็นขั้ว RCA
+- USB ด้านหน้าเป็น Type-A สำหรับสื่อ/อุปกรณ์ที่คู่มือรองรับ ไม่ใช่อินพุตจอจาก Laptop และคู่มือระบุไม่ใช้ชาร์จไฟ (หน้า 15/30)
+- มี LAN (100) และ DC IN 12V; ไม่สร้าง Optical OUT หรือ Analog Audio OUT จากข้อมูลเดิม
+- การส่งภาพ 4K60 มีเงื่อนไขจอ 4K, HDMI/HDCP 2.2 และสายที่รองรับตามหน้า 11 ไม่ได้หมายความว่าทีวีหรือโปรเจกเตอร์ทุกตัวในชุดรับ 4K ได้
 
-## กฎการใช้ข้อมูลและการตรวจคำตอบ
+### Sony KDL-40W650D
 
-1. ข้อมูลไม่ทราบต้องเป็น null ไม่ตีความว่าไม่รองรับ
-2. รูปร่างหัวต่อไม่ยืนยันทิศทาง สัญญาณ ความละเอียด หรือความสามารถเฉพาะรุ่น
-3. เก็บพอร์ตแต่ละจุดแยกกัน: HDMI-a/HDMI-b เป็นรหัสภายใน ไม่ใช่ฉลาก HDMI1/HDMI2 บนอุปกรณ์
-4. เปิดใช้ตัดสินคะแนนได้เมื่อมี capability_status=verified และ assessment_enabled=true พร้อมหลักฐานครบ ขณะนี้ทั้ง 35 รายการยังปิดการตัดสินคะแนน
-5. ตรวจทิศทาง OUT→IN, ความสามารถส่งภาพ, หัวต่อ/ชนิดสัญญาณและสาย, การใช้พอร์ตซ้ำ, สถานะเปิดเครื่อง, การเปิดส่งภาพ, Input ที่เลือก, รูปแบบภาพร่วมกัน และสภาพสาย
-6. คืนผล ready / invalid / no_image / indeterminate แยกกัน ข้อมูลไม่พอเป็น indeterminate และ gradable=false เสมอ ไม่หักคะแนนจากความไม่สมบูรณ์ของฐานข้อมูล
-7. ตัวแปลง สวิตช์ ตัวกระจายสัญญาณ USB video ซอฟต์แวร์ USB Display, EDID, HDCP และการเลือกเส้นทางภายใน Visualizer ยังอยู่นอกขอบเขตกฎระยะนี้ ให้คืน indeterminate จนมีกฎเส้นทางเฉพาะ ไม่สมมติว่าเชื่อมต่อได้
-8. ผล ready หมายถึงผ่านเงื่อนไขจำลองที่ระบุ ไม่ใช่ผลทดสอบฮาร์ดแวร์จริง
+- ยืนยัน HDMI IN 2 ช่อง: หลัง 1 และข้าง 1 ช่อง ไม่สมมติเลข HDMI1/HDMI2 บนเครื่องจากข้อมูลนี้
+- Composite Video IN 1 และ RF IN 1 อยู่ด้านล่างตามตาราง; ชนิดหัว RCA สำหรับ Composite เป็นการอนุมานมาตรฐาน เนื่องจากภาพไม่มีรูปแผงพอร์ต จึงยังไม่ให้คะแนนการเลือกหัวต่อจากรายการนี้
+- มี Digital Audio OUT 1 ด้านหลัง และ Audio/Headphone OUT 1 ด้านข้าง แต่ข้อความที่อ่านได้ไม่ระบุชนิดหัวต่อชัด จึงไม่เติม Optical หรือขนาดแจ็คเอง
+- มี Ethernet 1 ด้านล่าง รองรับ ARC/CEC แต่ไม่ยืนยันว่าช่อง HDMI ใดมี ARC; ARC เป็นเสียงย้อนกลับ ไม่ทำให้ทีวีส่งภาพผ่าน HDMI OUT
+- Component Video, MHL และ RS-232C ระบุว่าไม่มี
+- แถบลอยบังแถวบนของตาราง จึงยังไม่ระบุจำนวน USB จากไฟล์นี้ และไม่ใช้จำนวน USB ในโมเดลมาเติม
+- ความละเอียดแผง 1920x1080 ไม่ใช่รายการรูปแบบภาพ HDMI ที่รับได้ จึงไม่รับรอง 4K หรือ 120Hz
 
-ก่อนนำพอร์ตเข้าประเมิน ให้เพิ่มข้อมูล connector (ชนิดหัวต่อที่ยืนยันแล้ว), direction (in/out), video_capable, signal, supported_modes (รหัสรูปแบบภาพ เช่น 1920x1080@60) และ evidence_refs ที่อ้างคู่มือพร้อมหน้า/ภาพฉลาก และยืนยันรุ่นอุปกรณ์ ค่าความสามารถเหล่านี้ต้องตรวจทีละพอร์ต การตั้ง assessment_enabled=true เพียงอย่างเดียวไม่เพียงพอ
+### Vertex D-1420HW
 
-## สิ่งที่ต้องยืนยันเพื่อปิดงานตรวจสเปก
+- HDMI IN รับภาพ และ HDMI OUT ส่งภาพ; ต้องเลือก SOURCE ให้ตรง เช่น HDMI IN หรือ CAMERA ตามหน้า 6/8/11
+- RGB IN 1 อยู่ด้านหลัง (PC1), RGB IN 2 อยู่ด้านข้าง (PC2), RGB OUT 1 ยืนยันจากข้อความและภาพ
+- **RGB OUT 2, S-VIDEO IN, S-VIDEO OUT, Video IN และ Audio OUT** มีฉลากอยู่ในภาพหน้า 6 แม้บางรายการไม่มีในคำบรรยาย จึงลงบัญชีพร้อม basis=diagram_only
+- V-OUT และ Video IN มีหัว RCA/ฉลาก Video ในภาพ แต่ข้อความไม่ได้ระบุคำว่า Composite ชัด จึงแยกการยืนยันหัวต่อ/ฉลากออกจากการอนุมานชนิดสัญญาณ และยังไม่ใช้คู่นี้ตัดสินคะแนนความเข้ากันได้
+- USB เป็น **Type-B** ตามหน้า 6 และรับภาพจากกล้องไปยังคอมพิวเตอร์ผ่านไดรเวอร์/โปรแกรม amcap903 และการเลือก UVC CAMERA ตามหน้า 14-16 ไม่ใช่ USB-C และไม่ใช่สายภาพตรงเข้าโปรเจกเตอร์
+- ไม่สมมติว่า Visualizer แปลงสัญญาณข้าม HDMI/RGB/Composite/S-Video ได้ทุกคู่ และไม่ใช้ข้อความ “ออกพร้อมกัน 2 สัญญาณ” สร้าง routing matrix ที่คู่มือไม่ได้แจกแจง
 
-- หมายเลขรุ่นย่อย: Dell G7 รุ่นใด, Epson รุ่นใด, Sony Blu-ray รุ่นใด, Sony TV รุ่นใด และ Vertex รุ่นใด
-- ภาพแผงช่องต่อและฉลากของเครื่องจริง หรือคู่มือรุ่นที่ตรงกับต้นแบบ
-- จุด HDMI สองจุดของ Blu-ray ส่งภาพทั้งคู่หรือมีจุด audio-only
-- ลำดับ IN/OUT ของ HDMI ที่ Visualizer และความสามารถส่งผ่านสัญญาณ
-- ชิ้นส่วนที่ไม่มีชื่อในโมเดลว่ามี VGA/USB/พอร์ตภาพอื่นหรือไม่ และช่อง RCA แต่ละจุดทำหน้าที่อะไร
-- ปรับเทียบจุดเสียบสายและทิศทางผิวหน้าในโมเดล รวมการแปลงพิกัดที่หน้าเว็บใช้
+## ความหมายของสถานะในฐานข้อมูล
 
-## การตรวจซ้ำ
+- verified_reference: เอกสาร/ภาพระบุการมีพอร์ตหรือหน้าที่ที่ลงบันทึก แต่ค่าที่ยังไม่ทราบ เช่น supported_modes ยังคงเป็น null ได้ ไม่ได้หมายความว่าทุกคุณสมบัติยืนยันครบ
+- inferred_function หรือ signal_status/connector_status ที่ขึ้นต้น inferred: ข้ออนุมานที่แยกไว้ชัด ไม่ใช้แทนหลักฐานยืนยัน
+- model_mapping.pending_new_calibration: ยังไม่มี node/ตำแหน่งเสียบสายที่อนุมัติหลังการตรวจใหม่
+- assessment_enabled: อนุญาตเฉพาะการตรวจความสัมพันธ์เชิงตรรกะของพอร์ต native ที่มีข้อมูลพอ ไม่ใช่การยืนยันตำแหน่งคลิกหรือการรับรองว่าภาพจริงจะขึ้น
 
-รันจากราก repository:
+ค่าที่ไม่ทราบคงเป็น null ไม่ตีความเป็นไม่รองรับ ไม่สร้างพอร์ต USB-C, HDMI ช่องเพิ่มเติม หรือความสามารถส่งผ่านจากข้อมูลเก่า
+
+## กฎการเชื่อมต่อที่ปรับใหม่
+
+1. ไม่ยอมรับ capability_status=verified ของชุดเก่าอีกต่อไป ต้องใช้ verified_reference พร้อมหลักฐานชุดใหม่
+2. แยกการตรวจ topology (หัวต่อ/OUT-IN/ชนิดสัญญาณ) ออกจาก display (ต้องรู้ Input, สถานะเครื่อง, รูปแบบภาพ และสายด้วย) ผล compatible ไม่ใช่ผลภาพขึ้น
+3. HDMI audio-only ของ UBP-X700 ต้องถูกปฏิเสธเมื่อใช้เป็นแหล่งภาพ
+4. พอร์ตเปลี่ยนโหมด, USB video ผ่านซอฟต์แวร์, HDBaseT และอุปกรณ์แปลง ต้องใช้กฎเฉพาะเส้นทาง ไม่ให้ผ่านเพราะหัวต่อเหมือนกัน
+5. รายการรูปแบบภาพของ Epson ที่ลงใน JSON เป็น progressive subset ไม่ใช่รายการครบ การไม่พบโหมดในรายการบางส่วนจึงคืน “ยังไม่ทราบ” ไม่ตัดสินว่าไม่รองรับ
+6. ผล indeterminate ไม่ให้/หักคะแนนนักศึกษา ข้อมูลไม่พอเป็นข้อจำกัดของฐานข้อมูล ไม่ใช่ความผิดของผู้เรียน
+7. ตัวตรวจระยะนี้ยังไม่จำลอง EDID/HDCP/เนื้อหาที่ป้องกันการคัดลอกหรือการแปลงสัญญาณทั้งระบบ ผล ready จึงเป็นผลตามเงื่อนไขจำลองที่ระบุ
+
+## ไฟล์และวิธีตรวจซ้ำ
+
+- data/port-catalog.json: ฐานข้อมูลใหม่ทั้งหมดพร้อมหลักฐานรายพอร์ตและรหัส SHA-256 ของ ref
+- scripts/build_ref_catalog.py: สร้างฐานข้อมูลจากข้อเท็จจริงที่ตรวจทานใหม่ ไม่อ่าน/สืบทอดข้อมูล hotspot หรือ node เดิม และปฏิเสธหากไฟล์ ref เปลี่ยน SHA จนกว่าจะตรวจทานใหม่
+- src/connection-rules.mjs: ตัวตรวจสายตรงแยก topology/display
+- tests/connection-rules.test.mjs: ทดสอบกฎ หลักฐาน และข้อผิดพลาดเฉพาะรุ่น
+- scripts/audit_models.py เดิมถูกนำออก เพื่อไม่ให้การสแกนชื่อ geometry กลับมาเขียนทับผลยืนยันใหม่
 
 ```sh
-python scripts/audit_models.py
+python scripts/build_ref_catalog.py
 node --test tests/connection-rules.test.mjs
 ```
 
-สคริปต์ audit จะสร้างบัญชีหลักฐานดิบใหม่และคงสถานะยังไม่ยืนยัน จึงไม่ควรใช้ทับข้อมูลที่ผ่านการปรับเทียบ/ยืนยันด้วยมือแล้วโดยไม่แยกโปรไฟล์ไว้ ขั้นพัฒนาเว็บถัดไปควรแยกโปรไฟล์ที่อนุมัติออกจากผล audit ดิบ และแสดงสถานะข้อมูลให้อาจารย์ตรวจได้
+## บัญชีรายพอร์ตใหม่
 
-## บัญชีผู้สมัครช่องต่อจากโครงสร้างโมเดล
+จำนวนที่ไม่ทราบไม่เท่ากับศูนย์; ทิศทางของ Ethernet/USB เป็นทิศทางข้อมูล ไม่ใช่ OUT/IN ของภาพเสมอไป “ต้องใช้กฎเฉพาะ” หมายถึงยังใช้ตัวตรวจสายภาพตรงไม่ได้
 
-ลำดับ node เป็นหลักฐานอ้างอิง ต้องยืนยันหัวต่อและหน้าที่จากภาพ/คู่มืออีกครั้ง ขอบเขตบัญชีนี้คือกลุ่มหรือชิ้นส่วนที่ระบุชื่อได้ ไม่รวมการเดาหน้าที่ของ geometry ที่ไม่มีชื่อ
 
-| โมเดล | node index | ชื่อใน glTF | ชนิดผู้สมัคร |
-|---|---:|---|---|
-| DellG7-Laptop | 101 | HDMI Port | hdmi |
-| DellG7-Laptop | 50 | USB Type C Port | usb_c |
-| DellG7-Laptop | 10 | USB | usb_a_candidate |
-| DellG7-Laptop | 37 | USB | usb_a_candidate |
-| DellG7-Laptop | 123 | USB | usb_a_candidate |
-| DellG7-Laptop | 23 | Xport | rj45_candidate |
-| Epson-Projector | 23 | HDMI Port | hdmi |
-| Epson-Projector | 24 | HDMI Port | hdmi |
-| Epson-Projector | 33 | USB | usb_unknown |
-| Epson-Projector | 25 | Phono_Jack_Yellow#1 | rca_candidate |
-| Epson-Projector | 34 | Phono_Jack_Yellow#3 | rca_candidate |
-| Epson-Projector | 35 | Phono_Jack_Yellow#2 | rca_candidate |
-| Epson-Projector | 28 | 1734354-1 | unknown |
-| Sony-Blu-ray | 4 | HDMI Port | hdmi |
-| Sony-Blu-ray | 26 | HDMI Port | hdmi |
-| Sony-Blu-ray | 49 | RJ45 Connections | rj45_candidate |
-| Sony-Blu-ray | 77 | USB | usb_a_candidate |
-| Sony-Blu-ray | 72 | Phono_Jack_Yellow#3 | rca_candidate |
-| Sony-SmartTV | 109 | HDMI Port | hdmi |
-| Sony-SmartTV | 131 | HDMI Port | hdmi |
-| Sony-SmartTV | 96 | USB | usb_a_candidate |
-| Sony-SmartTV | 163 | USB | usb_a_candidate |
-| Sony-SmartTV | 7 | RJ45 Connections | rj45_candidate |
-| Sony-SmartTV | 30 | Phono_Jack_Yellow#3 | rca_candidate |
-| Sony-SmartTV | 32 | Phono_Jack_Yellow#2 | rca_candidate |
-| Sony-SmartTV | 34 | Phono_Jack_Yellow#1 | rca_candidate |
-| Sony-SmartTV | 36 | Coax Connection threaded | coax_candidate |
-| Sony-SmartTV | 56 | Fiber port | optical_candidate |
-| Vertex-Visualizer | 6 | HDMI Port | hdmi |
-| Vertex-Visualizer | 45 | HDMI Port | hdmi |
-| Vertex-Visualizer | 72 | USB Type B | usb_b |
-| Vertex-Visualizer | 100 | Phono_Jack_White | rca_candidate |
-| Vertex-Visualizer | 102 | Phono_Jack_Yellow | rca_candidate |
-| Vertex-Visualizer | 105 | Phono_Jack_Yellow | rca_candidate |
-| Vertex-Visualizer | 104 | 1734354-1 | unknown |
+### Dell G7 15 7588 / W56791901TH
+
+| พอร์ต | หัวต่อ | ทิศทาง | เส้นทาง | หลักฐาน |
+|---|---|---|---|---|
+| HDMI | hdmi | out (อนุมาน) | native_video | dell ตารางในภาพ |
+| USB 3.1 Type-A #1 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
+| USB 3.1 Type-A #2 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
+| USB 3.1 Type-A #3 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
+| USB 3.1 Type-C | usb_c | bidirectional | usb_data | dell ตารางในภาพ |
+| Ethernet LAN | rj45 | bidirectional | network | dell ตารางในภาพ |
+
+### Epson EB-2165W
+
+| พอร์ต | หัวต่อ | ทิศทาง | เส้นทาง | หลักฐาน |
+|---|---|---|---|---|
+| HDMI1/MHL | hdmi | in | native_video | epson หน้า 15,207 |
+| HDMI2 | hdmi | in | native_video | epson หน้า 15,207 |
+| Computer1 | vga | in | native_video | epson หน้า 15,207 |
+| Computer2/Monitor Out | vga | ตามโหมด | configurable_video | epson หน้า 15,207 |
+| Video | rca | in | native_video | epson หน้า 15,207 |
+| Audio 1 | mini_jack_3_5 | in | audio | epson หน้า 15,207 |
+| Audio 2 | mini_jack_3_5 | in | audio | epson หน้า 15,207 |
+| Audio Out | mini_jack_3_5 | out | audio | epson หน้า 15,207 |
+| L-Audio | rca | in | audio | epson หน้า 15,207 |
+| R-Audio | rca | in | audio | epson หน้า 15,207 |
+| USB-B | usb_b | bidirectional | software_video | epson หน้า 15,23,24,207 |
+| USB-A | usb_a | bidirectional | usb_media | epson หน้า 15,28,29,207 |
+| USB-A for wireless LAN module | usb_a | bidirectional | accessory | epson หน้า 208 |
+| LAN | rj45 | bidirectional | network | epson หน้า 15,208 |
+| HDBaseT | rj45 | in | hdbaset_video | epson หน้า 15,30,208 |
+| RS-232C | dsub9 | bidirectional | control | epson หน้า 15,208 |
+| Power inlet | ac_inlet | in | power | epson หน้า 15 |
+
+### Sony UBP-X700
+
+| พอร์ต | หัวต่อ | ทิศทาง | เส้นทาง | หลักฐาน |
+|---|---|---|---|---|
+| HDMI OUT 1 (VIDEO/AUDIO) | hdmi | out | native_video | bluray หน้า 8,30 |
+| HDMI OUT 2 (AUDIO ONLY) | hdmi | out | native_video | bluray หน้า 8,30 |
+| DIGITAL OUT (COAXIAL) | rca | out | audio | bluray หน้า 8,30 |
+| USB (front) | usb_a | bidirectional | usb_media | bluray หน้า 8,15,30 |
+| LAN (100) | rj45 | bidirectional | network | bluray หน้า 8,30 |
+| DC IN 12 V | dc_barrel | in | power | bluray หน้า 8,30 |
+
+### Sony KDL-40W650D
+
+| พอร์ต | หัวต่อ | ทิศทาง | เส้นทาง | หลักฐาน |
+|---|---|---|---|---|
+| HDMI IN (rear) | hdmi | in | native_video | tv ตารางในภาพ |
+| HDMI IN (side) | hdmi | in | native_video | tv ตารางในภาพ |
+| Composite Video IN (bottom) | rca | in | native_video | tv ตารางในภาพ |
+| RF IN (bottom) | rf_unknown | in | rf_video | tv ตารางในภาพ |
+| Digital audio OUT (rear) | ไม่ระบุ | out | audio | tv ตารางในภาพ |
+| Audio / Headphone OUT (side) | ไม่ระบุ | out | audio | tv ตารางในภาพ |
+| Ethernet IN (bottom) | rj45 | bidirectional | network | tv ตารางในภาพ |
+
+### Vertex D-1420HW
+
+| พอร์ต | หัวต่อ | ทิศทาง | เส้นทาง | หลักฐาน |
+|---|---|---|---|---|
+| HDMI IN | hdmi | in | native_video | vertex หน้า 6,8,11 |
+| HDMI OUT | hdmi | out | native_video | vertex หน้า 6,8,11 |
+| RGB IN 1 | vga | in | native_video | vertex หน้า 6,11 |
+| RGB IN 2 | vga | in | native_video | vertex หน้า 6,11 |
+| RGB OUT 1 | vga | out | native_video | vertex หน้า 6 |
+| RGB OUT 2 | vga | out | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| V-OUT | rca | out | native_video | vertex หน้า 6 |
+| Video IN | rca | in | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| S-VIDEO IN | mini_din4 | in | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| S-VIDEO OUT | mini_din4 | out | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| USB B | usb_b | bidirectional | software_video | vertex หน้า 6,14,15,16 |
+| Audio IN 1 (rear mini jack) | mini_jack_3_5 | in | audio | vertex หน้า 6 |
+| Audio IN 2 (side) | mini_jack_3_5 | in | audio | vertex หน้า 6 |
+| Audio IN (rear RCA) | rca | in | audio | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| Audio OUT (rear) | mini_jack_unknown | out | audio | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| MIC | jack_unknown | in | audio | vertex หน้า 6 |
+| RS-232 | dsub9 | bidirectional | control | vertex หน้า 6 |
+| POWER DC 12V 2A | dc_barrel | in | power | vertex หน้า 6 |

@@ -7,10 +7,13 @@ const result = (status, code, message) => ({status, code, message,
 const unknown = (code, message) => result('indeterminate', code, message);
 const bad = (code, message) => result('invalid', code, message);
 const noImage = (code, message) => result('no_image', code, message);
-export function validateDirectVideoLink({source, sink, cable, state = {}} = {}) {
+export function validateDirectVideoLink({source, sink, cable, state = {}, scope = 'display'} = {}) {
+  if (!['topology','display'].includes(scope)) return unknown('SCOPE_UNKNOWN','ต้องระบุขอบเขตการตรวจเป็น topology หรือ display');
   if (!source || !sink || !cable) return unknown('MISSING_DATA','ข้อมูลการเชื่อมต่อไม่ครบ');
   for (const p of [source,sink]) {
-    if (p.capability_status !== 'verified' || p.assessment_enabled !== true)
+    if (p.connection_kind && p.connection_kind !== 'native_video')
+      return unknown('SPECIAL_ROUTE_REQUIRED','พอร์ตนี้ต้องใช้กฎเส้นทางเฉพาะตามคู่มือ เช่น การเลือกโหมดหรือซอฟต์แวร์ USB');
+    if (p.capability_status !== 'verified_reference' || p.assessment_enabled !== true)
       return unknown('UNVERIFIED_PORT','ยังไม่มีหลักฐานยืนยันหน้าที่พอร์ต จึงยังไม่ตัดสินคะแนน');
     if (!['out','in'].includes(p.direction) || typeof p.video_capable !== 'boolean' || !p.connector)
       return unknown('INCOMPLETE_PORT','ข้อมูลพอร์ตที่ยืนยันแล้วยังไม่ครบ');
@@ -29,6 +32,7 @@ export function validateDirectVideoLink({source, sink, cable, state = {}} = {}) 
   if (!source.id || !sink.id || !Array.isArray(state.occupiedPortIds)) return unknown('TOPOLOGY_UNKNOWN','ต้องตรวจรายการพอร์ตที่ถูกใช้งานก่อน');
   if (source.id === sink.id) return bad('SELF_LINK','ไม่สามารถต่อพอร์ตเดียวกันเข้าหาตัวเอง');
   if ([source.id,sink.id].some(id=>state.occupiedPortIds.includes(id))) return bad('PORT_OCCUPIED','พอร์ตนี้มีสายเชื่อมต่ออยู่แล้ว ต้องใช้อุปกรณ์กลางที่เหมาะสม');
+  if (scope === 'topology') return result('compatible','NATIVE_TOPOLOGY_COMPATIBLE','พอร์ตและชนิดสัญญาณต่อกันได้ตามข้อมูลอ้างอิง ยังไม่ยืนยันว่าภาพจะแสดง');
   if (typeof state.sourcePowered !== 'boolean' || typeof state.sinkPowered !== 'boolean') return unknown('POWER_UNKNOWN','ยังไม่มีข้อมูลสถานะเปิดเครื่อง');
   if (!state.sourcePowered || !state.sinkPowered) return noImage('POWER_OFF','ตรวจการเปิดเครื่องต้นทางและปลายทาง');
   if (typeof state.sourceVideoEnabled !== 'boolean') return unknown('OUTPUT_UNKNOWN','ยังไม่มีข้อมูลการเปิดส่งภาพ');
@@ -36,7 +40,12 @@ export function validateDirectVideoLink({source, sink, cable, state = {}} = {}) 
   if (typeof state.selectedInputPortId !== 'string') return unknown('INPUT_UNKNOWN','ยังไม่มีข้อมูลแหล่งสัญญาณที่เลือก');
   if (state.selectedInputPortId !== sink.id) return noImage('WRONG_INPUT','เลือก Input ของจอไม่ตรงกับพอร์ตที่ต่อ');
   if (!state.mode || ![source.supported_modes,sink.supported_modes,cable.supported_modes].every(Array.isArray)) return unknown('MODE_UNKNOWN','ยังไม่ยืนยันรูปแบบภาพที่ต้นทาง ปลายทาง และสายรองรับ');
-  if (![source.supported_modes,sink.supported_modes,cable.supported_modes].every(m=>m.includes(state.mode))) return noImage('MODE_UNSUPPORTED','รูปแบบภาพที่เลือกไม่อยู่ในรายการที่ระบบนี้รองรับ');
+  for (const endpoint of [source,sink,cable]) {
+    if (!endpoint.supported_modes.includes(state.mode)) {
+      if (endpoint.supported_modes_complete !== true) return unknown('MODE_NOT_DOCUMENTED','ไม่พบรูปแบบภาพนี้ในรายการบางส่วนที่บันทึกไว้ จึงยังไม่ตัดสินว่าไม่รองรับ');
+      return noImage('MODE_UNSUPPORTED','รูปแบบภาพที่เลือกไม่อยู่ในรายการครบถ้วนที่ยืนยันแล้ว');
+    }
+  }
   if (typeof state.linkHealthy !== 'boolean') return unknown('LINK_UNKNOWN','ยังไม่มีผลตรวจสภาพสายและการเสียบต่อ');
   if (!state.linkHealthy) return noImage('LINK_FAULT','ตรวจสภาพสายและความแน่นของการเชื่อมต่อ');
   return result('ready','DIRECT_VIDEO_READY','การเชื่อมต่อตรงพร้อมแสดงภาพตามเงื่อนไขจำลองที่ตรวจแล้ว');
