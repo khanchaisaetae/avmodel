@@ -1863,6 +1863,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:hdmi-in"
         },
         {
@@ -1901,6 +1903,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:hdmi-out"
         },
         {
@@ -1938,6 +1942,8 @@
             "socket_normal_scene": null
           },
           "input_selector": "PC1",
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:rgb-in1"
         },
         {
@@ -1975,6 +1981,8 @@
             "socket_normal_scene": null
           },
           "input_selector": "PC2",
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:rgb-in2"
         },
         {
@@ -2010,6 +2018,8 @@
             "socket_normal_scene": null
           },
           "input_selector": null,
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:rgb-out1"
         },
         {
@@ -2045,6 +2055,8 @@
             "socket_normal_scene": null
           },
           "input_selector": null,
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:rgb-out2"
         },
         {
@@ -2082,6 +2094,8 @@
             "socket_normal_scene": null
           },
           "signal_status": "inferred_from_video_label_and_rca_diagram",
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:v-out"
         },
         {
@@ -2119,6 +2133,8 @@
             "socket_normal_scene": null
           },
           "signal_status": "inferred_from_video_label_and_rca_diagram",
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:video-in"
         },
         {
@@ -2153,6 +2169,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:svideo-in"
         },
         {
@@ -2187,6 +2205,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:svideo-out"
         },
         {
@@ -2233,6 +2253,8 @@
             "documented driver/software",
             "select UVC CAMERA"
           ],
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:usb-b"
         },
         {
@@ -2267,6 +2289,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:audio-in1"
         },
         {
@@ -2301,6 +2325,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:audio-in2"
         },
         {
@@ -2335,6 +2361,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:audio-in-rca"
         },
         {
@@ -2369,6 +2397,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:audio-out"
         },
         {
@@ -2403,6 +2433,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "side",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:mic"
         },
         {
@@ -2437,6 +2469,8 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:rs232"
         },
         {
@@ -2471,9 +2505,23 @@
             "socket_anchor_scene": null,
             "socket_normal_scene": null
           },
+          "location": "rear",
+          "count_status": "verified_reference_diagram",
           "id": "vertex:power"
         }
       ],
+      "inventory_confirmation": {
+        "status": "verified_reference_diagram",
+        "pdf_page": 6,
+        "source_id": "vertex",
+        "rear_connectors": 10,
+        "side_connectors": 8,
+        "total_connectors_including_power": 18,
+        "signal_and_control_connectors_excluding_power": 17,
+        "power_connectors": 1,
+        "counting_unit": "individual physical sockets, including separately labelled audio sockets",
+        "basis": "manual page 6 rear and side diagrams; not the shortened prose lists"
+      },
       "source_modes": [
         "CAMERA",
         "PC1",
@@ -2523,8 +2571,7 @@
       ],
       "unresolved": [
         "ตาราง cross-conversion ระหว่าง HDMI/RGB/Composite/S-Video ไม่ได้ยืนยันครบ",
-        "รายละเอียดรูปแบบภาพ/ความถี่แต่ละพอร์ต",
-        "RGB OUT 2 และ S-Video พบเฉพาะภาพ; ควรตรวจบนเครื่องก่อนฝึกกับฮาร์ดแวร์"
+        "รายละเอียดรูปแบบภาพ/ความถี่แต่ละพอร์ต"
       ]
     }
   ]

@@ -73,3 +73,11 @@ test('Vertex image-only ports and software-dependent USB are retained',()=>{
 test('Epson Monitor Out is not a generic HDMI-to-VGA converter',()=>{
  const p=ports['epson:computer2-monitor'];assert.equal(p.direction,null);assert.equal(p.modes[1].only_source,'epson:computer1');assert.ok(p.modes[1].blocked_sources.includes('HDMI1'));
 });
+
+test('Vertex socket count matches page 6: 10 rear plus 8 side, with power counted once',()=>{
+ const d=catalog.devices.find(d=>d.id==='vertex');
+ assert.equal(d.inventory_confirmation.status,'verified_reference_diagram');
+ assert.equal(d.ports.length,18);assert.equal(d.ports.filter(p=>p.location==='rear').length,10);assert.equal(d.ports.filter(p=>p.location==='side').length,8);
+ assert.equal(d.ports.filter(p=>p.connection_kind==='power').length,1);assert.equal(d.inventory_confirmation.signal_and_control_connectors_excluding_power,17);
+ assert.equal(d.ports.filter(p=>p.count_status==='verified_reference_diagram'&&p.count===1).length,18);
+});

@@ -68,7 +68,12 @@ def build():
    p['signal_status']='inferred_from_video_label_and_rca_diagram'
    p['assessment_enabled']=False
    p['notes_th'].append('ยืนยันฉลาก Video IN/V-OUT และหัว RCA จากภาพ; Composite เป็นการอนุมานชนิดสัญญาณ')
- device('vertex','Vertex-Visualizer',ps,source_modes=['CAMERA','PC1','PC2','WIRELESS IN','HDMI IN'],source_modes_evidence=ve('SOURCE เลือก CAMERA/PC1/PC2/WIRELESS IN/HDMI IN',[8,11]),routing_constraints=[{'from':'vertex:hdmi-in','to':'vertex:hdmi-out','required_setting':'SOURCE=HDMI IN','status':'verified_reference','evidence':ve('เอกสารอธิบายส่งภาพ HDMI ผ่าน Visualizer ออกไปยังจอ',[6,8,11])}],unresolved=['ตาราง cross-conversion ระหว่าง HDMI/RGB/Composite/S-Video ไม่ได้ยืนยันครบ','รายละเอียดรูปแบบภาพ/ความถี่แต่ละพอร์ต','RGB OUT 2 และ S-Video พบเฉพาะภาพ; ควรตรวจบนเครื่องก่อนฝึกกับฮาร์ดแวร์'])
+ rear={'rgb-in1','rgb-out1','rgb-out2','v-out','video-in','audio-in1','audio-in-rca','audio-out','rs232','power'}
+ for p in ps:
+  p['location']='rear' if p['key'] in rear else 'side'
+  p['count_status']='verified_reference_diagram'
+ inventory_confirmation={'status':'verified_reference_diagram','pdf_page':6,'source_id':'vertex','rear_connectors':10,'side_connectors':8,'total_connectors_including_power':18,'signal_and_control_connectors_excluding_power':17,'power_connectors':1,'counting_unit':'individual physical sockets, including separately labelled audio sockets','basis':'manual page 6 rear and side diagrams; not the shortened prose lists'}
+ device('vertex','Vertex-Visualizer',ps,inventory_confirmation=inventory_confirmation,source_modes=['CAMERA','PC1','PC2','WIRELESS IN','HDMI IN'],source_modes_evidence=ve('SOURCE เลือก CAMERA/PC1/PC2/WIRELESS IN/HDMI IN',[8,11]),routing_constraints=[{'from':'vertex:hdmi-in','to':'vertex:hdmi-out','required_setting':'SOURCE=HDMI IN','status':'verified_reference','evidence':ve('เอกสารอธิบายส่งภาพ HDMI ผ่าน Visualizer ออกไปยังจอ',[6,8,11])}],unresolved=['ตาราง cross-conversion ระหว่าง HDMI/RGB/Composite/S-Video ไม่ได้ยืนยันครบ','รายละเอียดรูปแบบภาพ/ความถี่แต่ละพอร์ต'])
  for source_id,s in SOURCES.items():
   raw=(ROOT/s['path']).read_bytes();actual=hashlib.sha256(raw).hexdigest()
   if EXPECTED_SHA and actual!=EXPECTED_SHA[source_id]:raise ValueError('Reference changed; re-review required: '+s['path'])

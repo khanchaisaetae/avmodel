@@ -72,6 +72,15 @@ https://www.dell.com/support/contents/en-th/article/product-support/self-support
 
 ### Vertex D-1420HW
 
+**ยืนยันจำนวนช่องต่อจากภาพคู่มือหน้า 6: ด้านหลัง 10 ช่อง + ด้านข้าง 8 ช่อง = 18 ช่อง รวมช่องไฟเลี้ยง 1 ช่อง** หากนับเฉพาะช่องสัญญาณ/ควบคุม ไม่รวมไฟเลี้ยง จะเป็น 17 ช่อง นับช่อง Audio IN แบบ mini jack และ Audio IN แบบ RCA แยกกันตามภาพ ไม่รวมเป็นช่องเดียว รายการบรรยายใต้ภาพเป็นรายการย่อ จึงไม่ใช้จำนวนบรรทัดในข้อความแทนจำนวนหัวต่อ
+
+| แผงพอร์ต | จำนวน | ฉลากที่นับจากภาพ |
+|---|---:|---|
+| ด้านหลัง | 10 | POWER DC 12V 2A; Audio IN (mini jack); Audio OUT; Audio IN (RCA); Video IN; V-OUT; RS-232; RGB IN 1; RGB OUT 1; RGB OUT 2 |
+| ด้านข้าง | 8 | HDMI IN; HDMI OUT; USB B; S-VIDEO IN; S-VIDEO OUT; MIC; RGB IN 2; Audio IN 2 |
+
+สถานะการยืนยันจำนวนพอร์ตแยกจากการยืนยันรูปแบบภาพ การแปลงสัญญาณ และตำแหน่งคลิกบน glTF จึงไม่เปลี่ยนความสามารถส่วนที่คู่มือไม่ได้ระบุ
+
 - HDMI IN รับภาพ และ HDMI OUT ส่งภาพ; ต้องเลือก SOURCE ให้ตรง เช่น HDMI IN หรือ CAMERA ตามหน้า 6/8/11
 - RGB IN 1 อยู่ด้านหลัง (PC1), RGB IN 2 อยู่ด้านข้าง (PC2), RGB OUT 1 ยืนยันจากข้อความและภาพ
 - **RGB OUT 2, S-VIDEO IN, S-VIDEO OUT, Video IN และ Audio OUT** มีฉลากอยู่ในภาพหน้า 6 แม้บางรายการไม่มีในคำบรรยาย จึงลงบัญชีพร้อม basis=diagram_only
