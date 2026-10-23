@@ -53,10 +53,10 @@ def build():
     x={'rgb-in1':-.458,'rgb-out1':-1.048,'rgb-out2':-1.639}[key];points=[p for p in points if abs(p[0]-x)<.26]
    lo=[min(p[a] for p in points) for a in range(3)];hi=[max(p[a] for p in points) for a in range(3)];anchor=[(a+b)/2 for a,b in zip(lo,hi)];anchor[axis]=(hi if sign>0 else lo)[axis];normal=[0,0,0];normal[axis]=sign
    mappings[device+':'+key]={'node_index':node,'anchor':anchor,'normal':normal,'bounds_scene':{'min':lo,'max':hi},'shared_node':shared,'asset_sha256':sha,'status':'reviewed','review_scope':'labelled_panel_and_indexed_geometry','review_date':'2026-10-23','basis':'ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์'}
-   if device in ['dell','bluray']:
-    mappings[device+':'+key]['user_acceptance']={'status':'accepted','date_local':'2026-10-23','source_path':'ref/PORT_CORRECTIONS_2026-10-23.md','accepted_baseline_commit':'000453f014144ce52fe62979c0871818f7d8038e','scope':'port_positions_only'}
+   if device in PLAN:
+    mappings[device+':'+key]['user_acceptance']={'status':'accepted','date_local':'2026-10-23','source_path':'ref/PORT_ACCEPTANCE_2026-10-23.md','accepted_baseline_commit':'8d884309c17c6f5156b6d3ecc0b63b0577b11fed','scope':'port_positions_only'}
    if device=='tv':
-    mappings[device+':'+key]['reference_review']={'source_path':'ref/Sony_Smart_TV_KDL-40W650D.pdf','pdf_pages':[28,38],'user_acceptance':'pending'}
+    mappings[device+':'+key]['reference_review']={'source_path':'ref/Sony_Smart_TV_KDL-40W650D.pdf','pdf_pages':[28,38],'user_acceptance':'accepted'}
  return {'schema_version':'1.0.0','coordinate_space':'original_gltf_scene_before_viewer_normalization','assets':assets,'mappings':mappings,'unmapped':{},'policy':'geometry calibration does not alter reference specification facts'}
 if __name__=='__main__':
  result=build();(ROOT/'data/model-mappings.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(len(result['mappings']),'model positions')

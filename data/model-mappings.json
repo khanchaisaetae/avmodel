@@ -62,8 +62,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -100,8 +100,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -138,8 +138,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -176,8 +176,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -214,8 +214,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -252,8 +252,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -286,7 +286,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:hdmi2": {
       "node_index": 23,
@@ -317,7 +324,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:computer1": {
       "node_index": 36,
@@ -348,7 +362,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:computer2-monitor": {
       "node_index": 27,
@@ -379,7 +400,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:video": {
       "node_index": 34,
@@ -410,7 +438,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:audio1": {
       "node_index": 31,
@@ -441,7 +476,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:audio2": {
       "node_index": 29,
@@ -472,7 +514,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:audio-out": {
       "node_index": 30,
@@ -503,7 +552,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:audio-l": {
       "node_index": 25,
@@ -534,7 +590,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:audio-r": {
       "node_index": 35,
@@ -565,7 +628,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:usb-b": {
       "node_index": 26,
@@ -596,7 +666,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:usb-a": {
       "node_index": 33,
@@ -627,7 +704,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:lan": {
       "node_index": 37,
@@ -658,7 +742,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:hdbaset": {
       "node_index": 32,
@@ -689,7 +780,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:rs232": {
       "node_index": 28,
@@ -720,7 +818,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "epson:power": {
       "node_index": 38,
@@ -751,7 +856,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "bluray:hdmi1": {
       "node_index": 4,
@@ -786,8 +898,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -824,8 +936,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -862,8 +974,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -900,8 +1012,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -938,8 +1050,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -976,8 +1088,8 @@
       "user_acceptance": {
         "status": "accepted",
         "date_local": "2026-10-23",
-        "source_path": "ref/PORT_CORRECTIONS_2026-10-23.md",
-        "accepted_baseline_commit": "000453f014144ce52fe62979c0871818f7d8038e",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
         "scope": "port_positions_only"
       }
     },
@@ -1011,13 +1123,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:hdmi-side": {
@@ -1050,13 +1169,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:rf": {
@@ -1089,13 +1215,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:digital-audio": {
@@ -1128,13 +1261,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:lan": {
@@ -1167,13 +1307,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:composite": {
@@ -1206,13 +1353,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:headphone": {
@@ -1245,13 +1399,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:audio-l": {
@@ -1284,13 +1445,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:audio-r": {
@@ -1323,13 +1491,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:usb-a-1": {
@@ -1362,13 +1537,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:usb-a-2": {
@@ -1401,13 +1583,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "tv:power": {
@@ -1440,13 +1629,20 @@
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
       "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      },
       "reference_review": {
         "source_path": "ref/Sony_Smart_TV_KDL-40W650D.pdf",
         "pdf_pages": [
           28,
           38
         ],
-        "user_acceptance": "pending"
+        "user_acceptance": "accepted"
       }
     },
     "vertex:hdmi-in": {
@@ -1478,7 +1674,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:hdmi-out": {
       "node_index": 45,
@@ -1509,7 +1712,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:usb-b": {
       "node_index": 68,
@@ -1540,7 +1750,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:svideo-in": {
       "node_index": 67,
@@ -1571,7 +1788,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:svideo-out": {
       "node_index": 28,
@@ -1602,7 +1826,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:mic": {
       "node_index": 29,
@@ -1633,7 +1864,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:rgb-in2": {
       "node_index": 4,
@@ -1664,7 +1902,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:audio-in2": {
       "node_index": 35,
@@ -1695,7 +1940,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:audio-in1": {
       "node_index": 162,
@@ -1726,7 +1978,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:audio-out": {
       "node_index": 172,
@@ -1757,7 +2016,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:audio-in-rca": {
       "node_index": 100,
@@ -1788,7 +2054,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:video-in": {
       "node_index": 102,
@@ -1819,7 +2092,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:v-out": {
       "node_index": 105,
@@ -1850,7 +2130,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:rs232": {
       "node_index": 104,
@@ -1881,7 +2168,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:power": {
       "node_index": 107,
@@ -1912,7 +2206,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:rgb-in1": {
       "node_index": 182,
@@ -1943,7 +2244,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:rgb-out1": {
       "node_index": 182,
@@ -1974,7 +2282,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     },
     "vertex:rgb-out2": {
       "node_index": 182,
@@ -2005,7 +2320,14 @@
       "status": "reviewed",
       "review_scope": "labelled_panel_and_indexed_geometry",
       "review_date": "2026-10-23",
-      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์"
+      "basis": "ตำแหน่งจาก geometry ของแต่ละหัวต่อ เทียบฉลากบนแผงโมเดลกับเอกสาร ref; ปรับจุดเพิ่มเติมได้ในโหมดอาจารย์",
+      "user_acceptance": {
+        "status": "accepted",
+        "date_local": "2026-10-23",
+        "source_path": "ref/PORT_ACCEPTANCE_2026-10-23.md",
+        "accepted_baseline_commit": "8d884309c17c6f5156b6d3ecc0b63b0577b11fed",
+        "scope": "port_positions_only"
+      }
     }
   },
   "unmapped": {},

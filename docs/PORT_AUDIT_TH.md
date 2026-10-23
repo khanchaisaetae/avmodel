@@ -71,7 +71,7 @@ https://www.dell.com/support/contents/en-th/article/product-support/self-support
 - USB-A 1/2 ด้านข้าง เล่นไฟล์ภาพถ่าย/เพลง/วิดีโอ ไม่ใช่ HDMI IN และไม่รับรอง HDD REC สำหรับประเทศไทย
 - LAN 10BASE-T/100BASE-TX, RF 75 โอห์ม และ DC IN 19.5 V; รูปแบบหัว RF ยังไม่ระบุชัด
 - บันทึก HDMI/PC progressive modes เป็น subset จากหน้า 38 ไม่เติม 4K หรือ 120Hz
-- รวม 12 ช่องรวมไฟเลี้ยง ตรวจจับคู่บนโมเดลครบแล้ว รายละเอียด node ใน PORT_LAB_REVIEW_TH.md และยังรอผู้ใช้ตรวจรับ TV
+- รวม 12 ช่องรวมไฟเลี้ยง ตรวจจับคู่บนโมเดลครบแล้ว รายละเอียด node ใน PORT_LAB_REVIEW_TH.md และผู้ใช้ตรวจรับแล้ว
 
 ### Vertex D-1420HW
 
@@ -210,7 +210,7 @@ node --test tests/connection-rules.test.mjs
 
 ## การตรวจรับและข้อแก้ไขผู้ใช้
 
-Dell และ Sony UBP-X700 ตรวจรับตำแหน่งแล้ว รวม 12 จุด ตามคำยืนยันผู้ใช้ 23 ตุลาคม 2026; TV ยังรอการตรวจรับใหม่
+อุปกรณ์ทั้ง 5 ตรวจรับตำแหน่งแล้ว รวม 58 จุด ตามคำยืนยันผู้ใช้ 23 ตุลาคม 2026 บันทึกใน ref/PORT_ACCEPTANCE_2026-10-23.md
 
 MIC ของ Vertex: Phone 1/4 นิ้ว (6.35 มม.) ตามผู้ใช้ยืนยัน ไม่ระบุ TS/TRS
 
