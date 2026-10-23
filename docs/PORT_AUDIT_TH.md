@@ -4,11 +4,10 @@
 
 ## สถานะข้อมูล
 
-**ยกเลิกผลยืนยันพอร์ตชุดเดิมทั้งหมดแล้ว** ฐานข้อมูล schema 1.0.0 และข้อสรุปจากชื่อ node, สีขั้วต่อ และ hotspot เดิมไม่ใช่ฐานยืนยันพอร์ตของงานนี้อีกต่อไป ส่วนแหล่งเว็บใช้เฉพาะหลักฐาน Dell ที่ตรวจใหม่และผู้ใช้อนุญาตเพิ่มเติม รายงานนี้และ data/port-catalog.json schema 2.2.0 ใช้แทนชุดเดิม โดยใช้ไฟล์ใน ref เป็นฐาน และเพิ่มหลักฐาน Dell อย่างเป็นทางการตามข้อมูลใหม่ที่ผู้ใช้ส่งมา บันทึกสรุปพร้อม URL ใน ref/Dell_G7_7588_Official_Port_Confirmation.md การเพิ่มเติมนี้ไม่ฟื้นข้อสรุปจาก hotspot/geometry ชุดเดิม
+**ยกเลิกผลยืนยันพอร์ตชุดเดิมทั้งหมดแล้ว** ฐานข้อมูล schema 1.0.0 และข้อสรุปจากชื่อ node, สีขั้วต่อ และ hotspot เดิมไม่ใช่ฐานยืนยันพอร์ตของงานนี้อีกต่อไป ส่วนแหล่งเว็บใช้เฉพาะหลักฐาน Dell ที่ตรวจใหม่และผู้ใช้อนุญาตเพิ่มเติม รายงานนี้และ data/port-catalog.json schema 2.3.0 ใช้แทนชุดเดิม โดยใช้ไฟล์ใน ref เป็นฐาน และเพิ่มหลักฐาน Dell อย่างเป็นทางการตามข้อมูลใหม่ที่ผู้ใช้ส่งมา บันทึกสรุปพร้อม URL ใน ref/Dell_G7_7588_Official_Port_Confirmation.md การเพิ่มเติมนี้ไม่ฟื้นข้อสรุปจาก hotspot/geometry ชุดเดิม
 
 การยืนยันครั้งนี้หมายถึงยืนยันสิ่งที่เอกสารหรือภาพที่แนบระบุ ไม่ใช่การตรวจเครื่องจริง และไม่ได้รับรองว่า geometry ของ glTF ตรงกับรุ่นในเอกสารทุกช่อง การจับคู่ชื่อรุ่นกับไฟล์โมเดลยึดตามชุด ref ที่ผู้ใช้จัดให้ ตำแหน่งคลิกชุดเดิมถูกยกเลิกแล้ว ปัจจุบันมีทะเบียนตำแหน่งใหม่แยกใน data/model-mappings.json และหน้าตรวจพอร์ตใน index.html ดูผลและข้อจำกัดใน docs/PORT_LAB_REVIEW_TH.md
 
-บันทึก 54 รายการอินเทอร์เฟซ: Dell 6, Epson 17, Blu-ray 6, TV 7 และ Vertex 18 รายการ ตัวเลขนี้เป็นจำนวนระเบียนในฐานข้อมูล ไม่ใช่การรับรองว่ามีหัวต่อรวม 54 ช่องจริง เพราะบางแหล่งยืนยันเพียงการมีอินเทอร์เฟซแต่ไม่ระบุจำนวน และภาพสเปกบางส่วนอ่านข้อมูลได้ไม่ครบ
 
 ## แหล่งอ้างอิงที่ใช้จริง
 
@@ -18,7 +17,9 @@
 | dell_official | Dell_G7_7588_Official_Port_Confirmation.md | คู่มือ G7 7588 > Right ข้อ 3/4 และบทความ Dell ที่ผู้ใช้ให้ | ยืนยัน USB-C video/HDMI OUT; ยังไม่กำหนดโหมดภาพหรือความสามารถชาร์จ |
 | epson | EB-2165W_Epson_Projector_User Guide.pdf | หน้า 14-15, 23-25, 27-31, 204-208 | คู่มือหลายรุ่น ต้องอ่านเฉพาะเงื่อนไข EB-2165W |
 | bluray | Sony_Ultra_HD_Blueray_UBP-X700.pdf | หน้า 1, 8, 11-12, 15, 19, 23, 30 | บางความสามารถ เช่น 4K ต้องเป็นไปตามเงื่อนไขจอ สาย และ HDCP |
-| tv | Sony_Smart_TV_KDL-40W650D_specifications.png | ตารางอินเทอร์เฟซและความละเอียดจอของ KDL-40W650D | แถบลอยบังแถวบนของตาราง; ไม่ยืนยัน USB และไม่ยืนยันเลขช่อง ARC |
+| tv | Sony_Smart_TV_KDL-40W650D.pdf | ภาพแผงหน้า 28; ข้อมูลเฉพาะหน้า 38; USB media หน้า 16-17 | คู่มือหลายรุ่น/ภูมิภาค; ไม่เพิ่ม HDD REC สำหรับประเทศไทย |
+| tv_spec | Sony_Smart_TV_KDL-40W650D_specifications.png | ตำแหน่ง RF และรายการอินเทอร์เฟซที่ไม่มี | ใช้ PDF ใหม่แทนส่วน USB/ARC |
+| user_review | PORT_CORRECTIONS_2026-10-23.md | ตรวจรับ Dell/Blu-ray; MIC; ตัดรายการ Epson accessory | บันทึกคำสั่งผู้ใช้ ไม่ใช่คู่มือผู้ผลิต |
 | vertex | Vertex_Visualizer_D-1420HW.pdf | หน้า 1, 6, 8-9, 11, 14-16 | ภาพหน้า 6 มีช่องต่อมากกว่ารายการบรรยาย ต้องแยกหลักฐานภาพกับข้อความ |
 
 เลขหน้าที่ระบุเป็นลำดับหน้า PDF แบบเริ่มที่ 1 และตรงกับเลขหน้าพิมพ์ที่ใช้อ้างในคู่มือส่วนนี้ ภาพ PNG ใช้กรอบพิกเซลในพิกัดภาพต้นฉบับ (x0,y0,x1,y1) เป็นจุดอ้างอิง ทั้งเส้นทางไฟล์และ SHA-256 เก็บในฐานข้อมูลและตรวจซ้ำในชุดทดสอบ
@@ -62,13 +63,15 @@ https://www.dell.com/support/contents/en-th/article/product-support/self-support
 
 ### Sony KDL-40W650D
 
-- ยืนยัน HDMI IN 2 ช่อง: หลัง 1 และข้าง 1 ช่อง ไม่สมมติเลข HDMI1/HDMI2 บนเครื่องจากข้อมูลนี้
-- Composite Video IN 1 และ RF IN 1 อยู่ด้านล่างตามตาราง; ชนิดหัว RCA สำหรับ Composite เป็นการอนุมานมาตรฐาน เนื่องจากภาพไม่มีรูปแผงพอร์ต จึงยังไม่ให้คะแนนการเลือกหัวต่อจากรายการนี้
-- มี Digital Audio OUT 1 ด้านหลัง และ Audio/Headphone OUT 1 ด้านข้าง แต่ข้อความที่อ่านได้ไม่ระบุชนิดหัวต่อชัด จึงไม่เติม Optical หรือขนาดแจ็คเอง
-- มี Ethernet 1 ด้านล่าง รองรับ ARC/CEC แต่ไม่ยืนยันว่าช่อง HDMI ใดมี ARC; ARC เป็นเสียงย้อนกลับ ไม่ทำให้ทีวีส่งภาพผ่าน HDMI OUT
-- Component Video, MHL และ RS-232C ระบุว่าไม่มี
-- แถบลอยบังแถวบนของตาราง จึงยังไม่ระบุจำนวน USB จากไฟล์นี้ และไม่ใช้จำนวน USB ในโมเดลมาเติม
-- ความละเอียดแผง 1920x1080 ไม่ใช่รายการรูปแบบภาพ HDMI ที่รับได้ จึงไม่รับรอง 4K หรือ 120Hz
+ทบทวนใหม่จาก ref/Sony_Smart_TV_KDL-40W650D.pdf หน้า 16-17, 28-29, 38-39 โดยภาพสเปกเดิมใช้เสริมตำแหน่ง RF และรายการที่ระบุว่าไม่มีเท่านั้น
+
+- HDMI IN 1 (ARC) ด้านหลัง และ HDMI IN 2 ด้านข้าง; ARC เป็นเสียงย้อนกลับ ไม่ใช่ VIDEO OUT
+- Composite VIDEO IN แบบ RCA พร้อม Audio IN L (MONO) และ R แยกหัวที่แผงล่าง
+- DIGITAL AUDIO OUT (OPTICAL) ด้านหลัง และ Audio/Headphone/Subwoofer OUT แบบ mini stereo ด้านข้าง
+- USB-A 1/2 ด้านข้าง เล่นไฟล์ภาพถ่าย/เพลง/วิดีโอ ไม่ใช่ HDMI IN และไม่รับรอง HDD REC สำหรับประเทศไทย
+- LAN 10BASE-T/100BASE-TX, RF 75 โอห์ม และ DC IN 19.5 V; รูปแบบหัว RF ยังไม่ระบุชัด
+- บันทึก HDMI/PC progressive modes เป็น subset จากหน้า 38 ไม่เติม 4K หรือ 120Hz
+- รวม 12 ช่องรวมไฟเลี้ยง ตรวจจับคู่บนโมเดลครบแล้ว รายละเอียด node ใน PORT_LAB_REVIEW_TH.md และยังรอผู้ใช้ตรวจรับ TV
 
 ### Vertex D-1420HW
 
@@ -120,11 +123,7 @@ python scripts/build_ref_catalog.py
 node --test tests/connection-rules.test.mjs
 ```
 
-## บัญชีรายพอร์ตใหม่
-
-จำนวนที่ไม่ทราบไม่เท่ากับศูนย์; ทิศทางของ Ethernet/USB เป็นทิศทางข้อมูล ไม่ใช่ OUT/IN ของภาพเสมอไป “ต้องใช้กฎเฉพาะ” หมายถึงยังใช้ตัวตรวจสายภาพตรงไม่ได้
-
-
+## บัญชีรายพอร์ตปัจจุบัน
 
 ### Dell G7 15 7588 / W56791901TH
 
@@ -134,7 +133,7 @@ node --test tests/connection-rules.test.mjs
 | USB 3.1 Type-A #1 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
 | USB 3.1 Type-A #2 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
 | USB 3.1 Type-A #3 | usb_a | bidirectional | usb_data | dell ตารางในภาพ |
-| Thunderbolt 3 / USB 3.1 Gen 2 Type-C / DisplayPort 1.2 | usb_c | bidirectional; video out | dp_alt_mode_video | dell_official Model-specific manual: Right |
+| Thunderbolt 3 / USB 3.1 Gen 2 Type-C / DisplayPort 1.2 | usb_c | bidirectional | dp_alt_mode_video | dell_official Model-specific manual: Right |
 | Ethernet LAN | rj45 | bidirectional | network | dell ตารางในภาพ |
 
 ### Epson EB-2165W
@@ -144,7 +143,7 @@ node --test tests/connection-rules.test.mjs
 | HDMI1/MHL | hdmi | in | native_video | epson หน้า 15,207 |
 | HDMI2 | hdmi | in | native_video | epson หน้า 15,207 |
 | Computer1 | vga | in | native_video | epson หน้า 15,207 |
-| Computer2/Monitor Out | vga | ตามโหมด | configurable_video | epson หน้า 15,207 |
+| Computer2/Monitor Out | vga | None | configurable_video | epson หน้า 15,207 |
 | Video | rca | in | native_video | epson หน้า 15,207 |
 | Audio 1 | mini_jack_3_5 | in | audio | epson หน้า 15,207 |
 | Audio 2 | mini_jack_3_5 | in | audio | epson หน้า 15,207 |
@@ -153,7 +152,6 @@ node --test tests/connection-rules.test.mjs
 | R-Audio | rca | in | audio | epson หน้า 15,207 |
 | USB-B | usb_b | bidirectional | software_video | epson หน้า 15,23,24,207 |
 | USB-A | usb_a | bidirectional | usb_media | epson หน้า 15,28,29,207 |
-| USB-A for wireless LAN module | usb_a | bidirectional | accessory | epson หน้า 208 |
 | LAN | rj45 | bidirectional | network | epson หน้า 15,208 |
 | HDBaseT | rj45 | in | hdbaset_video | epson หน้า 15,30,208 |
 | RS-232C | dsub9 | bidirectional | control | epson หน้า 15,208 |
@@ -174,13 +172,18 @@ node --test tests/connection-rules.test.mjs
 
 | พอร์ต | หัวต่อ | ทิศทาง | เส้นทาง | หลักฐาน |
 |---|---|---|---|---|
-| HDMI IN (rear) | hdmi | in | native_video | tv ตารางในภาพ |
-| HDMI IN (side) | hdmi | in | native_video | tv ตารางในภาพ |
-| Composite Video IN (bottom) | rca | in | native_video | tv ตารางในภาพ |
-| RF IN (bottom) | rf_unknown | in | rf_video | tv ตารางในภาพ |
-| Digital audio OUT (rear) | ไม่ระบุ | out | audio | tv ตารางในภาพ |
-| Audio / Headphone OUT (side) | ไม่ระบุ | out | audio | tv ตารางในภาพ |
-| Ethernet IN (bottom) | rj45 | bidirectional | network | tv ตารางในภาพ |
+| HDMI IN 1 (ARC) · ด้านหลัง | hdmi | in | native_video | tv หน้า 28,38 |
+| HDMI IN 2 · ด้านข้าง | hdmi | in | native_video | tv หน้า 28,38 |
+| VIDEO IN · Composite · แผงล่าง | rca | in | native_video | tv หน้า 28,38 |
+| RF / Antenna IN · แผงล่าง | rf_unknown | in | rf_video | tv หน้า 38 |
+| DIGITAL AUDIO OUT (OPTICAL) · ด้านหลัง | toslink | out | audio | tv หน้า 28,38 |
+| AUDIO OUT / Headphone / Subwoofer · ด้านข้าง | mini_jack_3_5 | out | audio | tv หน้า 28,38 |
+| LAN · แผงล่าง | rj45 | bidirectional | network | tv หน้า 28,38 |
+| AUDIO IN L (MONO) · แผงล่าง | rca | in | audio | tv หน้า 28,38 |
+| AUDIO IN R · แผงล่าง | rca | in | audio | tv หน้า 28,38 |
+| USB 1 · ด้านข้าง | usb_a | bidirectional | usb_media | tv หน้า 16,17,28,38 |
+| USB 2 · ด้านข้าง | usb_a | bidirectional | usb_media | tv หน้า 16,17,28,38 |
+| DC IN 19.5 V · แผงล่าง | dc_barrel | in | power | tv หน้า 38 |
 
 ### Vertex D-1420HW
 
@@ -191,16 +194,24 @@ node --test tests/connection-rules.test.mjs
 | RGB IN 1 | vga | in | native_video | vertex หน้า 6,11 |
 | RGB IN 2 | vga | in | native_video | vertex หน้า 6,11 |
 | RGB OUT 1 | vga | out | native_video | vertex หน้า 6 |
-| RGB OUT 2 | vga | out | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| RGB OUT 2 | vga | out | native_video | vertex หน้า 6 |
 | V-OUT | rca | out | native_video | vertex หน้า 6 |
-| Video IN | rca | in | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
-| S-VIDEO IN | mini_din4 | in | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
-| S-VIDEO OUT | mini_din4 | out | native_video | vertex หน้า 6 (ภาพแผงพอร์ต) |
+| Video IN | rca | in | native_video | vertex หน้า 6 |
+| S-VIDEO IN | mini_din4 | in | native_video | vertex หน้า 6 |
+| S-VIDEO OUT | mini_din4 | out | native_video | vertex หน้า 6 |
 | USB B | usb_b | bidirectional | software_video | vertex หน้า 6,14,15,16 |
 | Audio IN 1 (rear mini jack) | mini_jack_3_5 | in | audio | vertex หน้า 6 |
 | Audio IN 2 (side) | mini_jack_3_5 | in | audio | vertex หน้า 6 |
-| Audio IN (rear RCA) | rca | in | audio | vertex หน้า 6 (ภาพแผงพอร์ต) |
-| Audio OUT (rear) | mini_jack_unknown | out | audio | vertex หน้า 6 (ภาพแผงพอร์ต) |
-| MIC | jack_unknown | in | audio | vertex หน้า 6 |
+| Audio IN (rear RCA) | rca | in | audio | vertex หน้า 6 |
+| Audio OUT (rear) | mini_jack_unknown | out | audio | vertex หน้า 6 |
+| MIC · Phone 1/4 นิ้ว (6.35 มม.) | phone_jack_6_35 | in | audio | user_review ข้อมูลแก้ไข |
 | RS-232 | dsub9 | bidirectional | control | vertex หน้า 6 |
 | POWER DC 12V 2A | dc_barrel | in | power | vertex หน้า 6 |
+
+## การตรวจรับและข้อแก้ไขผู้ใช้
+
+Dell และ Sony UBP-X700 ตรวจรับตำแหน่งแล้ว รวม 12 จุด ตามคำยืนยันผู้ใช้ 23 ตุลาคม 2026; TV ยังรอการตรวจรับใหม่
+
+MIC ของ Vertex: Phone 1/4 นิ้ว (6.35 มม.) ตามผู้ใช้ยืนยัน ไม่ระบุ TS/TRS
+
+Epson: ไม่ลงบัญชี usb-wlan แยกต่างหาก; Wireless LAN module เป็นอุปกรณ์เสริมที่ต่อ USB-A ตามข้อแก้ไขผู้ใช้ ที่มาใน ref/PORT_CORRECTIONS_2026-10-23.md

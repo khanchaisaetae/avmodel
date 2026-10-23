@@ -36,7 +36,7 @@ scenario('topology compatibility does not imply visible image',f=>{f.scope='topo
 const catalog=JSON.parse(readFileSync(new URL('../data/port-catalog.json',import.meta.url)));
 const ports=Object.fromEntries(catalog.devices.flatMap(d=>d.ports.map(p=>[p.id,p])));
 test('v1 decisions replaced by v2 ref-only evidence',()=>{
- assert.equal(catalog.schema_version,'2.2.0');assert.equal(catalog.authority,'ref_files_with_user_authorized_dell_official_supplement');assert.equal(catalog.devices.length,5);assert.equal(Object.keys(ports).length,54);
+ assert.equal(catalog.schema_version,'2.3.0');assert.equal(catalog.authority,'ref_files_with_user_authorized_dell_official_supplement');assert.equal(catalog.devices.length,5);assert.equal(Object.keys(ports).length,58);
  for (const [id,s] of Object.entries(catalog.sources)){
   assert.ok(s.path.startsWith('ref/'));
   const bytes=readFileSync(new URL('../'+s.path,import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),s.sha256);
@@ -53,8 +53,8 @@ test('reference confirms Blu-ray primary HDMI to Epson topology',()=>{
  const f=fixture();f.source=ports['bluray:hdmi1'];f.sink=ports['epson:hdmi2'];assert.equal(check({...f,scope:'topology'}).status,'compatible');
  assert.equal(check({...f,state:{...f.state,selectedInputPortId:f.sink.id}}).code,'MODE_UNKNOWN');
 });
-test('TV references contain exactly two HDMI inputs, no guessed ARC assignment',()=>{
- const d=catalog.devices.find(d=>d.id==='tv');assert.equal(d.ports.filter(p=>p.connector==='hdmi').length,2);assert.equal(d.documented_features.find(f=>f.name==='ARC').port_assignment,null);
+test('TV references contain exactly two HDMI inputs, ARC assigned by the new PDF',()=>{
+ const d=catalog.devices.find(d=>d.id==='tv');assert.equal(d.ports.filter(p=>p.connector==='hdmi').length,2);assert.equal(d.documented_features.find(f=>f.name==='ARC').port_assignment,'tv:hdmi-rear');
 });
 test('Dell USB-C video confirmed by model-specific official supplement',()=>{
  const p=ports['dell:usb-c'];assert.equal(p.video_capable,true);assert.equal(p.video_direction,'out');assert.equal(p.direction,'bidirectional');assert.equal(p.location,'right');assert.equal(p.capability_status,'verified_reference');assert.ok(p.features.includes('DisplayPort 1.2'));assert.equal(p.evidence[0].source_id,'dell_official');assert.equal(p.power_delivery_charging_supported,null);
@@ -81,3 +81,7 @@ test('Vertex socket count matches page 6: 10 rear plus 8 side, with power counte
  assert.equal(d.ports.filter(p=>p.connection_kind==='power').length,1);assert.equal(d.inventory_confirmation.signal_and_control_connectors_excluding_power,17);
  assert.equal(d.ports.filter(p=>p.count_status==='verified_reference_diagram'&&p.count===1).length,18);
 });
+
+test('user MIC correction records 6.35 mm Phone without guessing contacts',()=>{const p=ports['vertex:mic'];assert.equal(p.connector,'phone_jack_6_35');assert.equal(p.connector_confirmation.size_mm,6.35);assert.equal(p.connector_confirmation.contact_configuration,null);assert.equal(p.evidence[0].source_id,'user_review');});
+test('Epson wireless accessory does not add a second USB-A socket',()=>{const d=catalog.devices.find(d=>d.id==='epson');assert.equal(d.ports.length,16);assert.equal(d.ports.filter(p=>p.connector==='usb_a').length,1);assert.equal(ports['epson:usb-wlan'],undefined);assert.equal(ports['epson:usb-a'].accessory_policy_evidence[0].source_id,'user_review');});
+test('Sony PDF confirms 12 sockets and separates video, audio, USB media and power',()=>{const d=catalog.devices.find(d=>d.id==='tv');assert.equal(d.ports.length,12);assert.equal(d.ports.filter(p=>p.connector==='usb_a').length,2);assert.equal(d.ports.filter(p=>p.id.match(/tv:audio-[lr]$/)).length,2);assert.equal(ports['tv:digital-audio'].connector,'toslink');assert.equal(ports['tv:composite'].assessment_enabled,true);assert.equal(ports['tv:power'].voltage_v,19.5);for(const id of ['tv:usb-a-1','tv:usb-a-2'])assert.equal(ports[id].connection_kind,'usb_media');assert.ok(ports['tv:hdmi-rear'].supported_modes.includes('1920x1080@60'));assert.equal(ports['tv:hdmi-rear'].supported_modes_complete,false);assert.ok(catalog.sources.tv.path.endsWith('.pdf'));});
