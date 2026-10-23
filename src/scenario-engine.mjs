@@ -60,3 +60,7 @@ export function checkScenario(task,state,catalog){
  return {state:{...state,observedSources:observed,attempts:state.attempts+1},result:{...r,complete}};
 }
 export function nextSource(task,state){const source=task.sources.find(id=>!state.observedSources.includes(id));return source?{...state,requestedSource:source}:state;}
+// Selecting either endpoint or cable applies the complete choice without a second connect button.
+export function updateSegmentSelection(task,state,index,patch,catalog){
+ return connectSegment(task,editSegment(state,index,patch),index,catalog);
+}

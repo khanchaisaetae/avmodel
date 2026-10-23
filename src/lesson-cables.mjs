@@ -23,3 +23,9 @@ export function portFunction(p){
  if(p.video_capable===true)return p.connection_kind==='software_video'?'ภาพผ่านซอฟต์แวร์':p.connection_kind==='configurable_video'?'ภาพ · ตามโหมดเครื่อง':'สัญญาณภาพ';
  return ({audio:'สัญญาณเสียง',network:'ข้อมูลเครือข่าย',control:'ควบคุม',power:'ไฟเลี้ยง',usb_data:'ข้อมูล USB',usb_media:'สื่อ / ข้อมูล USB'}[p.connection_kind]||'ตามหน้าที่ในคู่มือ');
 }
+// Bidirectional and mode-dependent sockets stay visible in both relevant groups.
+export function portSupportsSide(port,side){
+ if(side!=='in'&&side!=='out')return false;
+ const direction=port.video_direction||port.direction;
+ return direction===side||(direction!=='in'&&direction!=='out');
+}

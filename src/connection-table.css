@@ -45,3 +45,6 @@ dialog{font:inherit;color:var(--ink);border:1px solid #d4e2e6;border-radius:16px
 @media(max-width:540px){.direct-device .on-device,.direct-device .device-ports-button{min-height:44px}}@media(max-width:850px){#jump-results{width:100%;margin:4px 0 17px}#back-to-system{margin:0 0 17px;font-size:11px;min-height:35px}}
 
 .wire-label em{display:block;font-style:normal;font-size:8px;color:#8b7b60;margin-top:2px}@media(max-width:540px){.wire-label em{display:none}}
+/* Each device exposes distinct input/output menus; wire menus contain one select only. */
+.port-side-buttons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px;margin-top:7px}.port-side-buttons .device-ports-button{margin:0;font-size:10px;min-width:0;min-height:36px;padding:7px 2px;line-height:1.5;overflow-wrap:anywhere}.context-popover:has(#wire-cable){width:320px}.context-popover:has(#wire-cable) #context-content{padding:16px 18px 20px}
+@media(max-width:540px){.port-side-buttons{gap:4px}.port-side-buttons .device-ports-button{font-size:9px;min-height:44px;padding:5px 1px}.context-popover:has(#wire-cable){width:auto}}
