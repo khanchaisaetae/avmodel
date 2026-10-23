@@ -1,4 +1,4 @@
-import {mountConnectionLesson} from './connection-lesson.mjs?v=20261024-auto-result';
+import {mountConnectionLesson} from './connection-lesson.mjs?v=20261024-learning-ui';
 import {assetHash} from './asset-hash.mjs';
 import {SoftwareRenderer} from './software-view.mjs';
 import {validateCalibration,mappingCounts} from './mapping-model.mjs';
