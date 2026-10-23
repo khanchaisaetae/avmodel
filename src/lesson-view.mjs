@@ -14,7 +14,7 @@ export function visibleSignalSegments(task,state,live) {
 }
 export function issueLocation(task,state,result,activeSegment=0) {
  if(!result||['ready','compatible'].includes(result.status))return null;
- const wireCodes=['MISSING_SELECTION','WRONG_DEVICE','NO_VIDEO','OCCUPIED_PORT','PORT_OCCUPIED','WRONG_CABLE','CABLE_CONNECTOR_MISMATCH','CONNECTOR_MISMATCH','DIRECTION_MISMATCH','SPECIAL_ROUTE_REQUIRED','CONVERSION_REQUIRED'];
+ const wireCodes=['MISSING_SELECTION','UNSIMULATED_CABLE','WRONG_DEVICE','NO_VIDEO','OCCUPIED_PORT','PORT_OCCUPIED','WRONG_CABLE','CABLE_CONNECTOR_MISMATCH','CONNECTOR_MISMATCH','DIRECTION_MISMATCH','SPECIAL_ROUTE_REQUIRED','CONVERSION_REQUIRED'];
  if(result.code==='INCOMPLETE_SYSTEM')return {step:0,segment:state.links.findIndex(l=>!l.connected)};
  if(wireCodes.includes(result.code)||result.status==='invalid')return {step:0,segment:activeSegment};
  if(result.code==='WRONG_SOURCE') {

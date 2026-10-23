@@ -1,5 +1,5 @@
 import {validateDirectVideoLink} from './connection-rules.mjs';
-import {CABLES} from './connection-exercise.mjs';
+import {WIRE_CHOICES as CABLES} from './lesson-cables.mjs';
 import {DEVICE_NAMES,SOURCE_NAMES} from './scenario-catalog.mjs';
 const result=(status,code,message,extra={})=>({status,code,message,imageVisible:false,gradable:status!=='indeterminate',complete:false,...extra});
 export function initialScenario(task){return {links:task.segments.map(()=>({sourcePortId:'',sinkPortId:'',cableId:'',connected:false})),power:Object.fromEntries(task.devices.map(id=>[id,false])),sourceEnabled:Object.fromEntries(task.sources.filter(id=>id!=='vertex').map(id=>[id,false])),displayInput:'',vertexSource:'CAMERA',requestedSource:task.sources[0],observedSources:[],attempts:0};}
@@ -10,6 +10,7 @@ export function validateSegment(task,state,index,catalog){
  const ports=portMap(catalog),source=ports.get(link.sourcePortId),sink=ports.get(link.sinkPortId),choice=CABLES.find(c=>c.id===link.cableId);
  if(!source||!sink||!choice)return result('indeterminate','MISSING_SELECTION','เลือกพอร์ตทั้งสองปลายและชนิดสายให้ครบ');
  if(source.id.split(':')[0]!==plan.from||sink.id.split(':')[0]!==plan.to)return result('invalid','WRONG_DEVICE','พอร์ตไม่ตรงกับอุปกรณ์ในช่วงสายที่เลือก');
+ if(!choice.engineSupported)return result('indeterminate','UNSIMULATED_CABLE',choice.label+': '+choice.availability+' · '+choice.description+' โจทย์ยังไม่ตรวจเส้นทางนี้ จึงไม่ใช้ตัดสินว่าเชื่อมต่อผิด');
  if(source.video_capable===false||sink.video_capable===false)return result('invalid','NO_VIDEO','พอร์ตที่เลือกไม่ส่งหรือรับภาพ เช่น HDMI OUT 2 ของ Blu-ray ส่งเฉพาะเสียง');
  const occupied=state.links.flatMap((l,i)=>i!==index&&l.connected?[l.sourcePortId,l.sinkPortId]:[]);
  // Supplied timing is an exercise assumption, never a hardware-specification update.
@@ -25,6 +26,7 @@ export function evaluateScenario(task,state,catalog){
  if(!state.power[display])return result('no_image','DISPLAY_OFF','เปิด '+DEVICE_NAMES[display]+' ก่อนตรวจภาพ');
  if(!state.displayInput)return result('no_image','INPUT_NOT_SELECTED','เลือก Input ของจอให้ตรงกับช่องที่ต่อ');
  const index=task.segments.findIndex((s,i)=>s.to===display&&state.links[i].connected&&state.links[i].sinkPortId===state.displayInput);
+ if(index<0){const pending=task.segments.findIndex((seg,i)=>seg.to===display&&state.links[i].sinkPortId===state.displayInput&&CABLES.find(c=>c.id===state.links[i].cableId)?.engineSupported===false);if(pending>=0)return validateSegment(task,state,pending,catalog);}
  if(index<0)return result('no_image','WRONG_INPUT','Input ของจอยังไม่ตรงกับสายที่เชื่อม หรือยังไม่ได้เสียบสายเข้าช่องนั้น');
  const seen=new Set();
  function trace(i){
@@ -38,6 +40,7 @@ export function evaluateScenario(task,state,catalog){
    if(state.vertexSource==='CAMERA')return result('signal','CAMERA_SIGNAL','ภาพจากกล้อง Vertex',{imageVisible:true,actualSource:'vertex'});
    if(state.vertexSource!=='HDMI IN')return result('no_image','VERTEX_SIGNAL_TYPE','Vertex เลือกอินพุต RGB/VGA จึงไม่ส่งภาพข้ามประเภทออก HDMI ให้เลือก SOURCE: HDMI IN สำหรับสาย HDMI');
    const inputIndex=task.segments.findIndex((p,j)=>p.to==='vertex'&&state.links[j].connected&&state.links[j].sinkPortId==='vertex:hdmi-in');
+   if(inputIndex<0){const pending=task.segments.findIndex((seg,j)=>seg.to==='vertex'&&state.links[j].sinkPortId==='vertex:hdmi-in'&&CABLES.find(c=>c.id===state.links[j].cableId)?.engineSupported===false);if(pending>=0)return validateSegment(task,state,pending,catalog);}
    if(inputIndex<0)return result('no_image','VERTEX_INPUT_MISSING','Vertex เลือก HDMI IN แต่ยังไม่มีสายเชื่อมเข้าช่อง HDMI IN');
    return trace(inputIndex);
   }

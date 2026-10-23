@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {WIRE_CHOICES,portDirection,portFunction} from '../src/lesson-cables.mjs';
+import {SCENARIOS} from '../src/scenario-catalog.mjs';
+import {initialScenario,connectSegment,evaluateScenario} from '../src/scenario-engine.mjs';
+const catalog=JSON.parse(readFileSync(new URL('../data/port-catalog.json',import.meta.url)));
+const ports=catalog.devices.flatMap(d=>d.ports),task=SCENARIOS[0];
+test('17 cable choices cover five groups while retaining original engine-supported IDs',()=>{assert.equal(WIRE_CHOICES.length,17);assert.equal(new Set(WIRE_CHOICES.map(c=>c.id)).size,17);assert.equal(new Set(WIRE_CHOICES.map(c=>c.group)).size,5);assert.deepEqual(WIRE_CHOICES.filter(c=>c.engineSupported).map(c=>c.id),['hdmi','vga','usb']);for(const c of WIRE_CHOICES){assert.ok(c.availability);assert.ok(c.description);}});
+for(const c of WIRE_CHOICES.filter(c=>!c.engineSupported))test(c.id+' is selectable but never graded as an invented supported route',()=>{const before=JSON.stringify(catalog),s=initialScenario(task);s.links[0]={sourcePortId:'dell:hdmi',sinkPortId:'epson:hdmi1',cableId:c.id,connected:false};const checked=connectSegment(task,s,0,catalog);assert.equal(checked.result.code,'UNSIMULATED_CABLE');assert.equal(checked.result.gradable,false);assert.equal(checked.state.links[0].connected,false);assert.equal(JSON.stringify(catalog),before);});
+test('checking an unmodeled selected cable preserves indeterminate feedback rather than wrong input',()=>{const s=initialScenario(task);s.power.epson=true;s.displayInput='epson:hdmi1';s.links[0]={sourcePortId:'dell:usb-c',sinkPortId:'epson:hdmi1',cableId:'usb-c-hdmi',connected:false};assert.equal(evaluateScenario(task,s,catalog).code,'UNSIMULATED_CABLE');assert.equal(evaluateScenario(task,s,catalog).gradable,false);});
+test('unmodeled upstream adapter through Vertex remains indeterminate',()=>{const t=SCENARIOS.find(t=>t.id==='3-01'),s=initialScenario(t);s.power={dell:true,vertex:true,epson:true};s.displayInput='epson:hdmi1';s.vertexSource='HDMI IN';s.links=[{sourcePortId:'dell:usb-c',sinkPortId:'vertex:hdmi-in',cableId:'usb-c-hdmi',connected:false},{sourcePortId:'vertex:hdmi-out',sinkPortId:'epson:hdmi1',cableId:'hdmi',connected:true}];assert.equal(evaluateScenario(t,s,catalog).code,'UNSIMULATED_CABLE');});
+test('USB-C video direction is OUT while its USB data direction stays unchanged',()=>{const p=ports.find(p=>p.id==='dell:usb-c');assert.equal(portDirection(p),'OUT · ส่งออก');assert.equal(p.direction,'bidirectional');});
+test('audio-only HDMI and power are labeled by their real purpose',()=>{assert.equal(portFunction(ports.find(p=>p.id==='bluray:hdmi2')),'เสียงเท่านั้น');assert.equal(portFunction(ports.find(p=>p.id==='vertex:power')),'ไฟเลี้ยง');assert.equal(portFunction(ports.find(p=>p.id==='tv:lan')),'ข้อมูลเครือข่าย');});
