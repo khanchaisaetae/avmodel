@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.1.0",
+  "schema_version": "2.2.0",
   "review_date_local": "2026-10-23",
   "timezone": "Asia/Bangkok",
   "authority": "ref_files_with_user_authorized_dell_official_supplement",
@@ -155,7 +155,7 @@
       "asset_path": "DellG7-Laptop.gltf",
       "model_name": "Dell G7 15 7588 / W56791901TH",
       "identity_basis": "user_supplied_ref_assignment",
-      "model_geometry_match_status": "not_reverified",
+      "model_geometry_match_status": "see_external_mapping_registry",
       "ports": [
         {
           "label": "HDMI",
@@ -182,10 +182,12 @@
             "ยืนยัน OUT จากคู่มือเฉพาะรุ่น ไม่ใช้การอนุมานเดิม"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "dell:hdmi"
           },
           "id": "dell:hdmi"
         },
@@ -218,10 +220,12 @@
             "เลข # เป็นรหัสภายใน ไม่ใช่ตำแหน่งหรือเลขบนเครื่อง"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "dell:usb-a-1"
           },
           "id": "dell:usb-a-1"
         },
@@ -254,10 +258,12 @@
             "เลข # เป็นรหัสภายใน ไม่ใช่ตำแหน่งหรือเลขบนเครื่อง"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "dell:usb-a-2"
           },
           "id": "dell:usb-a-2"
         },
@@ -290,10 +296,12 @@
             "เลข # เป็นรหัสภายใน ไม่ใช่ตำแหน่งหรือเลขบนเครื่อง"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "dell:usb-a-3"
           },
           "id": "dell:usb-a-3"
         },
@@ -323,10 +331,12 @@
             "ยืนยันความสามารถส่งภาพแล้ว แต่ตัวตรวจสายภาพตรงยังไม่จำลองเส้นทาง USB-C/อะแดปเตอร์"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "dell:usb-c"
           },
           "video_direction": "out",
           "location": "right",
@@ -392,10 +402,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "dell:lan"
           },
           "id": "dell:lan"
         }
@@ -462,7 +474,7 @@
       "asset_path": "Epson-Projector.gltf",
       "model_name": "Epson EB-2165W",
       "identity_basis": "user_supplied_ref_assignment",
-      "model_geometry_match_status": "not_reverified",
+      "model_geometry_match_status": "see_external_mapping_registry",
       "ports": [
         {
           "label": "HDMI1/MHL",
@@ -512,10 +524,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:hdmi1"
           },
           "supported_modes_evidence": [
             {
@@ -585,10 +599,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:hdmi2"
           },
           "supported_modes_evidence": [
             {
@@ -636,10 +652,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:computer1"
           },
           "additional_signals": [
             "component_ypbpr"
@@ -675,10 +693,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:computer2-monitor"
           },
           "modes": [
             {
@@ -737,10 +757,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:video"
           },
           "id": "epson:video"
         },
@@ -773,10 +795,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:audio1"
           },
           "id": "epson:audio1"
         },
@@ -809,10 +833,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:audio2"
           },
           "id": "epson:audio2"
         },
@@ -845,10 +871,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:audio-out"
           },
           "id": "epson:audio-out"
         },
@@ -881,10 +909,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:audio-l"
           },
           "id": "epson:audio-l"
         },
@@ -917,10 +947,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:audio-r"
           },
           "id": "epson:audio-r"
         },
@@ -957,10 +989,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:usb-b"
           },
           "video_flow": "computer_to_projector",
           "requirements": [
@@ -1003,10 +1037,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:usb-a"
           },
           "id": "epson:usb-a"
         },
@@ -1037,10 +1073,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:usb-wlan"
           },
           "id": "epson:usb-wlan"
         },
@@ -1073,10 +1111,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:lan"
           },
           "id": "epson:lan"
         },
@@ -1111,10 +1151,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:hdbaset"
           },
           "requirements": [
             "compatible_HDBaseT_transmitter"
@@ -1150,10 +1192,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:rs232"
           },
           "id": "epson:rs232"
         },
@@ -1184,10 +1228,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "epson:power"
           },
           "id": "epson:power"
         }
@@ -1215,7 +1261,7 @@
       "asset_path": "Sony-Blu-ray.gltf",
       "model_name": "Sony UBP-X700",
       "identity_basis": "user_supplied_ref_assignment",
-      "model_geometry_match_status": "not_reverified",
+      "model_geometry_match_status": "see_external_mapping_registry",
       "ports": [
         {
           "label": "HDMI OUT 1 (VIDEO/AUDIO)",
@@ -1246,10 +1292,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "bluray:hdmi1"
           },
           "id": "bluray:hdmi1"
         },
@@ -1282,10 +1330,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "bluray:hdmi2"
           },
           "id": "bluray:hdmi2"
         },
@@ -1318,10 +1368,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "bluray:coax"
           },
           "id": "bluray:coax"
         },
@@ -1356,10 +1408,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "bluray:usb-a"
           },
           "id": "bluray:usb-a"
         },
@@ -1392,10 +1446,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "bluray:lan"
           },
           "id": "bluray:lan"
         },
@@ -1428,10 +1484,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "bluray:power"
           },
           "id": "bluray:power"
         }
@@ -1465,7 +1523,7 @@
       "asset_path": "Sony-SmartTV.gltf",
       "model_name": "Sony KDL-40W650D",
       "identity_basis": "user_supplied_ref_assignment",
-      "model_geometry_match_status": "not_reverified",
+      "model_geometry_match_status": "see_external_mapping_registry",
       "ports": [
         {
           "label": "HDMI IN (rear)",
@@ -1494,10 +1552,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "tv:hdmi-rear"
           },
           "id": "tv:hdmi-rear"
         },
@@ -1528,10 +1588,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "tv:hdmi-side"
           },
           "id": "tv:hdmi-side"
         },
@@ -1564,10 +1626,12 @@
             "ชนิดหัว RCA เป็นการอนุมานมาตรฐาน Composite; ภาพเป็นตารางไม่มีภาพหัวต่อ"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "tv:composite"
           },
           "connector_status": "inferred_standard",
           "id": "tv:composite"
@@ -1599,10 +1663,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "tv:rf"
           },
           "id": "tv:rf"
         },
@@ -1633,10 +1699,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "tv:digital-audio"
           },
           "id": "tv:digital-audio"
         },
@@ -1667,10 +1735,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "tv:headphone"
           },
           "id": "tv:headphone"
         },
@@ -1701,10 +1771,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "tv:lan"
           },
           "id": "tv:lan"
         }
@@ -1825,7 +1897,7 @@
       "asset_path": "Vertex-Visualizer.gltf",
       "model_name": "Vertex D-1420HW",
       "identity_basis": "user_supplied_ref_assignment",
-      "model_geometry_match_status": "not_reverified",
+      "model_geometry_match_status": "see_external_mapping_registry",
       "ports": [
         {
           "label": "HDMI IN",
@@ -1858,10 +1930,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:hdmi-in"
           },
           "location": "side",
           "count_status": "verified_reference_diagram",
@@ -1898,10 +1972,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:hdmi-out"
           },
           "location": "side",
           "count_status": "verified_reference_diagram",
@@ -1936,10 +2012,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:rgb-in1"
           },
           "input_selector": "PC1",
           "location": "rear",
@@ -1975,10 +2053,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:rgb-in2"
           },
           "input_selector": "PC2",
           "location": "side",
@@ -2012,10 +2092,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:rgb-out1"
           },
           "input_selector": null,
           "location": "rear",
@@ -2049,10 +2131,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:rgb-out2"
           },
           "input_selector": null,
           "location": "rear",
@@ -2088,10 +2172,12 @@
             "ยืนยันฉลาก Video IN/V-OUT และหัว RCA จากภาพ; Composite เป็นการอนุมานชนิดสัญญาณ"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:v-out"
           },
           "signal_status": "inferred_from_video_label_and_rca_diagram",
           "location": "rear",
@@ -2127,10 +2213,12 @@
             "ยืนยันฉลาก Video IN/V-OUT และหัว RCA จากภาพ; Composite เป็นการอนุมานชนิดสัญญาณ"
           ],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:video-in"
           },
           "signal_status": "inferred_from_video_label_and_rca_diagram",
           "location": "rear",
@@ -2164,10 +2252,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:svideo-in"
           },
           "location": "side",
           "count_status": "verified_reference_diagram",
@@ -2200,10 +2290,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:svideo-out"
           },
           "location": "side",
           "count_status": "verified_reference_diagram",
@@ -2242,10 +2334,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:usb-b"
           },
           "video_flow": "visualizer_camera_to_computer",
           "requirements": [
@@ -2284,10 +2378,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:audio-in1"
           },
           "location": "rear",
           "count_status": "verified_reference_diagram",
@@ -2320,10 +2416,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:audio-in2"
           },
           "location": "side",
           "count_status": "verified_reference_diagram",
@@ -2356,10 +2454,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:audio-in-rca"
           },
           "location": "rear",
           "count_status": "verified_reference_diagram",
@@ -2392,10 +2492,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:audio-out"
           },
           "location": "rear",
           "count_status": "verified_reference_diagram",
@@ -2428,10 +2530,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:mic"
           },
           "location": "side",
           "count_status": "verified_reference_diagram",
@@ -2464,10 +2568,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:rs232"
           },
           "location": "rear",
           "count_status": "verified_reference_diagram",
@@ -2500,10 +2606,12 @@
           ],
           "notes_th": [],
           "model_mapping": {
-            "status": "pending_new_calibration",
+            "status": "registry_reference",
+            "registry": "data/model-mappings.json",
             "node_index": null,
             "socket_anchor_scene": null,
-            "socket_normal_scene": null
+            "socket_normal_scene": null,
+            "mapping_id": "vertex:power"
           },
           "location": "rear",
           "count_status": "verified_reference_diagram",

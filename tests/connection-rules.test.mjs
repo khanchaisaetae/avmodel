@@ -36,13 +36,13 @@ scenario('topology compatibility does not imply visible image',f=>{f.scope='topo
 const catalog=JSON.parse(readFileSync(new URL('../data/port-catalog.json',import.meta.url)));
 const ports=Object.fromEntries(catalog.devices.flatMap(d=>d.ports.map(p=>[p.id,p])));
 test('v1 decisions replaced by v2 ref-only evidence',()=>{
- assert.equal(catalog.schema_version,'2.1.0');assert.equal(catalog.authority,'ref_files_with_user_authorized_dell_official_supplement');assert.equal(catalog.devices.length,5);assert.equal(Object.keys(ports).length,54);
+ assert.equal(catalog.schema_version,'2.2.0');assert.equal(catalog.authority,'ref_files_with_user_authorized_dell_official_supplement');assert.equal(catalog.devices.length,5);assert.equal(Object.keys(ports).length,54);
  for (const [id,s] of Object.entries(catalog.sources)){
   assert.ok(s.path.startsWith('ref/'));
   const bytes=readFileSync(new URL('../'+s.path,import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),s.sha256);
  }
  for (const p of Object.values(ports)){
-  assert.ok(p.evidence.length>0);assert.equal(p.model_mapping.node_index,null);assert.equal(p.model_mapping.status,'pending_new_calibration');
+  assert.ok(p.evidence.length>0);assert.equal(p.model_mapping.node_index,null);assert.equal(p.model_mapping.status,'registry_reference');
   for(const e of p.evidence){assert.ok(catalog.sources[e.source_id]);assert.ok(e.pdf_pages?.length || e.pixel_region_xyxy?.length===4 || e.section);}
  }
 });

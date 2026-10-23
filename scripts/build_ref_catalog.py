@@ -22,13 +22,14 @@ def ev(source,pages=None,region=None,basis='text',detail=''):
  return e
 
 def port(key,label,connector,direction,video,signal,evidence,*,kind='native_video',status='verified_reference',notes=None,**extra):
- return {'key':key,'label':label,'count':1,'connector':connector,'direction':direction,'video_capable':video,'signal':signal,'connection_kind':kind,'capability_status':status,'assessment_enabled':status=='verified_reference' and kind=='native_video' and direction in ['in','out'] and isinstance(video,bool),'supported_modes':None,'supported_modes_complete':False,'evidence':evidence,'notes_th':notes or [],'model_mapping':{'status':'pending_new_calibration','node_index':None,'socket_anchor_scene':None,'socket_normal_scene':None},**extra}
+ return {'key':key,'label':label,'count':1,'connector':connector,'direction':direction,'video_capable':video,'signal':signal,'connection_kind':kind,'capability_status':status,'assessment_enabled':status=='verified_reference' and kind=='native_video' and direction in ['in','out'] and isinstance(video,bool),'supported_modes':None,'supported_modes_complete':False,'evidence':evidence,'notes_th':notes or [],'model_mapping':{'status':'registry_reference','registry':'data/model-mappings.json','node_index':None,'socket_anchor_scene':None,'socket_normal_scene':None},**extra}
 
 def build():
  D=[]
  def device(key,asset,ports,**extra):
-  for p in ports:p['id']=key+':'+p.pop('key')
-  D.append({'id':key,'asset_path':asset+'.gltf','model_name':SOURCES[key]['model'],'identity_basis':'user_supplied_ref_assignment','model_geometry_match_status':'not_reverified','ports':ports,**extra})
+  for p in ports:
+   p['id']=key+':'+p.pop('key');p['model_mapping']['mapping_id']=p['id']
+  D.append({'id':key,'asset_path':asset+'.gltf','model_name':SOURCES[key]['model'],'identity_basis':'user_supplied_ref_assignment','model_geometry_match_status':'see_external_mapping_registry','ports':ports,**extra})
  de=lambda detail: [ev('dell',region=[100,3550,1150,4070],detail=detail)]
  ps=[port('hdmi','HDMI','hdmi','out',True,'hdmi_video',de('ภาพระบุ HDMI 1 ช่อง; OUT เป็นการอนุมานจากบทบาทโน้ตบุ๊ก ไม่ได้เขียนในภาพ'),status='inferred_function',notes=['ยืนยันจำนวนและหัวต่อจากภาพ; ทิศทาง OUT และการส่งภาพเป็นการอนุมาน จึงยังไม่ใช้ตัดสินคะแนน'])]
  for i in range(1,4):ps.append(port(f'usb-a-{i}',f'USB 3.1 Type-A #{i}','usb_a','bidirectional',None,'usb_data',de('ภาพระบุ 3 x USB 3.1 Type A'),kind='usb_data',notes=['เลข # เป็นรหัสภายใน ไม่ใช่ตำแหน่งหรือเลขบนเครื่อง']))
@@ -78,6 +79,6 @@ def build():
   raw=(ROOT/s['path']).read_bytes();actual=hashlib.sha256(raw).hexdigest()
   if EXPECTED_SHA and actual!=EXPECTED_SHA[source_id]:raise ValueError('Reference changed; re-review required: '+s['path'])
   s['sha256']=actual
- return {'schema_version':'2.1.0','review_date_local':'2026-10-23','timezone':'Asia/Bangkok','authority':'ref_files_with_user_authorized_dell_official_supplement','supersedes':{'catalog_schema':'1.0.0','decision':'revoked_all_prior_port_confirmations','legacy_geometry_and_hotspots':'not_imported'},'sources':SOURCES,'policy':{'unknown_is_not_incorrect':True,'inference_is_not_reference_confirmation':True,'reference_confirmation_is_not_geometry_calibration':True,'partial_mode_lists_are_not_exhaustive':True},'devices':D}
+ return {'schema_version':'2.2.0','review_date_local':'2026-10-23','timezone':'Asia/Bangkok','authority':'ref_files_with_user_authorized_dell_official_supplement','supersedes':{'catalog_schema':'1.0.0','decision':'revoked_all_prior_port_confirmations','legacy_geometry_and_hotspots':'not_imported'},'sources':SOURCES,'policy':{'unknown_is_not_incorrect':True,'inference_is_not_reference_confirmation':True,'reference_confirmation_is_not_geometry_calibration':True,'partial_mode_lists_are_not_exhaustive':True},'devices':D}
 if __name__=='__main__':
  c=build();(ROOT/'data/port-catalog.json').write_text(json.dumps(c,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');print(json.dumps({'devices':len(c['devices']),'port_records':sum(len(d['ports']) for d in c['devices']),'logical_native_assessment_ports':sum(p['assessment_enabled'] for d in c['devices'] for p in d['ports'])}))
