@@ -2,8 +2,8 @@
 export function createLessonResults(scope) {
   function render() {
     let s = scope.getState();
-    const live = scope.evaluateScenario(scope.task, s, scope.catalog),
-      practice = scope.learningMode === "practice";
+    let live = scope.evaluateScenario(scope.task, s, scope.catalog);
+    const practice = scope.learningMode === "practice";
     if (practice) {
       const reviewed = scope.reviewLearning(
         scope.task,
@@ -13,6 +13,7 @@ export function createLessonResults(scope) {
       );
       scope.put(reviewed.state);
       s = reviewed.state;
+      live = scope.evaluateScenario(scope.task, s, scope.catalog);
       scope.lastResult =
         scope.lastResult?.status === "invalid" ||
         scope.lastResult?.code === "UNSIMULATED_CABLE"
@@ -137,6 +138,7 @@ export function createLessonResults(scope) {
             }))
         : null,
     );
+    scope.activity?.render(scope, live);
   }
   return { render };
 }

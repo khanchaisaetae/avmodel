@@ -5,10 +5,13 @@ import { createExplorerScene } from "./explorer-scene.mjs";
 import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
-import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261024-modules";
+import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261024-classroom";
+import { CLASSROOM_TASKS } from "./classroom-catalog.mjs";
+import { createClassroomActivity } from "./classroom-activity.mjs";
 import { assetHash } from "./asset-hash.mjs";
 import { SoftwareRenderer } from "./software-view.mjs";
 import { validateCalibration, mappingCounts } from "./mapping-model.mjs";
+const classroom = document.body.dataset.activity === "classroom";
 const $ = (id) => document.getElementById(id);
 
 const text = (tag, value, cls) => {
@@ -78,6 +81,7 @@ async function init() {
     setup3D();
     lesson = mountConnectionLesson({
       catalog,
+      ...(classroom ? { scenarios: CLASSROOM_TASKS, progressKey: "av-port-lab.classroom-progress.v1", activity: createClassroomActivity() } : {}),
       viewDevice: loadDevice,
       viewPort: async (id, stillRelevant = () => true) => {
         const deviceId = id.split(":")[0];
@@ -96,14 +100,14 @@ async function init() {
           lesson.deviceIds.length + " โมเดล";
       },
     });
-    $("mode-explore").addEventListener("click", () => setAppMode("explore"));
-    $("mode-connect").addEventListener("click", () => setAppMode("practice"));
+    $("mode-explore").addEventListener("click", () => classroom ? location.assign("index.html") : setAppMode("explore"));
+    $("mode-connect").addEventListener("click", () => classroom ? location.assign("index.html?mode=practice") : setAppMode("practice"));
     const launch = new URLSearchParams(location.search),
       requested = launch.get("device");
     await loadDevice(
       catalog.devices.some((d) => d.id === requested) ? requested : "dell",
     );
-    if (launch.get("mode") === "practice") setAppMode("practice");
+    if (classroom || launch.get("mode") === "practice") setAppMode("practice");
   } catch (error) {
     $("load-message").textContent = error.message;
     $("retry").hidden = false;
@@ -118,7 +122,7 @@ function setAppMode(mode) {
   const practice = mode === "practice";
   document.body.classList.toggle("practice-mode", practice);
   $("mode-explore").setAttribute("aria-pressed", String(!practice));
-  $("mode-connect").setAttribute("aria-pressed", String(practice));
+  $("mode-connect").setAttribute("aria-pressed", String(practice && !classroom));
   $("lesson-pane").hidden = !practice;
   $("lesson-visual").hidden = !practice;
   document.querySelector(".inspector-tabs").hidden = practice;
@@ -130,17 +134,17 @@ function setAppMode(mode) {
     ? lesson.deviceIds.length + " โมเดล"
     : "5 โมเดล";
   document.querySelector(".library h1").textContent = practice
-    ? "ต่อภาพให้ขึ้นจอ"
+    ? (classroom ? "ห้องเรียนหลายแหล่งภาพ" : "ต่อภาพให้ขึ้นจอ")
     : "เริ่มจากอุปกรณ์ที่อยากสำรวจ";
   document.querySelector(".library .intro").textContent = practice
-    ? "เลือกโจทย์และช่วงสาย แล้วตั้งค่าให้แสดงภาพจากแหล่งที่กำหนด"
+    ? (classroom ? "เตรียมระบบครั้งเดียว แล้วสลับสไลด์ เอกสาร และวิดีโอ โดยไม่ถอดสาย" : "เลือกโจทย์และช่วงสาย แล้วตั้งค่าให้แสดงภาพจากแหล่งที่กำหนด")
     : "เลือกโมเดล แล้วหมุนดูช่องต่อ หรือเลือกพอร์ตเพื่อดูรายละเอียด";
   document.querySelector(".library-foot p").textContent = practice
     ? "เลือก OUT → IN · เลือกสาย · ตั้งค่าเครื่อง"
     : "รู้จักพอร์ต · เข้าใจ IN / OUT";
   document.querySelector(".library-foot small").textContent = practice
-    ? "ยูสเคส 2 · เชื่อมแหล่งภาพกับจอ"
-    : "ขั้นที่ 1 จาก 3 · สำรวจพอร์ต";
+    ? (classroom ? "ยูสเคส 4 · สลับภาพระหว่างสอน" : "ยูสเคส 2 · เชื่อมแหล่งภาพกับจอ")
+    : "ยูสเคส 1 · สำรวจพอร์ต";
   if (practice) {
     lesson.enter();
     if (!lesson.deviceIds.includes(device.id)) loadDevice(lesson.deviceIds[0]);

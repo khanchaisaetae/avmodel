@@ -1,0 +1,17 @@
+/* UC4 adds a teaching sequence; device controls stay on the shared board. */
+.classroom-mode .mode-switch [aria-current="page"] {background:#dbeae7;color:#174e4c;border-radius:8px;padding:9px 12px;font-weight:700}
+.classroom-mode #learning-mode,.classroom-mode .mode-label,.classroom-mode #next-source {display:none!important}
+.classroom-sequence {padding:18px 0 20px;border-bottom:1px solid #d6e1e2;margin-bottom:18px}
+.classroom-sequence h2 {font-size:19px;line-height:1.55;margin:9px 0 14px}
+.classroom-sequence ol {list-style:none;padding:0;margin:0 0 16px;display:grid;gap:7px}
+.classroom-sequence li {border:1px solid #dce4e5;border-radius:9px;padding:9px 12px;color:#61727c;background:#f5f7f7}
+.classroom-sequence li[data-state="current"] {border-color:#448681;color:#174e4c;background:#e7f1ef;font-weight:700;box-shadow:inset 3px 0 #448681}
+.classroom-sequence li[data-state="done"] {color:#285b4b;background:#edf4ed}
+.classroom-sequence p,.classroom-report p {font-size:13px;line-height:1.7}
+.classroom-sequence button:disabled {opacity:.65;cursor:default}
+.classroom-report {border-top:1px solid #d6e1e2;padding-top:15px;margin-top:18px}
+.classroom-report summary {cursor:pointer;font-weight:700;margin-bottom:12px}
+.classroom-report label {display:block;font-size:13px;line-height:1.6;margin:10px 0}
+.classroom-report textarea {box-sizing:border-box;width:100%;font:inherit;font-size:13px;border:1px solid #acbec2;border-radius:8px;padding:10px;resize:vertical;margin-bottom:10px}
+@media(min-width:1100px){.classroom-mode .topbar .course{display:none}}
+@media(max-width:750px){.classroom-mode .topbar{flex-wrap:wrap}.classroom-mode .mode-switch{flex-wrap:wrap}}

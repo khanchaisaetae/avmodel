@@ -2,11 +2,11 @@ import { createLessonState } from "./lesson-state.mjs";
 import { createLessonContext } from "./lesson-context.mjs";
 import { createLessonModel } from "./lesson-model.mjs";
 import { createLessonBoard } from "./lesson-board.mjs";
-import { createLessonResults } from "./lesson-results.mjs";
+import { createLessonResults } from "./lesson-results.mjs?v=20261024-classroom";
 import { createLessonTasks } from "./lesson-tasks.mjs";
 import { createLessonShell } from "./lesson-shell.mjs";
 import { bindLessonEvents } from "./lesson-events.mjs";
-import { reviewLearning } from "./learning-mode.mjs?v=20261024-learning-ui";
+import { reviewLearning as baseReviewLearning } from "./learning-mode.mjs?v=20261024-learning-ui";
 import {
   WIRE_CHOICES,
   portDirection,
@@ -15,7 +15,7 @@ import {
 } from "./lesson-cables.mjs?v=20261024-learning-ui";
 import { SCENARIOS, DEVICE_NAMES, SOURCE_NAMES } from "./scenario-catalog.mjs";
 import {
-  initialScenario,
+  initialScenario as baseInitialScenario,
   updateSegmentSelection,
   evaluateScenario,
   nextSource,
@@ -48,11 +48,16 @@ export function mountConnectionLesson({
   viewDevice,
   updateCable,
   onScenarioChange,
+  scenarios = SCENARIOS,
+  progressKey = "av-port-lab.scenario-progress.v1",
+  activity = null,
 }) {
+  const initialScenario = activity?.initial || baseInitialScenario;
+  const reviewLearning = activity?.review || baseReviewLearning;
   let learningMode = "practice",
     assessmentReviewed = false;
   let active = false,
-    task = SCENARIOS[0],
+    task = scenarios[0],
     activeSegment = 0,
     lastResult = null,
     context = null,
@@ -72,8 +77,8 @@ export function mountConnectionLesson({
     ),
     states = new Map(),
     histories = new Map(),
-    known = new Set(SCENARIOS.map((t) => t.id)),
-    key = "av-port-lab.scenario-progress.v1";
+    known = new Set(scenarios.map((t) => t.id)),
+    key = progressKey;
   let completed = new Set();
   try {
     const v = JSON.parse(localStorage.getItem(key) || "[]");
@@ -94,7 +99,7 @@ export function mountConnectionLesson({
     table,
     pane,
     create,
-    SCENARIOS,
+    SCENARIOS: scenarios,
     $,
   });
   reset.id = "reset-dialog";
@@ -104,6 +109,7 @@ export function mountConnectionLesson({
   document.body.append(reset);
 
   const moduleScope = {
+    get activity() { return activity; },
     get $() {
       return $;
     },
@@ -111,7 +117,7 @@ export function mountConnectionLesson({
       return DEVICE_NAMES;
     },
     get SCENARIOS() {
-      return SCENARIOS;
+      return scenarios;
     },
     get SOURCE_NAMES() {
       return SOURCE_NAMES;
@@ -395,6 +401,7 @@ export function mountConnectionLesson({
   const { render } = createLessonResults(moduleScope);
   const { build, chooseTask, renderTaskPicker } =
     createLessonTasks(moduleScope);
+  activity?.mount(moduleScope);
   bindLessonEvents(moduleScope);
   build();
   return {
