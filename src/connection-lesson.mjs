@@ -2,7 +2,7 @@ import { createLessonState } from "./lesson-state.mjs";
 import { createLessonContext } from "./lesson-context.mjs";
 import { createLessonModel } from "./lesson-model.mjs";
 import { createLessonBoard } from "./lesson-board.mjs";
-import { createLessonResults } from "./lesson-results.mjs?v=20261024-classroom";
+import { createLessonResults } from "./lesson-results.mjs?v=20261024-troubleshoot";
 import { createLessonTasks } from "./lesson-tasks.mjs";
 import { createLessonShell } from "./lesson-shell.mjs";
 import { bindLessonEvents } from "./lesson-events.mjs";
@@ -23,7 +23,7 @@ import {
 import {
   systemLayout,
   visibleSignalSegments,
-  issueLocation,
+  issueLocation as baseIssueLocation,
 } from "./lesson-view.mjs?v=20261024-learning-ui";
 import { deviceArt } from "./device-art.mjs";
 const $ = (id) => document.getElementById(id),
@@ -52,6 +52,7 @@ export function mountConnectionLesson({
   progressKey = "av-port-lab.scenario-progress.v1",
   activity = null,
 }) {
+  const issueLocation = activity?.issueLocation || baseIssueLocation;
   const initialScenario = activity?.initial || baseInitialScenario;
   const reviewLearning = activity?.review || baseReviewLearning;
   let learningMode = "practice",

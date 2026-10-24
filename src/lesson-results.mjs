@@ -15,8 +15,8 @@ export function createLessonResults(scope) {
       s = reviewed.state;
       live = scope.evaluateScenario(scope.task, s, scope.catalog);
       scope.lastResult =
-        scope.lastResult?.status === "invalid" ||
-        scope.lastResult?.code === "UNSIMULATED_CABLE"
+        !scope.activity?.maskFeedback && (scope.lastResult?.status === "invalid" ||
+        scope.lastResult?.code === "UNSIMULATED_CABLE")
           ? scope.lastResult
           : reviewed.result;
       if (reviewed.result?.complete) {

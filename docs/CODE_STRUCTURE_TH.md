@@ -66,3 +66,7 @@
 ## ยูสเคส 4 · ห้องเรียนหลายแหล่งภาพ
 
 `classroom.html` ใช้ `port-lab.mjs` และโมดูล `lesson-*` ร่วมกันผ่านตัวเลือก scenarios/progressKey/activity แยกโจทย์ (`classroom-catalog.mjs`), กฎลำดับและรายงาน (`classroom-model.mjs`), แผงกิจกรรม (`classroom-activity.mjs`) และสไตล์ (`classroom.css`) ดูรายละเอียด `CLASSROOM_LESSON_TH.md`
+
+## ยูสเคส 5 · แก้ปัญหาภาพ
+
+`troubleshoot.html` ใช้ตัวควบคุมและโมเดลร่วมกับหน้าฝึก แยกสถานการณ์ (`troubleshoot-catalog.mjs`), กฎหลักฐาน/การยืนยัน/คำใบ้/รายงาน (`troubleshoot-model.mjs`), แผงบันทึกและดาวน์โหลด (`troubleshoot-activity.mjs`), สไตล์ (`troubleshoot.css`) ส่วนขยายเลือกปิดการชี้สาเหตุอัตโนมัติและขอคำใบ้ได้ ดู `TROUBLESHOOT_LESSON_TH.md`
