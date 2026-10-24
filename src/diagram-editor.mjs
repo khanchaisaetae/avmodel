@@ -1,52 +1,239 @@
-import {DIAGRAM_TASKS,getDiagramTask,emptyDiagram,parseDiagram,reviewDiagram,exportDiagramSvg} from './diagram-model.mjs?v=20261024-diagram-export';
-import {DEVICE_NAMES,SOURCE_NAMES} from './scenario-catalog.mjs';
-import {WIRE_CHOICES,portSupportsSide,portDirection,portFunction} from './lesson-cables.mjs';
-import {deviceArt} from './device-art.mjs';
-const $=id=>document.getElementById(id),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;},copy=s=>JSON.parse(JSON.stringify(s));
-let catalog,state,selection=null,pending=null,review=null,picker=null,noticeTimer,confirmation;
-const history=[],future=[],storagePrefix='av-port-lab.diagram.v1.',ports=new Map();
-function notice(message){$('diagram-notice').textContent=message;clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>$('diagram-notice').textContent='',5500);}
-function save(){try{localStorage.setItem(storagePrefix+state.taskId,JSON.stringify(state));$('save-state').textContent='✓ บันทึกอัตโนมัติในเบราว์เซอร์นี้แล้ว';}catch{$('save-state').textContent='บันทึกในเบราว์เซอร์ไม่ได้ กรุณาดาวน์โหลด JSON เพื่อเก็บงาน';}}
-function loadTask(id){try{const saved=localStorage.getItem(storagePrefix+id);return saved?parseDiagram(JSON.parse(saved),catalog):emptyDiagram(id);}catch{notice('เปิดฉบับเก่าไม่ได้ เริ่มผังว่างโดยไม่เขียนทับจนกว่าจะแก้ไข');return emptyDiagram(id);}}
-function commit(next){history.push(copy(state));if(history.length>60)history.shift();future.length=0;state=next;review=null;save();render();}
-function changeNode(id,patch){commit({...state,nodes:state.nodes.map(n=>n.id===id?{...n,...patch}:n)});}
-function ask(title,detail,action){$('confirm-title').textContent=title;$('confirm-detail').textContent=detail;confirmation=action;$('confirm-action').showModal();$('confirm-cancel').focus();}
-function selectedTask(){return getDiagramTask(state.taskId);}
-function addDevice(id){if(state.nodes.some(n=>n.id===id))return;const positions=[[50,50],[430,50],[820,70],[50,430],[430,430]],point=positions[state.nodes.length];selection={kind:'node',id};commit({...state,nodes:[...state.nodes,{id,x:point[0],y:point[1],power:false,enabled:false,input:'',source:'CAMERA'}]});}
-function openPorts(id,side){picker={id,side};$('picker-side').textContent=side==='in'?'อินพุตพอร์ต':'เอาท์พุตพอร์ต';$('picker-title').textContent=DEVICE_NAMES[id];$('picker-help').textContent=side==='out'?'เลือกพอร์ตต้นทาง จากนั้นเลือกอินพุตพอร์ตบนอุปกรณ์ปลายทาง':pending?'เลือกพอร์ตรับภาพสำหรับสายจาก '+DEVICE_NAMES[pending.id]:'เลือกได้เพื่อเริ่มจากปลายรับ แล้วไปเลือกเอาท์พุตพอร์ตต้นทาง';$('picker-list').replaceChildren();
- for(const port of catalog.devices.find(d=>d.id===id).ports.filter(p=>portSupportsSide(p,side))){const b=el('button');b.append(el('strong',port.label),el('small',portDirection(port)+' · '+portFunction(port)));b.addEventListener('click',()=>choosePort(id,side,port.id));$('picker-list').append(b);}
- if(!$('picker-list').childElementCount)$('picker-list').append(el('p','ไม่มีพอร์ตในกลุ่มนี้ตามเอกสารอ้างอิง'));$('port-picker').showModal();
+import { createDiagramState } from "./diagram-state.mjs";
+import { createDiagramStorage } from "./diagram-storage.mjs";
+import { createDiagramControls } from "./diagram-controls.mjs";
+import { createDiagramCanvas } from "./diagram-canvas.mjs";
+import { createDiagramResults } from "./diagram-results.mjs";
+import { createDiagramView } from "./diagram-view.mjs";
+import { createDiagramDownload } from "./diagram-download.mjs";
+import { bindDiagramEvents } from "./diagram-events.mjs";
+import {
+  DIAGRAM_TASKS,
+  getDiagramTask,
+  emptyDiagram,
+  parseDiagram,
+  reviewDiagram,
+  exportDiagramSvg,
+} from "./diagram-model.mjs?v=20261024-modules";
+import { DEVICE_NAMES, SOURCE_NAMES } from "./scenario-catalog.mjs";
+import {
+  WIRE_CHOICES,
+  portSupportsSide,
+  portDirection,
+  portFunction,
+} from "./lesson-cables.mjs";
+import { deviceArt } from "./device-art.mjs";
+const $ = (id) => document.getElementById(id),
+  el = (tag, text, cls) => {
+    const n = document.createElement(tag);
+    if (text !== undefined) n.textContent = text;
+    if (cls) n.className = cls;
+    return n;
+  },
+  copy = (s) => JSON.parse(JSON.stringify(s));
+let catalog,
+  state,
+  selection = null,
+  pending = null,
+  review = null,
+  picker = null,
+  noticeTimer,
+  confirmation;
+const history = [],
+  future = [],
+  storagePrefix = "av-port-lab.diagram.v1.",
+  ports = new Map();
+function notice(message) {
+  $("diagram-notice").textContent = message;
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => ($("diagram-notice").textContent = ""), 5500);
 }
-function choosePort(id,side,portId){$('port-picker').close();if(!pending||pending.side===side){pending={id,side,portId};render();notice('เลือกแล้ว: '+ports.get(portId).label+' · เลือก'+(side==='out'?'อินพุต':'เอาท์พุต')+'พอร์ตของอีกอุปกรณ์');return;}if(pending.id===id){notice('เลือกปลายสายจากคนละอุปกรณ์');return;}const from=side==='out'?{id,portId}:pending,to=side==='in'?{id,portId}:pending;if(state.links.length>=20){notice('ผังนี้รองรับสายได้ไม่เกิน 20 เส้น');return;}const link={id:'w'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),from:from.id,to:to.id,sourcePortId:from.portId,sinkPortId:to.portId,cableId:''};pending=null;selection={kind:'wire',id:link.id};commit({...state,links:[...state.links,link]});notice('สร้างเส้นเชื่อมแล้ว เลือกชนิดสายที่แผงรายการที่เลือก');}
-function cableSelect(link){const select=el('select');select.id='selected-cable';const blank=el('option','ยังไม่เลือกชนิดสาย');blank.value='';select.append(blank);for(const groupName of new Set(WIRE_CHOICES.map(c=>c.group))){const group=el('optgroup');group.label=groupName;for(const c of WIRE_CHOICES.filter(c=>c.group===groupName)){const option=el('option',c.label+(c.engineSupported?'':' · ยังไม่จำลอง'));option.value=c.id;option.title=c.description;group.append(option);}select.append(group);}select.value=link.cableId;select.addEventListener('change',()=>commit({...state,links:state.links.map(l=>l.id===link.id?{...l,cableId:select.value}:l)}));return select;}
-function button(text,fn,cls){const b=el('button',text,cls);b.type='button';b.addEventListener('click',fn);return b;}
-function moveNode(id,dx,dy){const n=state.nodes.find(n=>n.id===id);changeNode(id,{x:Math.max(0,Math.min(960,n.x+dx)),y:Math.max(0,Math.min(680,n.y+dy))});}
-function renderProperties(){const box=$('diagram-selection');box.replaceChildren();if(!selection){box.append(el('p','เลือกอุปกรณ์หรือเส้นในผังเพื่อแก้ไข'));return;}
- if(selection.kind==='wire'){const link=state.links.find(l=>l.id===selection.id);if(!link){selection=null;renderProperties();return;}box.append(el('p','สาย '+(state.links.indexOf(link)+1),'selection-title'),el('p',DEVICE_NAMES[link.from]+' · '+ports.get(link.sourcePortId).label+' OUT → '+DEVICE_NAMES[link.to]+' · '+ports.get(link.sinkPortId).label+' IN'));const label=el('label','ชนิดสายเชื่อมต่อ');label.htmlFor='selected-cable';box.append(label,cableSelect(link),button('ลบสายเส้นนี้',()=>{selection=null;commit({...state,links:state.links.filter(l=>l.id!==link.id)});},'danger'));return;}
- const node=state.nodes.find(n=>n.id===selection.id);if(!node){selection=null;renderProperties();return;}box.append(el('p',DEVICE_NAMES[node.id],'selection-title'),el('p','ลากแถบชื่ออุปกรณ์ หรือใช้ปุ่มลูกศรย้ายทีละ 20 หน่วย'));const moves=el('div',undefined,'move-buttons');for(const [label,x,y]of [['←',-20,0],['↑',0,-20],['↓',0,20],['→',20,0]])moves.append(button(label,()=>moveNode(node.id,x,y)));box.append(moves);
- box.append(button('ดูโมเดลและพอร์ต 3 มิติ ↗',()=>{$('model-title').textContent=DEVICE_NAMES[node.id];$('model-frame').src='index.html?device='+encodeURIComponent(node.id);$('model-preview').showModal();}));box.append(button('ลบอุปกรณ์',()=>ask('ลบ '+DEVICE_NAMES[node.id]+'?','สายที่เชื่อมกับอุปกรณ์นี้จะถูกลบด้วย สามารถย้อนกลับได้',()=>{pending=null;selection=null;commit({...state,nodes:state.nodes.filter(n=>n.id!==node.id),links:state.links.filter(l=>l.from!==node.id&&l.to!==node.id)});}), 'danger'));
+
+async function init() {
+  try {
+    const r = await fetch("data/port-catalog.json");
+    if (!r.ok) throw Error("โหลดข้อมูลพอร์ตไม่สำเร็จ");
+    catalog = await r.json();
+    for (const d of catalog.devices)
+      for (const p of d.ports) ports.set(p.id, p);
+    for (const t of DIAGRAM_TASKS) {
+      const o = el("option", t.id + " · " + t.title);
+      o.value = t.id;
+      $("diagram-task").append(o);
+    }
+    for (const d of catalog.devices) {
+      const b = button("", () => addDevice(d.id));
+      b.dataset.device = d.id;
+      const art = el("span");
+      art.innerHTML = deviceArt(d.id);
+      b.append(art, el("strong", "＋ " + DEVICE_NAMES[d.id]));
+      $("diagram-devices").append(b);
+    }
+    state = loadTask("2-01");
+    render();
+    $("save-state").textContent = "บันทึกอัตโนมัติเมื่อแก้ไข · แยกแต่ละโจทย์";
+  } catch (e) {
+    $("diagram-result").textContent = e.message;
+    notice(e.message);
+  }
 }
-function renderNode(node){const card=el('article',undefined,'diagram-node'+(selection?.kind==='node'&&selection.id===node.id?' selected':''));card.id='design-'+node.id;card.style.left=node.x+'px';card.style.top=node.y+'px';card.setAttribute('aria-label',DEVICE_NAMES[node.id]);const grip=button('⠿ '+DEVICE_NAMES[node.id],()=>{selection={kind:'node',id:node.id};renderProperties();},'node-drag');grip.setAttribute('aria-label','เลือกหรือย้าย '+DEVICE_NAMES[node.id]);grip.addEventListener('keydown',event=>{const delta={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20]}[event.key];if(delta){event.preventDefault();moveNode(node.id,...delta);document.querySelector('#design-'+node.id+' .node-drag')?.focus();}});card.append(grip);const art=el('div',undefined,'node-art');art.innerHTML=deviceArt(node.id);card.append(art);const controls=el('div',undefined,'node-controls');
- const power=button(node.power?'⏻ เปิดอยู่':'⏻ ปิดอยู่',()=>changeNode(node.id,{power:!node.power}));power.setAttribute('aria-pressed',String(node.power));power.setAttribute('aria-label',(node.power?'ปิด':'เปิด')+'เครื่อง '+DEVICE_NAMES[node.id]);controls.append(power);
- if(['dell','bluray'].includes(node.id)){const enabled=button(node.id==='dell'?'ส่งภาพออกจอ: '+(node.enabled?'เปิด':'ปิด'):'เล่น / ส่งภาพ: '+(node.enabled?'เปิด':'ปิด'),()=>changeNode(node.id,{enabled:!node.enabled}));enabled.setAttribute('aria-pressed',String(node.enabled));controls.append(enabled);}
- if(['tv','epson','vertex'].includes(node.id)){const select=el('select');select.id='setting-'+node.id;const label=el('label',node.id==='vertex'?'SOURCE · แหล่งภาพ':'Input · ช่องรับภาพ');label.htmlFor=select.id;if(node.id==='vertex'){for(const value of ['CAMERA','HDMI IN','PC1','PC2']){const option=el('option',value);option.value=value;select.append(option);}select.value=node.source;}else{const blank=el('option','ยังไม่เลือก Input');blank.value='';select.append(blank);for(const p of catalog.devices.find(d=>d.id===node.id).ports.filter(p=>p.video_capable===true&&portSupportsSide(p,'in'))){const option=el('option',p.label);option.value=p.id;select.append(option);}select.value=node.input;}select.addEventListener('change',()=>changeNode(node.id,node.id==='vertex'?{source:select.value}:{input:select.value}));controls.append(label,select);}
- const group=el('div',undefined,'port-buttons');for(const side of ['in','out']){const b=button(side==='in'?'อินพุตพอร์ต':'เอาท์พุตพอร์ต',()=>openPorts(node.id,side));b.id='design-'+side+'-'+node.id;if(pending?.id===node.id&&pending.side===side)b.classList.add('pending');group.append(b);}controls.append(group);card.append(controls);
- const endpoints=el('div',undefined,'node-endpoints');let count=0;state.links.forEach((l,i)=>{if(l.from===node.id||l.to===node.id){const out=l.from===node.id,p=el('p',(i+1)+'. '+(out?'OUT → ':'→ IN ')+ports.get(out?l.sourcePortId:l.sinkPortId).label);p.dataset.linkEndpoint=l.id+(out?'-out':'-in');endpoints.append(p);count++;}});if(!count)endpoints.textContent='ยังไม่มีสายเชื่อมต่อ';card.append(endpoints);
- let drag=null;grip.addEventListener('pointerdown',event=>{if(event.button!==0)return;drag={x:event.clientX,y:event.clientY,startX:node.x,startY:node.y,xNow:node.x,yNow:node.y};grip.setPointerCapture(event.pointerId);selection={kind:'node',id:node.id};renderProperties();});grip.addEventListener('pointermove',event=>{if(!drag)return;drag.xNow=Math.max(0,Math.min(960,drag.startX+event.clientX-drag.x));drag.yNow=Math.max(0,Math.min(680,drag.startY+event.clientY-drag.y));card.style.left=drag.xNow+'px';card.style.top=drag.yNow+'px';drawWires();});const finish=()=>{if(!drag)return;const d=drag;drag=null;if(d.xNow!==node.x||d.yNow!==node.y)changeNode(node.id,{x:Math.round(d.xNow),y:Math.round(d.yNow)});};grip.addEventListener('pointerup',finish);grip.addEventListener('pointercancel',finish);return card;
-}
-function drawWires(){const svg=$('diagram-wires'),labels=$('diagram-wire-labels');svg.innerHTML='<defs><marker id="design-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#648b98"/></marker></defs>';labels.replaceChildren();const board=$('diagram-canvas').getBoundingClientRect();state.links.forEach((l,i)=>{const a=$('design-'+l.from).getBoundingClientRect(),b=$('design-'+l.to).getBoundingClientRect(),aTag=document.querySelector('[data-link-endpoint="'+l.id+'-out"]')?.getBoundingClientRect(),bTag=document.querySelector('[data-link-endpoint="'+l.id+'-in"]')?.getBoundingClientRect(),x=a.right-board.left,y=(aTag?aTag.top+aTag.height/2:a.top+a.height/2)-board.top,tx=b.left-board.left,ty=(bTag?bTag.top+bTag.height/2:b.top+b.height/2)-board.top,m=(x+tx)/2;const make=cls=>{const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M${x} ${y} C${m} ${y} ${m} ${ty} ${tx} ${ty}`);p.setAttribute('class',cls);p.addEventListener('click',()=>{selection={kind:'wire',id:l.id};render();});return p;};const hit=make('diagram-hit'),path=make('diagram-wire'+(selection?.id===l.id?' selected':''));path.setAttribute('marker-end','url(#design-arrow)');svg.append(hit,path);const label=button((i+1)+'. '+(WIRE_CHOICES.find(c=>c.id===l.cableId)?.label||'＋ เลือกชนิดสาย'),()=>{selection={kind:'wire',id:l.id};render();$('selected-cable')?.focus();},'canvas-wire-label'+(selection?.id===l.id?' selected':''));label.style.left=m+'px';label.style.top=((y+ty)/2-24)+'px';label.title='คลิกเพื่อเลือกชนิดสาย';label.setAttribute('aria-label','สาย '+(i+1)+' '+DEVICE_NAMES[l.from]+' ไป '+DEVICE_NAMES[l.to]);label.id='design-wire-'+i;labels.append(label);});}
-function renderReview(){const box=$('diagram-result');box.replaceChildren();if(!review){box.append(el('p','ผังฉบับแก้ไข · กดตรวจผังเมื่อพร้อม ไม่มีคะแนน'));return;}box.append(el('p',review.message,'result-item'+(review.structureReady&&review.live?.status==='ready'?' ready':'')));if(review.live?.imageVisible)box.append(el('p','ภาพปัจจุบัน: '+SOURCE_NAMES[review.live.actualSource]));for(const issue of review.issues){const item=el('div',issue.message,'result-item '+issue.kind);if(issue.linkId)item.append(button('ไปที่สายนี้',()=>{selection={kind:'wire',id:issue.linkId};renderProperties();drawWires();const i=state.links.findIndex(l=>l.id===issue.linkId);$('design-wire-'+i)?.scrollIntoView({block:'center',inline:'center'});}));box.append(item);}if(!state.reason.trim())box.append(el('p','เพิ่มเหตุผลประกอบเพื่อให้ผู้อื่นเข้าใจผังของคุณ'));}
-function render(){const task=selectedTask();$('diagram-task').value=state.taskId;$('diagram-title').textContent=task.id+' · '+task.title;$('diagram-goal').textContent=task.goal;$('diagram-reason').value=state.reason;$('diagram-conclusion').value=state.conclusion;$('analysis-conclusion').hidden=task.id!=='analysis-01';$('drawing-instruction').textContent=pending?'เลือก'+(pending.side==='out'?'อินพุต':'เอาท์พุต')+'พอร์ตของอีกอุปกรณ์ · ต้นที่เลือก: '+ports.get(pending.portId).label:'เพิ่มอุปกรณ์ เลือกพอร์ต แล้วเขียนเส้นทางสัญญาณด้วยตนเอง';if(pending){$('drawing-instruction').append(button('ยกเลิกการเลือกปลายสาย',()=>{pending=null;render();}));}
- $('diagram-undo').disabled=!history.length;$('diagram-redo').disabled=!future.length;$('diagram-clear').disabled=!state.nodes.length&&!state.reason;$('empty-canvas').hidden=state.nodes.length>0;
- for(const b of $('diagram-devices').querySelectorAll('button'))b.disabled=state.nodes.some(n=>n.id===b.dataset.device);
- $('diagram-nodes').replaceChildren(...state.nodes.map(renderNode));renderProperties();const source=$('preview-source'),selected=source.value;source.replaceChildren();const sources=task.sources.length?task.sources:state.nodes.filter(n=>['dell','bluray','vertex'].includes(n.id)).map(n=>n.id);for(const id of sources){const option=el('option',SOURCE_NAMES[id]);option.value=id;source.append(option);}if(sources.includes(selected))source.value=selected;source.disabled=!task.sources.length;drawWires();renderReview();}
-function download(name,content,type){const url=URL.createObjectURL(new Blob([content],{type})),a=el('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-async function init(){try{const r=await fetch('data/port-catalog.json');if(!r.ok)throw Error('โหลดข้อมูลพอร์ตไม่สำเร็จ');catalog=await r.json();for(const d of catalog.devices)for(const p of d.ports)ports.set(p.id,p);for(const t of DIAGRAM_TASKS){const o=el('option',t.id+' · '+t.title);o.value=t.id;$('diagram-task').append(o);}for(const d of catalog.devices){const b=button('',()=>addDevice(d.id));b.dataset.device=d.id;const art=el('span');art.innerHTML=deviceArt(d.id);b.append(art,el('strong','＋ '+DEVICE_NAMES[d.id]));$('diagram-devices').append(b);}state=loadTask('2-01');render();$('save-state').textContent='บันทึกอัตโนมัติเมื่อแก้ไข · แยกแต่ละโจทย์';}catch(e){$('diagram-result').textContent=e.message;notice(e.message);}}
-$('diagram-task').addEventListener('change',()=>{state=loadTask($('diagram-task').value);selection=null;pending=null;review=null;history.length=0;future.length=0;render();$('save-state').textContent='เปิดผังของโจทย์นี้แล้ว · บันทึกอัตโนมัติเมื่อแก้ไข';});
-$('diagram-reason').addEventListener('input',()=>{state={...state,reason:$('diagram-reason').value};review=null;save();renderReview();});$('diagram-conclusion').addEventListener('change',()=>commit({...state,conclusion:$('diagram-conclusion').value}));
-$('diagram-review').addEventListener('click',()=>{review=reviewDiagram(state,catalog,$('preview-source').value);renderReview();});$('preview-source').addEventListener('change',()=>{review=null;renderReview();});
-$('diagram-undo').addEventListener('click',()=>{if(!history.length)return;future.push(copy(state));state=history.pop();selection=null;pending=null;review=null;save();render();});$('diagram-redo').addEventListener('click',()=>{if(!future.length)return;history.push(copy(state));state=future.pop();selection=null;pending=null;review=null;save();render();});
-$('diagram-clear').addEventListener('click',()=>ask('ล้างผังของโจทย์นี้?','ลบอุปกรณ์ สาย และเหตุผลเฉพาะโจทย์นี้ ย้อนกลับได้',()=>{pending=null;selection=null;commit(emptyDiagram(state.taskId));}));$('confirm-cancel').addEventListener('click',()=>$('confirm-action').close());$('confirm-ok').addEventListener('click',()=>{$('confirm-action').close();confirmation?.();confirmation=null;});$('picker-close').addEventListener('click',()=>$('port-picker').close());
-$('diagram-json').addEventListener('click',()=>download('AV-diagram-'+state.taskId+'.json',JSON.stringify(state,null,2),'application/json'));$('diagram-svg').addEventListener('click',()=>download('AV-diagram-'+state.taskId+'.svg',exportDiagramSvg(state,catalog),'image/svg+xml'));$('diagram-print').addEventListener('click',()=>{const output=$('print-diagram');output.innerHTML=exportDiagramSvg(state,catalog,{includeReason:false});const explanation=el('section',undefined,'print-explanation');explanation.append(el('h2','แนวคิดและเหตุผล · '+selectedTask().title));if(state.taskId==='analysis-01')explanation.append(el('p','ข้อสรุป: '+({possible:'ทำได้ตามเงื่อนไข',impossible:'ทำไม่ได้ตามเงื่อนไข',unsure:'ยังไม่สรุป'}[state.conclusion])));explanation.append(el('p',state.reason||'ยังไม่ได้ระบุ'));output.append(explanation);window.print();});
-$('diagram-import').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{if(file.size>1000000)throw Error('ไฟล์ใหญ่เกิน 1 MB');const imported=parseDiagram(JSON.parse(await file.text()),catalog);ask('เปิดผังจากไฟล์?','จะแทนที่ฉบับในโจทย์ '+imported.taskId+' ที่บันทึกในเบราว์เซอร์นี้ ควรดาวน์โหลดฉบับเดิมไว้ก่อน',()=>{state=loadTask(imported.taskId);history.length=0;future.length=0;selection=null;pending=null;commit(imported);notice('เปิดผังจากไฟล์เรียบร้อยแล้ว');});}catch(e){notice('เปิดไฟล์ไม่ได้: '+e.message);}event.target.value='';});
-$('model-close').addEventListener('click',()=>$('model-preview').close());$('model-preview').addEventListener('close',()=>{$('model-frame').src='about:blank';});window.addEventListener('resize',()=>{if(state)drawWires();});init();
+
+const moduleScope = {
+  get $() {
+    return $;
+  },
+  get DEVICE_NAMES() {
+    return DEVICE_NAMES;
+  },
+  get SOURCE_NAMES() {
+    return SOURCE_NAMES;
+  },
+  get WIRE_CHOICES() {
+    return WIRE_CHOICES;
+  },
+  get ask() {
+    return ask;
+  },
+  get button() {
+    return button;
+  },
+  get catalog() {
+    return catalog;
+  },
+  set catalog(value) {
+    catalog = value;
+  },
+  get changeNode() {
+    return changeNode;
+  },
+  get commit() {
+    return commit;
+  },
+  get confirmation() {
+    return confirmation;
+  },
+  set confirmation(value) {
+    confirmation = value;
+  },
+  get copy() {
+    return copy;
+  },
+  get deviceArt() {
+    return deviceArt;
+  },
+  get download() {
+    return download;
+  },
+  get drawWires() {
+    return drawWires;
+  },
+  get el() {
+    return el;
+  },
+  get emptyDiagram() {
+    return emptyDiagram;
+  },
+  get exportDiagramSvg() {
+    return exportDiagramSvg;
+  },
+  get future() {
+    return future;
+  },
+  get getDiagramTask() {
+    return getDiagramTask;
+  },
+  get history() {
+    return history;
+  },
+  get loadTask() {
+    return loadTask;
+  },
+  get moveNode() {
+    return moveNode;
+  },
+  get notice() {
+    return notice;
+  },
+  get openPorts() {
+    return openPorts;
+  },
+  get parseDiagram() {
+    return parseDiagram;
+  },
+  get pending() {
+    return pending;
+  },
+  set pending(value) {
+    pending = value;
+  },
+  get picker() {
+    return picker;
+  },
+  set picker(value) {
+    picker = value;
+  },
+  get portDirection() {
+    return portDirection;
+  },
+  get portFunction() {
+    return portFunction;
+  },
+  get portSupportsSide() {
+    return portSupportsSide;
+  },
+  get ports() {
+    return ports;
+  },
+  get render() {
+    return render;
+  },
+  get renderNode() {
+    return renderNode;
+  },
+  get renderProperties() {
+    return renderProperties;
+  },
+  get renderReview() {
+    return renderReview;
+  },
+  get review() {
+    return review;
+  },
+  set review(value) {
+    review = value;
+  },
+  get reviewDiagram() {
+    return reviewDiagram;
+  },
+  get save() {
+    return save;
+  },
+  get selectedTask() {
+    return selectedTask;
+  },
+  get selection() {
+    return selection;
+  },
+  set selection(value) {
+    selection = value;
+  },
+  get state() {
+    return state;
+  },
+  set state(value) {
+    state = value;
+  },
+  get storagePrefix() {
+    return storagePrefix;
+  },
+};
+const { commit, changeNode, selectedTask, addDevice, moveNode } =
+  createDiagramState(moduleScope);
+const { save, loadTask } = createDiagramStorage(moduleScope);
+const { ask, openPorts, choosePort, cableSelect, button, renderProperties } =
+  createDiagramControls(moduleScope);
+const { renderNode, drawWires } = createDiagramCanvas(moduleScope);
+const { renderReview } = createDiagramResults(moduleScope);
+const { render } = createDiagramView(moduleScope);
+const { download } = createDiagramDownload(moduleScope);
+bindDiagramEvents(moduleScope);
+init();

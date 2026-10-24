@@ -1,0 +1,149 @@
+import { getDiagramTask } from "./diagram-data.mjs";
+import { DEVICE_NAMES } from "./scenario-catalog.mjs";
+import { validateSegment, evaluateScenario } from "./scenario-engine.mjs";
+export function diagramRoutes(diagram, source, display) {
+  const routes = [];
+  function walk(id, path, seen) {
+    if (id === display) {
+      routes.push(path);
+      return;
+    }
+    for (let i = 0; i < diagram.links.length; i++) {
+      const l = diagram.links[i];
+      if (l.from === id && !seen.has(l.to))
+        walk(l.to, [...path, i], new Set([...seen, l.to]));
+    }
+  }
+  walk(source, [], new Set([source]));
+  return routes;
+}
+
+export function reviewDiagram(diagram, catalog, sourceId) {
+  const task = getDiagramTask(diagram.taskId),
+    issues = [],
+    ports = new Map(
+      catalog.devices.flatMap((d) => d.ports.map((p) => [p.id, p])),
+    ),
+    segments = diagram.links.map((l) => ({ from: l.from, to: l.to })),
+    dynamic = { ...task, mode: task.mode || "1920x1080@60", segments },
+    state = {
+      links: diagram.links.map((l) => ({ ...l, connected: false })),
+      power: Object.fromEntries(diagram.nodes.map((n) => [n.id, n.power])),
+      sourceEnabled: Object.fromEntries(
+        diagram.nodes.map((n) => [n.id, n.enabled]),
+      ),
+      displayInput:
+        diagram.nodes.find((n) => n.id === task.displayId)?.input || "",
+      vertexSource:
+        diagram.nodes.find((n) => n.id === "vertex")?.source || "CAMERA",
+      requestedSource: sourceId || task.sources[0],
+      observedSources: [],
+      attempts: 0,
+    };
+  // Check each submitted cable independently, then flag all sides of a conflict.
+  const use = new Map();
+  diagram.links.forEach((l, i) => {
+    for (const id of [l.sourcePortId, l.sinkPortId])
+      use.set(id, [...(use.get(id) || []), i]);
+  });
+  const linkResults = diagram.links.map((l, i) => {
+    let r = validateSegment(dynamic, state, i, catalog);
+    if ([l.sourcePortId, l.sinkPortId].some((id) => use.get(id).length > 1))
+      r = {
+        status: "invalid",
+        code: "PORT_OCCUPIED",
+        message:
+          "พอร์ตเดียวมีสายมากกว่าหนึ่งเส้น ต้องใช้พอร์ตหรืออุปกรณ์ที่รองรับ",
+      };
+    if (r.status !== "compatible")
+      issues.push({
+        kind: r.status,
+        linkId: l.id,
+        message: "สาย " + (i + 1) + ": " + r.message,
+      });
+    return r;
+  });
+  state.links = state.links.map((l, i) => ({
+    ...l,
+    connected: linkResults[i].status === "compatible",
+  }));
+  if (task.id === "analysis-01")
+    return {
+      issues,
+      linkResults,
+      state,
+      live: null,
+      structureReady: false,
+      message:
+        diagram.conclusion === "impossible"
+          ? "ข้อสรุปสอดคล้องกับเงื่อนไข: Vertex ไม่แปลง HDMI IN ออก RGB/VGA พร้อม HDMI OUT ให้เขียนเหตุผลประกอบ"
+          : "พิจารณาฟังก์ชัน Source Switch: HDMI IN ส่งออก HDMI OUT ส่วน RGB IN ส่งออก RGB OUT ไม่แปลงข้ามประเภท",
+    };
+  if (task.id === "free")
+    return {
+      issues,
+      linkResults,
+      state,
+      live: null,
+      structureReady: false,
+      message:
+        "ตรวจพอร์ตและสายรายช่วงแล้ว ผังอิสระยังไม่ตรวจเป้าหมายภาพทั้งระบบ ให้ระบุความต้องการในเหตุผลประกอบ",
+    };
+  const missing = task.devices.filter(
+      (id) => !diagram.nodes.some((n) => n.id === id),
+    ),
+    extra = diagram.nodes.filter((n) => !task.devices.includes(n.id));
+  for (const id of missing)
+    issues.push({
+      kind: "missing",
+      message: "ยังไม่มี " + DEVICE_NAMES[id] + " ในผัง",
+    });
+  for (const n of extra)
+    issues.push({
+      kind: "extra",
+      message: DEVICE_NAMES[n.id] + " ไม่อยู่ในเงื่อนไขโจทย์นี้",
+    });
+  const actual = segments.map((l) => l.from + ">" + l.to),
+    expected = task.segments.map((l) => l.from + ">" + l.to),
+    same =
+      actual.length === expected.length &&
+      expected.every(
+        (e) =>
+          actual.filter((a) => a === e).length ===
+          expected.filter((a) => a === e).length,
+      );
+  if (!same)
+    issues.push({
+      kind: "topology",
+      message:
+        "เส้นทางยังไม่ครบตามเงื่อนไขโจทย์ ตรวจว่าจะส่งตรง ผ่าน Vertex หรือใช้หลายแหล่งภาพ",
+    });
+  const routes = task.sources.map((source) => ({
+    source,
+    segments: diagramRoutes(diagram, source, task.displayId)[0] || [],
+  }));
+  for (const route of routes)
+    if (diagramRoutes(diagram, route.source, task.displayId).length > 1)
+      issues.push({
+        kind: "topology",
+        message:
+          "พบมากกว่าหนึ่งเส้นทางจาก " +
+          DEVICE_NAMES[route.source] +
+          " ไปยังจอ ตรวจความซ้ำซ้อนของผัง",
+      });
+  const structureReady =
+    !missing.length && !extra.length && same && issues.length === 0;
+  const live = evaluateScenario({ ...dynamic, routes }, state, catalog);
+  return {
+    issues,
+    linkResults,
+    state,
+    live,
+    structureReady,
+    message: structureReady
+      ? live.status === "ready"
+        ? "ผังครบและภาพตรงตามแหล่งที่เลือก"
+        : live.message
+      : "ทบทวนรายการในผังด้านล่าง แล้วตรวจใหม่ได้ ไม่มีคะแนน",
+  };
+}

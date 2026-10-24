@@ -1,47 +1,378 @@
-import {mountConnectionLesson} from './connection-lesson.mjs?v=20261024-learning-ui';
-import {assetHash} from './asset-hash.mjs';
-import {SoftwareRenderer} from './software-view.mjs';
-import {validateCalibration,mappingCounts} from './mapping-model.mjs';
-const $=id=>document.getElementById(id);
-const META={dell:{title:'Dell G7 7588',sub:'โน้ตบุ๊ก / แหล่งภาพ',category:'COMPUTER / SOURCE',icon:'laptop'},epson:{title:'Epson EB-2165W',sub:'โปรเจกเตอร์ / แสดงภาพ',category:'PROJECTOR / DISPLAY',icon:'projector'},bluray:{title:'Sony UBP-X700',sub:'เครื่องเล่น Blu-ray / แหล่งภาพ',category:'BLU-RAY / SOURCE',icon:'player'},tv:{title:'Sony KDL-40W650D',sub:'สมาร์ททีวี / แสดงภาพ',category:'TELEVISION / DISPLAY',icon:'tv'},vertex:{title:'Vertex D-1420HW',sub:'Visualizer / สาธิตเอกสาร',category:'VISUALIZER / DOCUMENT CAMERA',icon:'visualizer'}};
-const DRAW={laptop:'M5 5h22v16H5z M2 25h28l-3-4H5z',projector:'M3 12h26v13H3z M18 12V8 M8 8h15 M21 19a4 4 0 1 0 0-.01 M6 17h7 M6 21h7',player:'M3 12h26v12H3z M6 16h13v4H6z M24 18h2',tv:'M3 5h26v19H3z M16 24v5 M10 29h12',visualizer:'M4 25h24v4H4z M24 25V9L15 5H9v5h8 M13 10v4 M5 25l8-11'};
-const icon=kind=>`<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${DRAW[kind]}"></path></svg>`;
-const text=(tag,value,cls)=>{const el=document.createElement(tag);el.textContent=value;if(cls)el.className=cls;return el;};
-let catalog,baseline,device,selected=null,filter='all',root,wrapper,scene,camera,renderer,controls,selectionBox,marker,nodeObjects=[],modelMeshes=[],loadSerial=0,localMappings={},pendingPoint=null,downPoint=null,toastTimer;
-const storageKey='av-port-lab.calibration.v1';
-let lesson,appMode='explore',lessonWire=null;
-function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),4500);}
-function getMapping(id){return localMappings[id]||baseline?.mappings[id];}
-function saveLocal(){try{localStorage.setItem(storageKey,JSON.stringify({schema_version:'1.0.0',mappings:localMappings}));}catch{toast('เบราว์เซอร์ไม่อนุญาตให้บันทึก กรุณาส่งออกผลตรวจเป็นไฟล์');}}
-function sourceIsConfirmed(p){return p.capability_status==='verified_reference';}
-function positionLabel(m){return !m?'ยังไม่ระบุตำแหน่ง':m.user_acceptance?.status==='accepted'?'ผู้ใช้ตรวจรับตำแหน่งแล้ว':(['reviewed','local_reviewed'].includes(m.status)?'ตรวจตำแหน่งแล้ว':m.status==='local_draft'?'จุดที่ปรับไว้ · รอตรวจ':'ตำแหน่งเสนอ · รอตรวจ');}
-function symbol(p){if(p.connector==='hdmi')return 'HDMI';if(p.connector==='vga')return 'RGB';if(p.connector?.startsWith('usb'))return 'USB';if(p.connection_kind==='power')return 'DC';if(p.connection_kind==='audio')return '♪';if(p.connector==='rj45')return 'LAN';return '○';}
-function direction(p){const d=p.video_direction||p.direction;return d==='out'?'OUT':d==='in'?'IN':d==='bidirectional'?'I/O':'MODE';}
-function renderDevices(){const nav=$('devices');nav.replaceChildren();for(const d of catalog.devices.filter(d=>appMode!=='practice'||lesson?.deviceIds.includes(d.id))){const meta=META[d.id],b=document.createElement('button');b.className='device'+(d.id===device?.id?' active':'');b.dataset.device=d.id;b.setAttribute('aria-pressed',String(d.id===device?.id));b.innerHTML=`<span class="device-icon">${icon(meta.icon)}</span>`;const labels=document.createElement('span');labels.append(text('strong',meta.title),text('small',meta.sub));b.append(labels,text('span','›','arrow'));b.addEventListener('click',()=>loadDevice(d.id));nav.append(b);}}
-function renderPorts(){const list=$('ports');list.replaceChildren();const query=$('port-search').value.trim().toLowerCase();const ports=device.ports.filter(p=>(filter==='all'||(filter==='video'?p.video_capable===true:p.video_capable!==true))&&`${p.label} ${p.connector||''}`.toLowerCase().includes(query));for(const p of ports){const m=getMapping(p.id),b=document.createElement('button');b.className='port'+(selected?.id===p.id?' active':'');b.dataset.port=p.id;b.setAttribute('aria-pressed',String(selected?.id===p.id));b.append(text('span',symbol(p),'port-symbol'));const block=document.createElement('span');block.append(text('span',p.label,'port-title'));const sub=text('span',positionLabel(m),'port-subtitle');const dot=text('i','','mapping-dot '+(m?.status?.includes('reviewed')?'reviewed':m?'candidate':''));sub.prepend(dot);block.append(sub);b.append(block,text('span',direction(p),'port-direction '+(direction(p)==='OUT'?'out':'')));b.addEventListener('click',()=>selectPort(p.id));list.append(b);}if(!ports.length)list.append(text('p','ไม่พบพอร์ตที่ตรงกับการค้นหา','muted small'));$('port-count').textContent=device.ports.length+' รายการ';}
-function infoRow(label,value){const row=text('div','','info-row');row.append(text('span',label),text('span',value));return row;}
-function renderDetail(){const el=$('detail');el.replaceChildren();if(!selected){el.append(text('p','เลือกพอร์ตเพื่อดูหน้าที่และเอกสารอ้างอิง','muted small'));renderReview();return;}const p=selected,m=getMapping(p.id),head=text('div','','detail-top');head.append(text('span','รายละเอียดพอร์ต','tiny-title'),text('span',sourceIsConfirmed(p)?'มีหลักฐานอ้างอิง':'ยังยืนยันไม่ครบ','badge '+(sourceIsConfirmed(p)?'':'amber')));el.append(head,text('h3',p.label));el.append(infoRow('ทิศทางสัญญาณ',p.video_direction?'ภาพส่งออก (OUT) / ข้อมูล USB รับ–ส่ง':p.direction==='out'?'ส่งออก · OUT':p.direction==='in'?'รับเข้า · IN':p.direction==='bidirectional'?'รับ–ส่งข้อมูล · I/O':'เปลี่ยนตามโหมดการทำงาน'));el.append(infoRow('ชนิดหัวต่อ',({hdmi:'HDMI',usb_a:'USB Type-A',usb_b:'USB Type-B',usb_c:'USB Type-C',vga:'D-Sub 15 / VGA',rca:'RCA',rj45:'RJ-45',mini_din4:'Mini-DIN 4',dsub9:'D-Sub 9',dc_barrel:'DC',ac_inlet:'AC',mini_jack_3_5:'แจ็คสเตอริโอ 3.5 มม.',phone_jack_6_35:'Phone 1/4 นิ้ว (6.35 มม.)',toslink:'Optical / TOSLINK'}[p.connector]||'เอกสารยังไม่ระบุ')),infoRow('ความสามารถด้านภาพ',p.connection_kind==='usb_media'?'เล่นไฟล์สื่อ · ไม่ใช่อินพุตภาพสด':p.video_capable===true?'รองรับตามเงื่อนไข':p.video_capable===false?'ไม่ใช่พอร์ตส่งภาพ':'ยังไม่ยืนยัน'),infoRow('ตำแหน่งบนโมเดล',positionLabel(m)));
- const descriptions=[];if(p.evidence[0]?.detail_th)descriptions.push(p.evidence[0].detail_th);if(p.requirements)descriptions.push('ต้องใช้: '+p.requirements.map(r=>({'compatible_computer':'คอมพิวเตอร์ที่รองรับ','Epson USB Display software':'โปรแกรม Epson USB Display','USB-B cable':'สาย USB Type-B','compatible_HDBaseT_transmitter':'ตัวส่ง HDBaseT ที่รองรับ','USB cable':'สาย USB','documented driver/software':'ไดรเวอร์และโปรแกรมตามคู่มือ','select UVC CAMERA':'เลือก UVC CAMERA ในโปรแกรม'}[r]||r)).join(', '));if(p.notes_th?.length)descriptions.push(...p.notes_th.filter(n=>!/direction=|ตัวตรวจ|inferred|geometry|assessment/.test(n)));if(p.connection_kind==='configurable_video')descriptions.push('ต้องตั้งค่าโหมดพอร์ตก่อนใช้งาน');if(descriptions.length)el.append(text('p',descriptions.join(' · '),'detail-note'));
- for(const e of p.evidence){const s=catalog.sources[e.source_id];if(!s)continue;const a=document.createElement('a');a.className='source-link';a.target='_blank';a.rel='noopener';a.href=e.url||encodeURI(s.path)+(e.pdf_pages?'#page='+e.pdf_pages[0]:'');a.textContent='↗ '+(e.source_id==='dell_official'?'คู่มือ Dell อย่างเป็นทางการ':s.model)+(e.pdf_pages?' · หน้า '+e.pdf_pages.join(', '):' · ข้อมูลอ้างอิง');el.append(a);if(e.basis==='diagram_only')el.append(text('small','ยืนยันจากภาพแผงพอร์ตในเอกสาร','muted small'));}
- if(m?.user_acceptance?.status==='accepted')el.append(text('p','ผู้ใช้ยืนยันตรวจรับตำแหน่งเมื่อ 23 ต.ค. 2026','detail-note'));if(m?.reference_review&&!m?.user_acceptance)el.append(text('p','ตรวจตำแหน่งใหม่เทียบคู่มือหน้า 28, 38 · รอผู้ใช้ตรวจรับ','muted small'));
- if(m){const b=text('button','⌖ ดูใกล้ที่พอร์ตนี้','focus-button');b.addEventListener('click',()=>focusPort(p.id));el.append(b);const panel=text('button','ดูแผงพอร์ตโดยรอบ','focus-button');panel.addEventListener('click',()=>focusPort(p.id,2.8));el.append(panel);}else{el.append(text('p',baseline.unmapped?.[p.id]?.reason||'ยังไม่ได้จับคู่จุดบนโมเดล เปิดแท็บตรวจตำแหน่งเพื่อระบุตำแหน่ง','muted small'));}
- renderReview();}
-function renderReview(){const m=selected?getMapping(selected.id):null,c=selected?$('review-current'):null;$('review-current').replaceChildren();if(c){c.append(text('strong',selected.label),text('div',positionLabel(m)));if(m)c.append(text('small','ชิ้นส่วน '+m.node_index+' · จุด '+m.anchor.map(n=>n.toFixed(3)).join(', ')));if(pendingPoint)c.append(text('div','มีจุดที่คลิกใหม่ กด “ใช้จุดที่คลิก” เพื่อบันทึกเป็นร่าง'));}else $('review-current').textContent='เลือกพอร์ตก่อน จากแท็บพอร์ตและหน้าที่';$('approve').disabled=!m||!root;$('discard-local').disabled=!selected||!localMappings[selected.id];$('save-point').disabled=!selected||!pendingPoint;const counts=mappingCounts(device.ports,getMapping);$('review-summary').textContent=`มีตำแหน่ง ${counts.located} / ${counts.total} รายการ · ตรวจแล้ว ${counts.reviewed} รายการ`;}
-function switchTab(id){for(const b of document.querySelectorAll('[data-tab]'))b.classList.toggle('active',b.dataset.tab===id);$('port-pane').hidden=id!=='ports';$('review-pane').hidden=id!=='review';}
-function selectPort(id,{focus=true}={}){selected=device.ports.find(p=>p.id===id)||null;pendingPoint=null;renderPorts();renderDetail();if(selected){$('selection-label').textContent=selected.label+' · '+positionLabel(getMapping(id));if(focus)focusPort(id);else updateSelection();lesson?.onPortSelected(selected);}}
-function setup3D(){const T=window.THREE;if(!T)throw new Error('โหลดเครื่องมือ 3 มิติไม่สำเร็จ');scene=new T.Scene();camera=new T.PerspectiveCamera(38,1,.003,100);try{renderer=new T.WebGLRenderer({canvas:$('scene'),antialias:true,alpha:true});}catch{renderer=new SoftwareRenderer($('scene'));$('viewport-hint').title='โหมดแสดงผลสำรอง · ใช้การควบคุมเมาส์แบบเดียวกัน';}renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputEncoding=T.sRGBEncoding;renderer.setClearColor(0xf3f6f8,0);scene.add(new T.HemisphereLight(0xffffff,0x70818c,1.1));const a=new T.DirectionalLight(0xffffff,1.1);a.position.set(4,7,5);scene.add(a);const b=new T.DirectionalLight(0xe4f4ff,.65);b.position.set(-5,3,-4);scene.add(b);const grid=new T.GridHelper(12,50,0xc6d3dc,0xe1e7ec);grid.position.y=-1.55;grid.material.opacity=.3;grid.material.transparent=true;scene.add(grid);controls=new T.OrbitControls(camera,$('scene'));controls.enableDamping=!renderer.isSoftware;controls.dampingFactor=.1;controls.minDistance=.07;controls.maxDistance=18;controls.maxPolarAngle=Math.PI*.96;controls.screenSpacePanning=true;marker=new T.Mesh(new T.SphereGeometry(.016,16,12),new T.MeshBasicMaterial({color:0x07968f,depthTest:false,transparent:true,opacity:.9}));marker.renderOrder=999;marker.visible=false;scene.add(marker);new ResizeObserver(resize).observe($('viewport'));const ray=new T.Raycaster();$('scene').addEventListener('pointerdown',e=>downPoint=e.button===0?[e.clientX,e.clientY]:null);$('scene').addEventListener('pointerup',e=>{if(e.button!==0||!root||!downPoint||Math.hypot(e.clientX-downPoint[0],e.clientY-downPoint[1])>5)return;const rect=$('scene').getBoundingClientRect();ray.setFromCamera(new T.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),camera);const hit=ray.intersectObjects(modelMeshes,false)[0];if(hit)pickSurface(hit);});function animate(){requestAnimationFrame(animate);if($('viewport').offsetParent!==null){controls.update();renderer.render(scene,camera);}}resize();animate();}
-function resize(){if(!renderer)return;const rect=$('viewport').getBoundingClientRect();if(rect.width<=0||rect.height<=0)return;renderer.setSize(rect.width,rect.height,false);camera.aspect=rect.width/rect.height;camera.updateProjectionMatrix();}
-function disposeModel(){clearLessonCable();if(selectionBox){scene.remove(selectionBox);selectionBox.geometry.dispose();selectionBox.material.dispose();selectionBox=null;}if(wrapper){scene.remove(wrapper);const geometries=new Set(),materials=new Set(),textures=new Set();wrapper.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of(Array.isArray(o.material)?o.material:[o.material]))if(m){materials.add(m);for(const v of Object.values(m))if(v?.isTexture)textures.add(v);}});geometries.forEach(x=>x.dispose());materials.forEach(x=>x.dispose());textures.forEach(x=>x.dispose());}root=null;wrapper=null;modelMeshes=[];nodeObjects=[];marker.visible=false;}
-async function loadDevice(id){const serial=++loadSerial;device=catalog.devices.find(d=>d.id===id);$('viewport').dataset.device=id;selected=null;pendingPoint=null;$('port-search').value='';filter='all';document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));renderDevices();renderPorts();renderDetail();$('device-title').textContent=META[id].title;$('device-category').textContent=META[id].category;$('stage-meta').textContent=device.ports.length+' รายการช่องต่อ · หมุนสำรวจได้รอบเครื่อง';$('selection-label').textContent='เลือกพอร์ตจากรายการ หรือคลิกบนตัวเครื่อง';$('loader').hidden=false;$('retry').hidden=true;$('load-message').textContent='กำลังโหลด '+META[id].title;disposeModel();try{const response=await fetch(device.asset_path);if(!response.ok)throw new Error('ดาวน์โหลดโมเดลไม่สำเร็จ');const raw=await response.arrayBuffer();if(serial!==loadSerial)return;const hash=await assetHash(raw);if(hash!==baseline.assets[id].sha256)throw new Error('ไฟล์โมเดลเปลี่ยน ต้องปรับเทียบตำแหน่งใหม่');const gltf=await new Promise((resolve,reject)=>new THREE.GLTFLoader().parse(new TextDecoder().decode(raw),'./',resolve,reject));if(serial!==loadSerial){gltf.scene.traverse(o=>{if(o.geometry)o.geometry.dispose();});return;}const loadedRoot=gltf.scene;loadedRoot.updateMatrixWorld(true);const loadedNodes=await Promise.all(Array.from({length:gltf.parser.json.nodes.length},(_,i)=>gltf.parser.getDependency('node',i)));if(serial!==loadSerial){loadedRoot.traverse(o=>{if(o.geometry)o.geometry.dispose();});return;}root=loadedRoot;nodeObjects=loadedNodes;nodeObjects.forEach((o,i)=>{o.traverse(c=>{c.userData.auditAncestors??=[];c.userData.auditAncestors.push(i);});});root.traverse(o=>{if(o.isMesh){o.material=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();modelMeshes.push(o);}});const bounds=new THREE.Box3().setFromObject(root),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3()),scale=3.5/Math.max(size.x,size.y,size.z);wrapper=new THREE.Group();wrapper.add(root);wrapper.scale.setScalar(scale);wrapper.position.copy(center).multiplyScalar(-scale);scene.add(wrapper);wrapper.updateMatrixWorld(true);setView('overview');$('loader').hidden=true;if(selected)focusPort(selected.id);renderReview();lesson?.onDeviceChanged(id);}catch(error){if(serial!==loadSerial)return;$('load-message').textContent=error.message;$('retry').hidden=false;console.error(error);}}
-function setView(view){if(!controls)return;const views={overview:[4.4,3.3,5.1],front:[0,1.2,5.8],back:[0,1.1,-5.8],left:[-5.8,1.1,0],right:[5.8,1.1,0]};camera.position.set(...(views[view]||views.overview));controls.target.set(0,0,0);controls.update();document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));}
-function updateSelection(){if(selectionBox){scene.remove(selectionBox);selectionBox.geometry.dispose();selectionBox.material.dispose();selectionBox=null;}marker.visible=false;if(!selected||!root)return;const m=getMapping(selected.id);if(!m)return;const obj=nodeObjects[m.node_index];if(!obj)return;if(m.bounds_scene){const b=new THREE.Box3(new THREE.Vector3(...m.bounds_scene.min),new THREE.Vector3(...m.bounds_scene.max)).applyMatrix4(wrapper.matrixWorld);selectionBox=new THREE.Box3Helper(b,m.status.includes('reviewed')?0x0e9690:0xc99d46);}else selectionBox=new THREE.BoxHelper(obj,m.status.includes('reviewed')?0x0e9690:0xc99d46);selectionBox.material.depthTest=false;selectionBox.material.transparent=true;selectionBox.material.opacity=.6;selectionBox.renderOrder=998;scene.add(selectionBox);const anchor=wrapper.localToWorld(new THREE.Vector3(...m.anchor));marker.position.copy(anchor);marker.visible=true;}
-function focusPort(id,distance=.68){const m=getMapping(id);if(!m||!wrapper)return;updateSelection();const point=wrapper.localToWorld(new THREE.Vector3(...m.anchor)),normal=new THREE.Vector3(...m.normal).transformDirection(wrapper.matrixWorld);controls.target.copy(point);camera.position.copy(point).addScaledVector(normal,distance).add(new THREE.Vector3(0,.16,0));controls.update();document.querySelectorAll('[data-view]').forEach(b=>b.classList.remove('active'));}
-function pickSurface(hit){const ancestors=hit.object.userData.auditAncestors||[];if($('calibration-mode').checked){if(!selected){toast('เลือกชื่อพอร์ตจากรายการก่อน แล้วกลับมาคลิกช่องต่อ');return;}const existing=getMapping(selected.id);let index=ancestors.includes(existing?.node_index)?existing.node_index:ancestors.at(-1);if(!Number.isInteger(index)){toast('ไม่พบชิ้นส่วนสำหรับจุดที่เลือก');return;}const worldNormal=hit.face.normal.clone().applyNormalMatrix(new THREE.Matrix3().getNormalMatrix(hit.object.matrixWorld));const normal=worldNormal.transformDirection(wrapper.matrixWorld.clone().invert()).normalize();const point=wrapper.worldToLocal(hit.point.clone());pendingPoint={node_index:index,anchor:point.toArray(),normal:normal.toArray(),asset_sha256:baseline.assets[device.id].sha256,status:'local_draft',...(existing?.node_index===index&&existing.bounds_scene?{bounds_scene:existing.bounds_scene,shared_node:existing.shared_node}: {})};marker.position.copy(hit.point);marker.visible=true;$('selection-label').textContent='จุดใหม่ของ '+selected.label+' · กดใช้จุดที่คลิกเพื่อบันทึก';renderReview();toast('เลือกจุดแล้ว กด “ใช้จุดที่คลิก” เพื่อเก็บเป็นร่าง');return;}
- const matches=device.ports.filter(p=>{const m=getMapping(p.id);return m&&ancestors.includes(m.node_index);});if(matches.length){const localPoint=wrapper.worldToLocal(hit.point.clone());matches.sort((a,b)=>new THREE.Vector3(...getMapping(a.id).anchor).distanceToSquared(localPoint)-new THREE.Vector3(...getMapping(b.id).anchor).distanceToSquared(localPoint));selectPort(matches[0].id,{focus:false});return;}toast('ส่วนนี้ยังไม่ได้จับคู่ชื่อพอร์ต ใช้แท็บ “ตรวจตำแหน่ง” เพื่อระบุจุด');}
-function bind(){for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>setView(b.dataset.view));for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click',()=>switchTab(b.dataset.tab));for(const b of document.querySelectorAll('[data-filter]'))b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderPorts();});$('port-search').addEventListener('input',renderPorts);$('reset-view').addEventListener('click',()=>setView('overview'));$('retry').addEventListener('click',()=>loadDevice(device.id));$('calibration-mode').addEventListener('change',()=>{$('review-banner').hidden=!$('calibration-mode').checked;pendingPoint=null;renderReview();});$('save-point').addEventListener('click',()=>{if(!selected||!pendingPoint)return;localMappings[selected.id]={...pendingPoint};pendingPoint=null;saveLocal();renderPorts();renderDetail();updateSelection();toast('บันทึกจุดร่างแล้ว ตรวจภาพและกดยืนยันตำแหน่งเมื่อพร้อม');});$('approve').addEventListener('click',()=>{const m=selected&&getMapping(selected.id);if(!m)return;localMappings[selected.id]={...m,status:'local_reviewed'};saveLocal();renderPorts();renderDetail();updateSelection();toast('ยืนยันตำแหน่งในเบราว์เซอร์นี้แล้ว สามารถส่งออกผลตรวจได้');});$('discard-local').addEventListener('click',()=>{if(!selected)return;delete localMappings[selected.id];pendingPoint=null;saveLocal();renderPorts();renderDetail();updateSelection();toast('คืนค่าตำแหน่งเดิมของพอร์ตนี้แล้ว');});$('export').addEventListener('click',()=>{const data={schema_version:'1.0.0',coordinate_space:baseline.coordinate_space,exported_at:new Date().toISOString(),mappings:localMappings};download('AV_Port_Lab_Calibration.json',JSON.stringify(data,null,2));toast('ส่งออกเฉพาะผลตรวจที่ปรับในเบราว์เซอร์นี้แล้ว');});$('import').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>2e6)throw new Error('ไฟล์ปรับเทียบมีขนาดใหญ่เกินไป');const accepted=validateCalibration(JSON.parse(await file.text()),catalog,baseline);localMappings={...localMappings,...accepted};saveLocal();renderPorts();renderDetail();updateSelection();toast('นำเข้าผลตรวจ '+Object.keys(accepted).length+' รายการแล้ว');}catch(error){toast(error.message);}e.target.value='';});}
-function download(name,value){const url=URL.createObjectURL(new Blob([value],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-async function init(){try{if(!window.THREE)await new Promise(resolve=>window.addEventListener('load',resolve,{once:true}));[catalog,baseline]=await Promise.all(['data/port-catalog.json','data/model-mappings.json'].map(async url=>{const r=await fetch(url);if(!r.ok)throw new Error('โหลดข้อมูลอ้างอิงไม่สำเร็จ');return r.json();}));try{const saved=localStorage.getItem(storageKey);if(saved)localMappings=validateCalibration(JSON.parse(saved),catalog,baseline);}catch{toast('ข้อมูลปรับเทียบเก่าไม่ตรงกับโมเดล ใช้ตำแหน่งตั้งต้นแทน');}bind();setup3D();lesson=mountConnectionLesson({catalog,viewDevice:loadDevice,viewPort:async (id,stillRelevant=()=>true)=>{const deviceId=id.split(':')[0];if(device?.id!==deviceId)await loadDevice(deviceId);if(appMode==='practice'&&device?.id===deviceId&&stillRelevant())selectPort(id);},updateCable:drawLessonCable,onScenarioChange:()=>{renderDevices();document.querySelector('.library .count').textContent=lesson.deviceIds.length+' โมเดล';}});$('mode-explore').addEventListener('click',()=>setAppMode('explore'));$('mode-connect').addEventListener('click',()=>setAppMode('practice'));const launch=new URLSearchParams(location.search),requested=launch.get('device');await loadDevice(catalog.devices.some(d=>d.id===requested)?requested:'dell');if(launch.get('mode')==='practice')setAppMode('practice');}catch(error){$('load-message').textContent=error.message;$('retry').hidden=false;$('retry').onclick=()=>location.reload();console.error(error);}}
-function clearLessonCable(){if(!lessonWire)return;scene.remove(lessonWire);lessonWire.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});lessonWire=null;}
-function drawLessonCable(connections){clearLessonCable();if(!connections?.length||!wrapper||!root||$('loader').hidden===false)return;lessonWire=new THREE.Group();for(const connection of connections){for(const id of [connection.sourcePortId,connection.sinkPortId]){if(!id.startsWith(device.id+':'))continue;const m=getMapping(id);if(!m)continue;const point=wrapper.localToWorld(new THREE.Vector3(...m.anchor)),normal=new THREE.Vector3(...m.normal).transformDirection(wrapper.matrixWorld);const path=new THREE.CatmullRomCurve3([point,point.clone().addScaledVector(normal,.10),point.clone().addScaledVector(normal,.26).add(new THREE.Vector3(0,-.15,0)),point.clone().addScaledVector(normal,.4).add(new THREE.Vector3(0,-.40,0))]);const tube=new THREE.Mesh(new THREE.TubeGeometry(path,24,.009,8,false),new THREE.MeshStandardMaterial({color:connection.color,roughness:.8}));lessonWire.add(tube);const plug=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.045,12),new THREE.MeshStandardMaterial({color:0x334454,roughness:.8}));plug.position.copy(point).addScaledVector(normal,.022);plug.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),normal);lessonWire.add(plug);}}scene.add(lessonWire);}
-function setAppMode(mode){if(!lesson||appMode===mode)return;appMode=mode;const practice=mode==='practice';document.body.classList.toggle('practice-mode',practice);$('mode-explore').setAttribute('aria-pressed',String(!practice));$('mode-connect').setAttribute('aria-pressed',String(practice));$('lesson-pane').hidden=!practice;$('lesson-visual').hidden=!practice;document.querySelector('.inspector-tabs').hidden=practice;$('port-pane').hidden=practice;$('review-pane').hidden=true;$('calibration-mode').checked=false;$('review-banner').hidden=true;document.querySelector('.library .count').textContent=practice?lesson.deviceIds.length+' โมเดล':'5 โมเดล';document.querySelector('.library h1').textContent=practice?'ต่อภาพให้ขึ้นจอ':'เริ่มจากอุปกรณ์ที่อยากสำรวจ';document.querySelector('.library .intro').textContent=practice?'เลือกโจทย์และช่วงสาย แล้วตั้งค่าให้แสดงภาพจากแหล่งที่กำหนด':'เลือกโมเดล แล้วหมุนดูช่องต่อ หรือเลือกพอร์ตเพื่อดูรายละเอียด';document.querySelector('.library-foot p').textContent=practice?'เลือก OUT → IN · เลือกสาย · ตั้งค่าเครื่อง':'รู้จักพอร์ต · เข้าใจ IN / OUT';document.querySelector('.library-foot small').textContent=practice?'ยูสเคส 2 · เชื่อมแหล่งภาพกับจอ':'ขั้นที่ 1 จาก 3 · สำรวจพอร์ต';if(practice){lesson.enter();if(!lesson.deviceIds.includes(device.id))loadDevice(lesson.deviceIds[0]);}else{lesson.leave();switchTab('ports');}renderDevices();resize();}
+import { META, icon } from "./explorer-device-meta.mjs";
+import { createExplorerPresenter } from "./explorer-presenter.mjs";
+import { createExplorerCalibration } from "./explorer-calibration.mjs";
+import { createExplorerScene } from "./explorer-scene.mjs";
+import { createExplorerModel } from "./explorer-model.mjs";
+import { createExplorerControls } from "./explorer-controls.mjs";
+import { createExplorerCables } from "./explorer-cables.mjs";
+import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261024-modules";
+import { assetHash } from "./asset-hash.mjs";
+import { SoftwareRenderer } from "./software-view.mjs";
+import { validateCalibration, mappingCounts } from "./mapping-model.mjs";
+const $ = (id) => document.getElementById(id);
+
+const text = (tag, value, cls) => {
+  const el = document.createElement(tag);
+  el.textContent = value;
+  if (cls) el.className = cls;
+  return el;
+};
+let catalog,
+  baseline,
+  device,
+  selected = null,
+  filter = "all",
+  root,
+  wrapper,
+  scene,
+  camera,
+  renderer,
+  controls,
+  selectionBox,
+  marker,
+  nodeObjects = [],
+  modelMeshes = [],
+  loadSerial = 0,
+  localMappings = {},
+  pendingPoint = null,
+  downPoint = null,
+  toastTimer;
+const storageKey = "av-port-lab.calibration.v1";
+let lesson,
+  appMode = "explore",
+  lessonWire = null;
+function toast(message) {
+  $("toast").textContent = message;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.remove("show"), 4500);
+}
+
+async function init() {
+  try {
+    if (!window.THREE)
+      await new Promise((resolve) =>
+        window.addEventListener("load", resolve, { once: true }),
+      );
+    [catalog, baseline] = await Promise.all(
+      ["data/port-catalog.json", "data/model-mappings.json"].map(
+        async (url) => {
+          const r = await fetch(url);
+          if (!r.ok) throw new Error("โหลดข้อมูลอ้างอิงไม่สำเร็จ");
+          return r.json();
+        },
+      ),
+    );
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved)
+        localMappings = validateCalibration(
+          JSON.parse(saved),
+          catalog,
+          baseline,
+        );
+    } catch {
+      toast("ข้อมูลปรับเทียบเก่าไม่ตรงกับโมเดล ใช้ตำแหน่งตั้งต้นแทน");
+    }
+    bind();
+    setup3D();
+    lesson = mountConnectionLesson({
+      catalog,
+      viewDevice: loadDevice,
+      viewPort: async (id, stillRelevant = () => true) => {
+        const deviceId = id.split(":")[0];
+        if (device?.id !== deviceId) await loadDevice(deviceId);
+        if (
+          appMode === "practice" &&
+          device?.id === deviceId &&
+          stillRelevant()
+        )
+          selectPort(id);
+      },
+      updateCable: drawLessonCable,
+      onScenarioChange: () => {
+        renderDevices();
+        document.querySelector(".library .count").textContent =
+          lesson.deviceIds.length + " โมเดล";
+      },
+    });
+    $("mode-explore").addEventListener("click", () => setAppMode("explore"));
+    $("mode-connect").addEventListener("click", () => setAppMode("practice"));
+    const launch = new URLSearchParams(location.search),
+      requested = launch.get("device");
+    await loadDevice(
+      catalog.devices.some((d) => d.id === requested) ? requested : "dell",
+    );
+    if (launch.get("mode") === "practice") setAppMode("practice");
+  } catch (error) {
+    $("load-message").textContent = error.message;
+    $("retry").hidden = false;
+    $("retry").onclick = () => location.reload();
+    console.error(error);
+  }
+}
+
+function setAppMode(mode) {
+  if (!lesson || appMode === mode) return;
+  appMode = mode;
+  const practice = mode === "practice";
+  document.body.classList.toggle("practice-mode", practice);
+  $("mode-explore").setAttribute("aria-pressed", String(!practice));
+  $("mode-connect").setAttribute("aria-pressed", String(practice));
+  $("lesson-pane").hidden = !practice;
+  $("lesson-visual").hidden = !practice;
+  document.querySelector(".inspector-tabs").hidden = practice;
+  $("port-pane").hidden = practice;
+  $("review-pane").hidden = true;
+  $("calibration-mode").checked = false;
+  $("review-banner").hidden = true;
+  document.querySelector(".library .count").textContent = practice
+    ? lesson.deviceIds.length + " โมเดล"
+    : "5 โมเดล";
+  document.querySelector(".library h1").textContent = practice
+    ? "ต่อภาพให้ขึ้นจอ"
+    : "เริ่มจากอุปกรณ์ที่อยากสำรวจ";
+  document.querySelector(".library .intro").textContent = practice
+    ? "เลือกโจทย์และช่วงสาย แล้วตั้งค่าให้แสดงภาพจากแหล่งที่กำหนด"
+    : "เลือกโมเดล แล้วหมุนดูช่องต่อ หรือเลือกพอร์ตเพื่อดูรายละเอียด";
+  document.querySelector(".library-foot p").textContent = practice
+    ? "เลือก OUT → IN · เลือกสาย · ตั้งค่าเครื่อง"
+    : "รู้จักพอร์ต · เข้าใจ IN / OUT";
+  document.querySelector(".library-foot small").textContent = practice
+    ? "ยูสเคส 2 · เชื่อมแหล่งภาพกับจอ"
+    : "ขั้นที่ 1 จาก 3 · สำรวจพอร์ต";
+  if (practice) {
+    lesson.enter();
+    if (!lesson.deviceIds.includes(device.id)) loadDevice(lesson.deviceIds[0]);
+  } else {
+    lesson.leave();
+    switchTab("ports");
+  }
+  renderDevices();
+  resize();
+}
+const moduleScope = {
+  get $() {
+    return $;
+  },
+  get META() {
+    return META;
+  },
+  get SoftwareRenderer() {
+    return SoftwareRenderer;
+  },
+  get appMode() {
+    return appMode;
+  },
+  set appMode(value) {
+    appMode = value;
+  },
+  get assetHash() {
+    return assetHash;
+  },
+  get baseline() {
+    return baseline;
+  },
+  set baseline(value) {
+    baseline = value;
+  },
+  get camera() {
+    return camera;
+  },
+  set camera(value) {
+    camera = value;
+  },
+  get catalog() {
+    return catalog;
+  },
+  set catalog(value) {
+    catalog = value;
+  },
+  get clearLessonCable() {
+    return clearLessonCable;
+  },
+  get controls() {
+    return controls;
+  },
+  set controls(value) {
+    controls = value;
+  },
+  get device() {
+    return device;
+  },
+  set device(value) {
+    device = value;
+  },
+  get downPoint() {
+    return downPoint;
+  },
+  set downPoint(value) {
+    downPoint = value;
+  },
+  get filter() {
+    return filter;
+  },
+  set filter(value) {
+    filter = value;
+  },
+  get focusPort() {
+    return focusPort;
+  },
+  get getMapping() {
+    return getMapping;
+  },
+  get icon() {
+    return icon;
+  },
+  get lesson() {
+    return lesson;
+  },
+  set lesson(value) {
+    lesson = value;
+  },
+  get lessonWire() {
+    return lessonWire;
+  },
+  set lessonWire(value) {
+    lessonWire = value;
+  },
+  get loadDevice() {
+    return loadDevice;
+  },
+  get loadSerial() {
+    return loadSerial;
+  },
+  set loadSerial(value) {
+    loadSerial = value;
+  },
+  get localMappings() {
+    return localMappings;
+  },
+  set localMappings(value) {
+    localMappings = value;
+  },
+  get mappingCounts() {
+    return mappingCounts;
+  },
+  get marker() {
+    return marker;
+  },
+  set marker(value) {
+    marker = value;
+  },
+  get modelMeshes() {
+    return modelMeshes;
+  },
+  set modelMeshes(value) {
+    modelMeshes = value;
+  },
+  get nodeObjects() {
+    return nodeObjects;
+  },
+  set nodeObjects(value) {
+    nodeObjects = value;
+  },
+  get pendingPoint() {
+    return pendingPoint;
+  },
+  set pendingPoint(value) {
+    pendingPoint = value;
+  },
+  get pickSurface() {
+    return pickSurface;
+  },
+  get positionLabel() {
+    return positionLabel;
+  },
+  get renderDetail() {
+    return renderDetail;
+  },
+  get renderDevices() {
+    return renderDevices;
+  },
+  get renderPorts() {
+    return renderPorts;
+  },
+  get renderReview() {
+    return renderReview;
+  },
+  get renderer() {
+    return renderer;
+  },
+  set renderer(value) {
+    renderer = value;
+  },
+  get root() {
+    return root;
+  },
+  set root(value) {
+    root = value;
+  },
+  get saveLocal() {
+    return saveLocal;
+  },
+  get scene() {
+    return scene;
+  },
+  set scene(value) {
+    scene = value;
+  },
+  get selectPort() {
+    return selectPort;
+  },
+  get selected() {
+    return selected;
+  },
+  set selected(value) {
+    selected = value;
+  },
+  get selectionBox() {
+    return selectionBox;
+  },
+  set selectionBox(value) {
+    selectionBox = value;
+  },
+  get setView() {
+    return setView;
+  },
+  get storageKey() {
+    return storageKey;
+  },
+  get text() {
+    return text;
+  },
+  get toast() {
+    return toast;
+  },
+  get updateSelection() {
+    return updateSelection;
+  },
+  get validateCalibration() {
+    return validateCalibration;
+  },
+  get wrapper() {
+    return wrapper;
+  },
+  set wrapper(value) {
+    wrapper = value;
+  },
+};
+const {
+  sourceIsConfirmed,
+  positionLabel,
+  symbol,
+  direction,
+  renderDevices,
+  renderPorts,
+  infoRow,
+  renderDetail,
+} = createExplorerPresenter(moduleScope);
+const { getMapping, saveLocal, renderReview, pickSurface } =
+  createExplorerCalibration(moduleScope);
+const { setup3D, resize, setView, updateSelection, focusPort } =
+  createExplorerScene(moduleScope);
+const { disposeModel, loadDevice } = createExplorerModel(moduleScope);
+const { bind, download, switchTab, selectPort } =
+  createExplorerControls(moduleScope);
+const { clearLessonCable, drawLessonCable } = createExplorerCables(moduleScope);
 init();

@@ -1,0 +1,40 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync,readdirSync,existsSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {createDiagramState} from '../src/diagram-state.mjs';
+import {createDiagramStorage} from '../src/diagram-storage.mjs';
+import {createLessonState} from '../src/lesson-state.mjs';
+import {emptyDiagram,getDiagramTask,parseDiagram} from '../src/diagram-data.mjs';
+import {initialScenario,updateSegmentSelection} from '../src/scenario-engine.mjs';
+import {SCENARIOS} from '../src/scenario-catalog.mjs';
+const catalog=JSON.parse(readFileSync(new URL('../data/port-catalog.json',import.meta.url)));
+test('separate editor instances do not share state or undo history',()=>{
+ const make=()=>({state:emptyDiagram(),history:[],future:['old redo'],selection:null,review:{old:true},copy:structuredClone,getDiagramTask,save(){},render(){}}),a=make(),b=make(),aa=createDiagramState(a),bb=createDiagramState(b);
+ aa.addDevice('dell');bb.addDevice('epson');aa.moveNode('dell',100,50);
+ assert.deepEqual(a.state.nodes.map(n=>n.id),['dell']);assert.deepEqual(b.state.nodes.map(n=>n.id),['epson']);assert.equal(a.state.nodes[0].x,150);assert.equal(b.state.nodes[0].x,50);assert.equal(a.history.length,2);assert.equal(b.history.length,1);assert.deepEqual(a.history[0].nodes,[]);assert.deepEqual(a.future,[]);assert.equal(a.review,null);
+});
+test('diagram storage preserves existing browser keys and round-trips the prior save format',()=>{
+ const before=globalThis.localStorage,values=new Map(),messages=[];globalThis.localStorage={setItem:(k,v)=>values.set(k,v),getItem:k=>values.get(k)||null};
+ try{const scope={state:{...emptyDiagram(),reason:'งานเดิมของนิสิต'},storagePrefix:'av-port-lab.diagram.v1.',catalog,parseDiagram,emptyDiagram,notice:m=>messages.push(m),$:()=>({textContent:''})},api=createDiagramStorage(scope);api.save();assert.ok(values.has('av-port-lab.diagram.v1.2-01'));assert.deepEqual(api.loadTask('2-01'),scope.state);assert.deepEqual(api.loadTask('2-02'),emptyDiagram('2-02'));assert.deepEqual(messages,[]);}finally{if(before===undefined)delete globalThis.localStorage;else globalThis.localStorage=before;}
+});
+test('lesson controller updates current state through injected dependencies and keeps prior snapshots',()=>{
+ const task=SCENARIOS[0];let current=initialScenario(task),renders=0;const scope={task,catalog,activeSegment:0,histories:new Map(),stateKey:()=>task.id+':practice',getState:()=>current,put:s=>{current=s;},clone:structuredClone,render:()=>renders++,lastResult:{old:true},assessmentReviewed:true,updateSegmentSelection},api=createLessonState(scope);
+ api.pickPort('dell','dell:hdmi','out');api.pickPort('epson','epson:hdmi2','in');api.changeLink(0,{cableId:'hdmi'});
+ assert.equal(current.links[0].connected,true);assert.equal(scope.lastResult.status,'compatible');assert.equal(scope.assessmentReviewed,false);assert.equal(scope.histories.get(scope.stateKey()).length,3);assert.equal(scope.histories.get(scope.stateKey())[0].state.links[0].sourcePortId,'');assert.ok(renders>=3);
+});
+test('feature modules import in Node without mounting a page or requiring browser globals',async()=>{
+ const dir=new URL('../src/',import.meta.url),files=readdirSync(dir).filter(n=>/^(explorer-|lesson-|diagram-)/.test(n)&&n.endsWith('.mjs')&&!['diagram-editor.mjs'].includes(n));
+ for(const name of files)await import(new URL(name,dir));assert.ok(files.length>=25);
+});
+test('every relative module dependency resolves and the static import graph has no cycles',()=>{
+ const dir=new URL('../src/',import.meta.url),files=readdirSync(dir).filter(n=>n.endsWith('.mjs')),graph=new Map();
+ for(const name of files){const url=new URL(name,dir),source=readFileSync(url,'utf8'),deps=[...source.matchAll(/(?:from\s*|import\s*)['"](\.\.?\/[^'"]+)['"]/g)].map(m=>new URL(m[1].split('?')[0],url));for(const dep of deps)assert.ok(existsSync(fileURLToPath(dep)),name+' missing '+dep.pathname);graph.set(url.pathname,deps.map(d=>d.pathname));}
+ const visited=new Set(),active=new Set();function visit(file){assert.ok(!active.has(file),'circular import at '+file);if(visited.has(file))return;active.add(file);for(const dep of graph.get(file)||[])visit(dep);active.delete(file);visited.add(file);}for(const file of graph.keys())visit(file);
+});
+test('diagram-model facade preserves the original public API identities',async()=>{const api=await import('../src/diagram-model.mjs'),data=await import('../src/diagram-data.mjs'),review=await import('../src/diagram-review.mjs'),output=await import('../src/diagram-export.mjs');assert.equal(api.parseDiagram,data.parseDiagram);assert.equal(api.reviewDiagram,review.reviewDiagram);assert.equal(api.exportDiagramSvg,output.exportDiagramSvg);});
+test('lesson shell initializes all reviewed task options using its injected element lookup',async()=>{
+ const {createLessonShell}=await import('../src/lesson-shell.mjs'),before=globalThis.document,selected=[];globalThis.document={body:{append(){}}};
+ const create=()=>({setAttribute(){},append(...items){this.children.push(...items);},children:[]}),table={},pane={};
+ try{const shell=createLessonShell({table,pane,create,SCENARIOS,$:id=>{assert.equal(id,'scenario-select');return {append:group=>selected.push(group)};}});assert.deepEqual(Object.keys(shell).sort(),['model','picker','pop','reset']);assert.equal(selected.flatMap(g=>g.children).length,18);assert.ok(table.innerHTML.includes('connection-board'));assert.ok(pane.innerHTML.includes('target-source'));}finally{if(before===undefined)delete globalThis.document;else globalThis.document=before;}
+});
