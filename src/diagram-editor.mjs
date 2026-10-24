@@ -1,11 +1,12 @@
+import { createTransferActivity } from "./transfer-activity.mjs";
 import { createDiagramState } from "./diagram-state.mjs";
 import { createDiagramStorage } from "./diagram-storage.mjs";
 import { createDiagramControls } from "./diagram-controls.mjs";
 import { createDiagramCanvas } from "./diagram-canvas.mjs";
-import { createDiagramResults } from "./diagram-results.mjs";
-import { createDiagramView } from "./diagram-view.mjs";
+import { createDiagramResults } from "./diagram-results.mjs?v=20261025-transfer";
+import { createDiagramView } from "./diagram-view.mjs?v=20261025-transfer";
 import { createDiagramDownload } from "./diagram-download.mjs";
-import { bindDiagramEvents } from "./diagram-events.mjs";
+import { bindDiagramEvents } from "./diagram-events.mjs?v=20261025-transfer";
 import {
   DIAGRAM_TASKS,
   getDiagramTask,
@@ -22,6 +23,7 @@ import {
   portFunction,
 } from "./lesson-cables.mjs";
 import { deviceArt } from "./device-art.mjs";
+const transferMode = document.body.dataset.activity === "transfer";
 const $ = (id) => document.getElementById(id),
   el = (tag, text, cls) => {
     const n = document.createElement(tag);
@@ -30,6 +32,8 @@ const $ = (id) => document.getElementById(id),
     return n;
   },
   copy = (s) => JSON.parse(JSON.stringify(s));
+let activity = null;
+let storagePrefix = transferMode ? "av-port-lab.transfer.diagram.v1.sample-2-01." : "av-port-lab.diagram.v1.";
 let catalog,
   state,
   selection = null,
@@ -40,7 +44,6 @@ let catalog,
   confirmation;
 const history = [],
   future = [],
-  storagePrefix = "av-port-lab.diagram.v1.",
   ports = new Map();
 function notice(message) {
   $("diagram-notice").textContent = message;
@@ -55,7 +58,7 @@ async function init() {
     catalog = await r.json();
     for (const d of catalog.devices)
       for (const p of d.ports) ports.set(p.id, p);
-    for (const t of DIAGRAM_TASKS) {
+    for (const t of DIAGRAM_TASKS.filter(t => !transferMode || !["free", "analysis-01"].includes(t.id))) {
       const o = el("option", t.id + " · " + t.title);
       o.value = t.id;
       $("diagram-task").append(o);
@@ -68,7 +71,8 @@ async function init() {
       b.append(art, el("strong", "＋ " + DEVICE_NAMES[d.id]));
       $("diagram-devices").append(b);
     }
-    state = loadTask("2-01");
+    if (transferMode) { activity = createTransferActivity(moduleScope); activity.mount(); }
+    state = loadTask(activity?.initialTaskId || "2-01");
     render();
     $("save-state").textContent = "บันทึกอัตโนมัติเมื่อแก้ไข · แยกแต่ละโจทย์";
   } catch (e) {
@@ -78,6 +82,7 @@ async function init() {
 }
 
 const moduleScope = {
+  get activity() { return activity; },
   get $() {
     return $;
   },
@@ -225,6 +230,7 @@ const moduleScope = {
   get storagePrefix() {
     return storagePrefix;
   },
+  set storagePrefix(value) { storagePrefix = value; },
 };
 const { commit, changeNode, selectedTask, addDevice, moveNode } =
   createDiagramState(moduleScope);

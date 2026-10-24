@@ -70,3 +70,7 @@
 ## ยูสเคส 5 · แก้ปัญหาภาพ
 
 `troubleshoot.html` ใช้ตัวควบคุมและโมเดลร่วมกับหน้าฝึก แยกสถานการณ์ (`troubleshoot-catalog.mjs`), กฎหลักฐาน/การยืนยัน/คำใบ้/รายงาน (`troubleshoot-model.mjs`), แผงบันทึกและดาวน์โหลด (`troubleshoot-activity.mjs`), สไตล์ (`troubleshoot.css`) ส่วนขยายเลือกปิดการชี้สาเหตุอัตโนมัติและขอคำใบ้ได้ ดู `TROUBLESHOOT_LESSON_TH.md`
+
+## ยูสเคส 6 · จากโมเดลสู่ผังระบบ
+
+`transfer.html` ใช้ตัวแก้ไขผังร่วมกับยูสเคส 3 และคีย์บันทึกแยกตามระบบอ้างอิง โมดูล `transfer-model.mjs` เทียบพอร์ต/สาย/การตั้งค่าและสร้างรายงาน, `transfer-sender.mjs` ส่งสำเนาระบบจากยูสเคส 2, `transfer-activity.mjs` ดูแลแผงสำรวจ/ยืนยัน/เอกสารพิมพ์, `transfer.css` จัดหน้าจอ ดู `TRANSFER_LESSON_TH.md` ไม่สร้างผังคำตอบอัตโนมัติและไม่มีคะแนน

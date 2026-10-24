@@ -50,6 +50,7 @@ export function createDiagramView(scope) {
     source.disabled = !task.sources.length;
     scope.drawWires();
     scope.renderReview();
+    scope.activity?.render();
   }
   return { render };
 }

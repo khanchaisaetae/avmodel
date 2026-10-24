@@ -1,0 +1,14 @@
+[data-activity="transfer"] .editor{grid-template-columns:260px minmax(0,1fr) 300px}
+.transfer-reference{margin-bottom:20px}.transfer-reference label{font-weight:600}
+.reference-device{background:#f1f5f4;border:1px solid #d5e2df;border-radius:10px;padding:12px;margin:10px 0}
+.reference-device h3{font-size:13px;margin:0 0 8px}.reference-device p{margin:4px 0;font-size:11px}
+.reference-device button{width:100%;text-align:left;margin:4px 0;white-space:normal}
+.reference-device .reference-check{display:flex;align-items:start;gap:6px;font-weight:400;font-size:11px}
+.reference-check input{width:auto;margin-top:5px;flex-shrink:0}
+#transfer-observed{background:#e8f0ed;padding:8px;border-radius:6px;color:#285c53}
+.transfer-handoff{border-top:1px solid #d3e0e2;padding-top:12px;margin-top:18px}
+.transfer-handoff button{display:block;width:100%;margin:9px 0}.transfer-match{color:#27675a;font-weight:600}
+#transfer-result .result-item{font-size:11px}.transfer-print{display:none}
+@media(max-width:1000px){[data-activity="transfer"] .editor{grid-template-columns:220px minmax(0,1fr)}[data-activity="transfer"] .properties{grid-column:1/-1}.topbar{flex-wrap:wrap}}
+@media(max-width:700px){[data-activity="transfer"] .editor{display:block}.reference-device button{min-height:40px}}
+@media print{.transfer-print{display:block;break-before:page}.transfer-print table{width:100%;border-collapse:collapse}.transfer-print th,.transfer-print td{border:1px solid #aaa;padding:7px;font-size:10px;text-align:left}.transfer-print tr{break-inside:avoid}.transfer-print thead{display:table-header-group}.transfer-print h2{font-size:18px}}

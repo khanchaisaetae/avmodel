@@ -5,7 +5,7 @@ import { createExplorerScene } from "./explorer-scene.mjs";
 import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
-import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261024-troubleshoot";
+import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261025-transfer";
 import { CLASSROOM_TASKS } from "./classroom-catalog.mjs";
 import { createClassroomActivity } from "./classroom-activity.mjs";
 import { TROUBLESHOOT_TASKS } from "./troubleshoot-catalog.mjs";
@@ -111,6 +111,8 @@ async function init() {
     await loadDevice(
       catalog.devices.some((d) => d.id === requested) ? requested : "dell",
     );
+    const requestedPort = launch.get("port");
+    if (requestedPort && device.ports.some(p => p.id === requestedPort)) selectPort(requestedPort);
     if (activityPage || launch.get("mode") === "practice") setAppMode("practice");
   } catch (error) {
     $("load-message").textContent = error.message;

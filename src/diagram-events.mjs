@@ -120,6 +120,7 @@ export function bindDiagramEvents(scope) {
       );
     explanation.append(scope.el("p", scope.state.reason || "ยังไม่ได้ระบุ"));
     output.append(explanation);
+    scope.activity?.appendPrint(output);
     window.print();
   });
   scope.$("diagram-import").addEventListener("change", async (event) => {
