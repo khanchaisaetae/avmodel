@@ -5,18 +5,15 @@ import { createExplorerScene } from "./explorer-scene.mjs";
 import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
-import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261025-five";
-import { CLASSROOM_TASKS } from "./classroom-catalog.mjs";
-import { createClassroomActivity } from "./classroom-activity.mjs";
+import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261025-four";
 import { TROUBLESHOOT_TASKS } from "./troubleshoot-catalog.mjs";
 import { createTroubleshootActivity } from "./troubleshoot-activity.mjs";
 import { assetHash } from "./asset-hash.mjs";
 import { SoftwareRenderer } from "./software-view.mjs";
 import { validateCalibration, mappingCounts } from "./mapping-model.mjs";
 if (new URLSearchParams(location.search).get("embedded") === "1") document.body.classList.add("embedded-view");
-const classroom = document.body.dataset.activity === "classroom";
 const troubleshooting = document.body.dataset.activity === "troubleshoot";
-const activityPage = classroom || troubleshooting;
+const activityPage = troubleshooting;
 const $ = (id) => document.getElementById(id);
 
 const text = (tag, value, cls) => {
@@ -86,7 +83,7 @@ async function init() {
     setup3D();
     lesson = mountConnectionLesson({
       catalog,
-      ...(troubleshooting ? { scenarios: TROUBLESHOOT_TASKS, progressKey: "av-port-lab.troubleshoot-progress.v1", activity: createTroubleshootActivity() } : classroom ? { scenarios: CLASSROOM_TASKS, progressKey: "av-port-lab.classroom-progress.v1", activity: createClassroomActivity() } : {}),
+      ...(troubleshooting ? { scenarios: TROUBLESHOOT_TASKS, progressKey: "av-port-lab.troubleshoot-progress.v1", activity: createTroubleshootActivity() } : {}),
       viewDevice: loadDevice,
       viewPort: async (id, stillRelevant = () => true) => {
         const deviceId = id.split(":")[0];
@@ -141,16 +138,16 @@ function setAppMode(mode) {
     ? lesson.deviceIds.length + " โมเดล"
     : "5 โมเดล";
   document.querySelector(".library h1").textContent = practice
-    ? (troubleshooting ? "แก้ปัญหาภาพไม่ขึ้น" : classroom ? "ห้องเรียนหลายแหล่งภาพ" : "ต่อภาพให้ขึ้นจอ")
+    ? (troubleshooting ? "แก้ปัญหาภาพไม่ขึ้น" : "ต่อภาพให้ขึ้นจอ")
     : "เริ่มจากอุปกรณ์ที่อยากสำรวจ";
   document.querySelector(".library .intro").textContent = practice
-    ? (troubleshooting ? "สังเกตอาการ ตรวจจากต้นทางถึงจอ แล้วคืนภาพพร้อมอธิบายสาเหตุ" : classroom ? "เตรียมระบบครั้งเดียว แล้วสลับสไลด์ เอกสาร และวิดีโอ โดยไม่ถอดสาย" : "เลือกโจทย์และช่วงสาย แล้วตั้งค่าให้แสดงภาพจากแหล่งที่กำหนด")
+    ? (troubleshooting ? "สังเกตอาการ ตรวจจากต้นทางถึงจอ แล้วคืนภาพพร้อมอธิบายสาเหตุ" : "เลือกโจทย์และช่วงสาย แล้วตั้งค่าให้แสดงภาพจากแหล่งที่กำหนด")
     : "เลือกโมเดล แล้วหมุนดูช่องต่อ หรือเลือกพอร์ตเพื่อดูรายละเอียด";
   document.querySelector(".library-foot p").textContent = practice
     ? "เลือก OUT → IN · เลือกสาย · ตั้งค่าเครื่อง"
     : "รู้จักพอร์ต · เข้าใจ IN / OUT";
   document.querySelector(".library-foot small").textContent = practice
-    ? (troubleshooting ? "ยูสเคส 5 · แก้ปัญหาภาพ" : classroom ? "ยูสเคส 4 · สลับภาพระหว่างสอน" : "ยูสเคส 2 · เชื่อมแหล่งภาพกับจอ")
+    ? (troubleshooting ? "ยูสเคส 5 · แก้ปัญหาภาพ" : "ยูสเคส 2 · เชื่อมแหล่งภาพกับจอ")
     : "ยูสเคส 1 · สำรวจพอร์ต";
   if (practice) {
     lesson.enter();

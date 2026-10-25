@@ -1,22 +1,15 @@
-import {mountActivityNavigation,createWorkspaceTabs,openDetails,element} from './workspace-ui.mjs?v=20261025-five';
+import {mountActivityNavigation,createWorkspaceTabs,openDetails,element} from './workspace-ui.mjs?v=20261025-four';
 export function mountLessonWorkspace(scope){
  mountActivityNavigation();
- const trouble=document.body.dataset.activity==='troubleshoot',pane=scope.pane,footer=element('div',undefined,'workspace-actions');let tabs;
- if(trouble){
+ const pane=scope.pane,footer=element('div',undefined,'workspace-actions');let tabs;
   const panel=pane.querySelector('.trouble-panel'),form=element('div',undefined,'trouble-form'),observe=element('div'),files=pane.querySelector('.trouble-files');
   const hint=panel.querySelector('.trouble-help'),heading=scope.$('trouble-case'),instruction=scope.$('trouble-instruction'),screen=scope.$('lesson-screen');
   observe.append(heading,screen,instruction,hint);
   const confirm=scope.$('trouble-confirm');footer.append(confirm);
   for(const n of [...panel.children]){if(n.matches('.tiny-title'))n.remove();else form.append(n);}
   tabs=createWorkspaceTabs(panel,[['ผลภาพ',[observe]],['บันทึกตรวจ',[form]],['รายงาน',[files]]],'ขั้นตอนตรวจปัญหา');panel.append(footer);
- }else{
-  const stage=pane.querySelector('.classroom-sequence'),files=pane.querySelector('.classroom-report'),screen=scope.$('lesson-screen');
-  const confirm=scope.$('classroom-confirm');confirm.before(screen);footer.append(confirm);
-  pane.querySelector('.result-heading').classList.add('workspace-redundant');
-  tabs=createWorkspaceTabs(pane,[['ลำดับฝึก',[stage]],['บันทึกและไฟล์',[files]]],'ขั้นตอนสลับภาพ');pane.append(footer);
- }
  tabs.panels[0].append(scope.$("go-issue"),scope.$("why-feedback"));
- footer.prepend(scope.$(trouble?"trouble-instruction":"classroom-instruction"));
+ footer.prepend(scope.$("trouble-instruction"));
  footer.querySelector("button").addEventListener("click",()=>tabs.select(0));
  footer.append(scope.$("next-scenario"));
  openDetails(pane);
@@ -25,9 +18,8 @@ export function mountLessonWorkspace(scope){
  const assumptions=pane.querySelector('.lesson-assumption');if(assumptions)tabs.panels.at(-1).append(assumptions);
  const progress=scope.$('image-progress');progress.setAttribute('role','status');
  return {render(){
-  if(trouble){const s=scope.getState(),ready=scope.$('trouble-confirm');
+  const s=scope.getState(),ready=scope.$('trouble-confirm');
    tabs.buttons[1].textContent='บันทึกตรวจ'+(s.troubleshoot.checks.length?' · '+s.troubleshoot.checks.length:'');
    footer.dataset.ready=String(!ready.disabled);
-  }
  },focusPanel(){tabs.focus();},tabs};
 }

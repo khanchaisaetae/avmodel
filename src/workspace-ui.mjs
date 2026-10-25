@@ -1,4 +1,4 @@
-export const ACTIVITIES=[['index.html','1 · สำรวจพอร์ต'],['index.html?mode=practice','2 · ฝึกเชื่อมต่อ'],['diagram.html','3 · เขียนผังระบบ'],['classroom.html','4 · สลับแหล่งภาพ'],['troubleshoot.html','5 · แก้ปัญหาภาพ']];
+export const ACTIVITIES=[['index.html','1 · สำรวจพอร์ต'],['index.html?mode=practice','2 · ฝึกเชื่อมต่อ'],['diagram.html','3 · เขียนผังระบบ'],['troubleshoot.html','5 · แก้ปัญหาภาพ']];
 export function element(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
 export function mountActivityNavigation(){
  document.body.classList.add('ux-workspace');
@@ -26,4 +26,4 @@ export function createWorkspaceTabs(root,definitions,label){
  function select(i){active=i;buttons.forEach((b,j)=>{b.setAttribute('aria-selected',String(i===j));b.tabIndex=i===j?0:-1;panels[j].hidden=i!==j;});root.dispatchEvent(new CustomEvent('workspace-tab-change',{bubbles:true}));}
  select(0);return {select,panels,buttons,get active(){return active;},focus(){panels[active].focus();}};
 }
-export function openDetails(root){for(const d of root.querySelectorAll('details')){if(d.matches('.file-panel,.reason-panel,.classroom-report,.trouble-files')){d.open=true;d.classList.add('workspace-unfolded');}}}
+export function openDetails(root){for(const d of root.querySelectorAll('details')){if(d.matches('.file-panel,.reason-panel,.trouble-files')){d.open=true;d.classList.add('workspace-unfolded');}}}
