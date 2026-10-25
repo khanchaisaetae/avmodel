@@ -43,3 +43,8 @@
 @media(max-width:650px){.canvas-view-tools button,.workspace-tabs button,.activity-navigation select{min-height:44px}}
 .ux-workspace .workspace-tab-panel>button{display:block;width:100%;margin:9px 0}
 .ux-workspace .workspace-tab-panel>small{display:block;font-size:11px;line-height:1.8;margin:12px 0;color:#607985}
+
+/* Keep the diagram grid across its entire existing viewport at every zoom. */
+.ux-workspace .canvas-scroll{background-image:radial-gradient(#cfdee3 1px,transparent 1px);background-size:20px 20px}
+.ux-workspace .canvas-scaled-area{min-width:100%;min-height:100%}
+.ux-workspace #diagram-canvas{background-image:none}
