@@ -5,7 +5,7 @@ import { createExplorerScene } from "./explorer-scene.mjs";
 import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
-import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261025-ux";
+import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261025-five";
 import { CLASSROOM_TASKS } from "./classroom-catalog.mjs";
 import { createClassroomActivity } from "./classroom-activity.mjs";
 import { TROUBLESHOOT_TASKS } from "./troubleshoot-catalog.mjs";

@@ -1,7 +1,4 @@
-import { mountEditorWorkspace } from "./editor-workspace.mjs";
-import { createProjectActivity } from "./project-activity.mjs";
-import { parseProjectDiagram } from "./project-model.mjs";
-import { createTransferActivity } from "./transfer-activity.mjs?v=20261025-ux";
+import { mountEditorWorkspace } from "./editor-workspace.mjs?v=20261025-five";
 import { createDiagramState } from "./diagram-state.mjs";
 import { createDiagramStorage } from "./diagram-storage.mjs";
 import { createDiagramControls } from "./diagram-controls.mjs?v=20261025-ux";
@@ -26,8 +23,6 @@ import {
   portFunction,
 } from "./lesson-cables.mjs";
 import { deviceArt } from "./device-art.mjs";
-const transferMode = document.body.dataset.activity === "transfer";
-const projectMode = document.body.dataset.activity === "project";
 const $ = (id) => document.getElementById(id),
   el = (tag, text, cls) => {
     const n = document.createElement(tag);
@@ -38,7 +33,7 @@ const $ = (id) => document.getElementById(id),
   copy = (s) => JSON.parse(JSON.stringify(s));
 let activity = null;
 let workspace = null;
-let storagePrefix = transferMode ? "av-port-lab.transfer.diagram.v1.sample-2-01." : "av-port-lab.diagram.v1.";
+const storagePrefix = "av-port-lab.diagram.v1.";
 let catalog,
   state,
   selection = null,
@@ -63,7 +58,7 @@ async function init() {
     catalog = await r.json();
     for (const d of catalog.devices)
       for (const p of d.ports) ports.set(p.id, p);
-    for (const t of DIAGRAM_TASKS.filter(t => projectMode ? t.id === "free" : !transferMode || !["free", "analysis-01"].includes(t.id))) {
+    for (const t of DIAGRAM_TASKS) {
       const o = el("option", t.id + " · " + t.title);
       o.value = t.id;
       $("diagram-task").append(o);
@@ -76,8 +71,6 @@ async function init() {
       b.append(art, el("strong", "＋ " + DEVICE_NAMES[d.id]));
       $("diagram-devices").append(b);
     }
-    if (projectMode) { activity = createProjectActivity(moduleScope); activity.mount(); }
-    else if (transferMode) { activity = createTransferActivity(moduleScope); activity.mount(); }
     state = loadTask(activity?.initialTaskId || "2-01");
     render();
     workspace = mountEditorWorkspace(moduleScope);
@@ -171,7 +164,7 @@ const moduleScope = {
     return openPorts;
   },
   get parseDiagram() {
-    return projectMode ? parseProjectDiagram : parseDiagram;
+    return parseDiagram;
   },
   get pending() {
     return pending;
@@ -239,7 +232,6 @@ const moduleScope = {
   get storagePrefix() {
     return storagePrefix;
   },
-  set storagePrefix(value) { storagePrefix = value; },
 };
 const { commit, changeNode, selectedTask, addDevice, moveNode } =
   createDiagramState(moduleScope);

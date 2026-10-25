@@ -1,4 +1,4 @@
-export const ACTIVITIES=[['index.html','1 · สำรวจพอร์ต'],['index.html?mode=practice','2 · ฝึกเชื่อมต่อ'],['diagram.html','3 · เขียนผังระบบ'],['classroom.html','4 · สลับแหล่งภาพ'],['troubleshoot.html','5 · แก้ปัญหาภาพ'],['transfer.html','6 · ถ่ายทอดระบบ'],['project.html','7 · โครงการห้องเรียน']];
+export const ACTIVITIES=[['index.html','1 · สำรวจพอร์ต'],['index.html?mode=practice','2 · ฝึกเชื่อมต่อ'],['diagram.html','3 · เขียนผังระบบ'],['classroom.html','4 · สลับแหล่งภาพ'],['troubleshoot.html','5 · แก้ปัญหาภาพ']];
 export function element(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
 export function mountActivityNavigation(){
  document.body.classList.add('ux-workspace');

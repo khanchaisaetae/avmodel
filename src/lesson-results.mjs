@@ -139,7 +139,6 @@ export function createLessonResults(scope) {
         : null,
     );
     scope.activity?.render(scope, live);
-    scope.transferSender?.render();
     scope.workspace?.render();
   }
   return { render };
