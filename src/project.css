@@ -1,0 +1,10 @@
+[data-activity="project"] .editor{grid-template-columns:250px minmax(0,1fr) 310px}
+.project-brief{margin-bottom:20px}.project-brief p{font-size:12px}.project-progress{background:#e9f1ee;padding:10px;border-radius:8px;color:#2c685b}
+#project-tests{padding-left:18px;font-size:11px;line-height:1.8}.project-delivery{border-top:1px solid #d4e2e3;padding-top:14px;margin-top:18px}
+.project-delivery button,.project-file{display:block;width:100%;margin:9px 0}.project-delivery small{display:block;line-height:1.8}
+.project-documents label{font-weight:600}.project-checklist label{display:flex;gap:6px;align-items:start}.project-checklist input{margin-top:5px;flex-shrink:0}
+.project-file{border:1px solid #c7d8dd;border-radius:8px;padding:9px;cursor:pointer;font-size:12px}.project-file input{display:block;width:100%;font-size:10px;margin-top:6px}
+#project-readiness p,#project-readiness li{font-size:11px}.project-print{display:none}
+@media(max-width:1000px){[data-activity="project"] .editor{grid-template-columns:220px minmax(0,1fr)}[data-activity="project"] .properties{grid-column:1/-1}}
+@media(max-width:700px){[data-activity="project"] .editor{display:block}.topbar{flex-wrap:wrap}}
+@media print{.project-print{display:block;break-before:page}.project-print table{border-collapse:collapse;width:100%}.project-print th,.project-print td{border:1px solid #aaa;padding:6px;text-align:left;font-size:10px}.project-print tr{break-inside:avoid}.project-print thead{display:table-header-group}.project-print .text{white-space:pre-wrap;overflow-wrap:anywhere}}

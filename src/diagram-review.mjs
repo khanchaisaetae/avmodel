@@ -18,8 +18,8 @@ export function diagramRoutes(diagram, source, display) {
   return routes;
 }
 
-export function reviewDiagram(diagram, catalog, sourceId) {
-  const task = getDiagramTask(diagram.taskId),
+export function reviewDiagram(diagram, catalog, sourceId, taskOverride = null) {
+  const task = taskOverride || getDiagramTask(diagram.taskId),
     issues = [],
     ports = new Map(
       catalog.devices.flatMap((d) => d.ports.map((p) => [p.id, p])),

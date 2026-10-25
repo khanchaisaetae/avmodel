@@ -24,7 +24,7 @@ test('lesson controller updates current state through injected dependencies and 
  assert.equal(current.links[0].connected,true);assert.equal(scope.lastResult.status,'compatible');assert.equal(scope.assessmentReviewed,false);assert.equal(scope.histories.get(scope.stateKey()).length,3);assert.equal(scope.histories.get(scope.stateKey())[0].state.links[0].sourcePortId,'');assert.ok(renders>=3);
 });
 test('feature modules import in Node without mounting a page or requiring browser globals',async()=>{
- const dir=new URL('../src/',import.meta.url),files=readdirSync(dir).filter(n=>/^(explorer-|lesson-|diagram-|classroom-|troubleshoot-|transfer-)/.test(n)&&n.endsWith('.mjs')&&!['diagram-editor.mjs'].includes(n));
+ const dir=new URL('../src/',import.meta.url),files=readdirSync(dir).filter(n=>/^(explorer-|lesson-|diagram-|classroom-|troubleshoot-|transfer-|project-)/.test(n)&&n.endsWith('.mjs')&&!['diagram-editor.mjs'].includes(n));
  for(const name of files)await import(new URL(name,dir));assert.ok(files.length>=25);
 });
 test('every relative module dependency resolves and the static import graph has no cycles',()=>{

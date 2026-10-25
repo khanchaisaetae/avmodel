@@ -1,3 +1,5 @@
+import { createProjectActivity } from "./project-activity.mjs";
+import { parseProjectDiagram } from "./project-model.mjs";
 import { createTransferActivity } from "./transfer-activity.mjs";
 import { createDiagramState } from "./diagram-state.mjs";
 import { createDiagramStorage } from "./diagram-storage.mjs";
@@ -24,6 +26,7 @@ import {
 } from "./lesson-cables.mjs";
 import { deviceArt } from "./device-art.mjs";
 const transferMode = document.body.dataset.activity === "transfer";
+const projectMode = document.body.dataset.activity === "project";
 const $ = (id) => document.getElementById(id),
   el = (tag, text, cls) => {
     const n = document.createElement(tag);
@@ -58,7 +61,7 @@ async function init() {
     catalog = await r.json();
     for (const d of catalog.devices)
       for (const p of d.ports) ports.set(p.id, p);
-    for (const t of DIAGRAM_TASKS.filter(t => !transferMode || !["free", "analysis-01"].includes(t.id))) {
+    for (const t of DIAGRAM_TASKS.filter(t => projectMode ? t.id === "free" : !transferMode || !["free", "analysis-01"].includes(t.id))) {
       const o = el("option", t.id + " · " + t.title);
       o.value = t.id;
       $("diagram-task").append(o);
@@ -71,7 +74,8 @@ async function init() {
       b.append(art, el("strong", "＋ " + DEVICE_NAMES[d.id]));
       $("diagram-devices").append(b);
     }
-    if (transferMode) { activity = createTransferActivity(moduleScope); activity.mount(); }
+    if (projectMode) { activity = createProjectActivity(moduleScope); activity.mount(); }
+    else if (transferMode) { activity = createTransferActivity(moduleScope); activity.mount(); }
     state = loadTask(activity?.initialTaskId || "2-01");
     render();
     $("save-state").textContent = "บันทึกอัตโนมัติเมื่อแก้ไข · แยกแต่ละโจทย์";
@@ -162,7 +166,7 @@ const moduleScope = {
     return openPorts;
   },
   get parseDiagram() {
-    return parseDiagram;
+    return projectMode ? parseProjectDiagram : parseDiagram;
   },
   get pending() {
     return pending;
@@ -207,7 +211,7 @@ const moduleScope = {
     review = value;
   },
   get reviewDiagram() {
-    return reviewDiagram;
+    return activity?.reviewDiagram || reviewDiagram;
   },
   get save() {
     return save;
