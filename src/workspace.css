@@ -42,3 +42,6 @@
 }
 .ux-workspace .diagram-legend span,.ux-workspace .library>p.muted{display:none}
 @media(max-width:650px){.canvas-view-tools button,.workspace-tabs button,.activity-navigation select{min-height:44px}}
+.ux-workspace .workspace-tab-panel>button{display:block;width:100%;margin:9px 0}
+.ux-workspace .workspace-tab-panel>small{display:block;font-size:11px;line-height:1.8;margin:12px 0;color:#607985}
+.ux-workspace .workspace-tab-panel>.project-file{background:#f8fbfa;margin:10px 0}
