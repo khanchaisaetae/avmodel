@@ -1,4 +1,4 @@
-import { worldDelta } from "./workspace-geometry.mjs";
+import { worldDelta, diagramCoordinate } from "./workspace-geometry.mjs?v=20261025-placement";
 // Dependencies are injected by the entry controller; importing this module has no UI side effects.
 export function createDiagramCanvas(scope) {
   function renderNode(node) {
@@ -139,6 +139,7 @@ export function createDiagramCanvas(scope) {
     let drag = null;
     grip.addEventListener("pointerdown", (event) => {
       if (event.button !== 0) return;
+      scope.workspace?.beginMove();
       drag = {
         x: event.clientX,
         y: event.clientY,
@@ -153,14 +154,8 @@ export function createDiagramCanvas(scope) {
     });
     grip.addEventListener("pointermove", (event) => {
       if (!drag) return;
-      drag.xNow = Math.max(
-        0,
-        Math.min(960, drag.startX + worldDelta(event.clientX - drag.x, scope.workspace?.scale || 1)),
-      );
-      drag.yNow = Math.max(
-        0,
-        Math.min(680, drag.startY + worldDelta(event.clientY - drag.y, scope.workspace?.scale || 1)),
-      );
+      drag.xNow = diagramCoordinate(drag.startX + worldDelta(event.clientX - drag.x, scope.workspace?.scale || 1));
+      drag.yNow = diagramCoordinate(drag.startY + worldDelta(event.clientY - drag.y, scope.workspace?.scale || 1));
       card.style.left = drag.xNow + "px";
       card.style.top = drag.yNow + "px";
       drawWires();

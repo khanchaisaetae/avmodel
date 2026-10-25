@@ -1,4 +1,4 @@
-import { getDiagramTask } from "./diagram-data.mjs";
+import { getDiagramTask } from "./diagram-data.mjs?v=20261025-placement";
 import { DEVICE_NAMES } from "./scenario-catalog.mjs";
 import { validateSegment, evaluateScenario } from "./scenario-engine.mjs";
 export function diagramRoutes(diagram, source, display) {

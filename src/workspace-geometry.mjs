@@ -1,3 +1,5 @@
+export const MAX_DIAGRAM_COORDINATE=100000;
+export function diagramCoordinate(value){return Math.max(0,Math.min(MAX_DIAGRAM_COORDINATE,value));}
 export function canvasBounds(items,padding=32){
  if(!items.length)return {x:0,y:0,width:900,height:640};
  const x=Math.max(0,Math.min(...items.map(b=>b.x))-padding),y=Math.max(0,Math.min(...items.map(b=>b.y))-padding);

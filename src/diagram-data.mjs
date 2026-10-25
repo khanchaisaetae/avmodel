@@ -1,3 +1,4 @@
+import {MAX_DIAGRAM_COORDINATE} from "./workspace-geometry.mjs?v=20261025-placement";
 import { SCENARIOS, DEVICE_NAMES } from "./scenario-catalog.mjs";
 import { WIRE_CHOICES } from "./lesson-cables.mjs";
 export const DIAGRAM_TASKS = [
@@ -56,9 +57,9 @@ export function parseDiagram(value, catalog) {
       !Number.isFinite(n.x) ||
       !Number.isFinite(n.y) ||
       n.x < 0 ||
-      n.x > 960 ||
+      n.x > MAX_DIAGRAM_COORDINATE ||
       n.y < 0 ||
-      n.y > 680
+      n.y > MAX_DIAGRAM_COORDINATE
     )
       throw Error("ข้อมูลอุปกรณ์หรือตำแหน่งไม่ถูกต้อง");
     nodeIds.add(n.id);

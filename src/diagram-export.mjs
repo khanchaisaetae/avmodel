@@ -1,4 +1,4 @@
-import { getDiagramTask } from "./diagram-data.mjs";
+import { getDiagramTask } from "./diagram-data.mjs?v=20261025-placement";
 import { DEVICE_NAMES } from "./scenario-catalog.mjs";
 import { WIRE_CHOICES } from "./lesson-cables.mjs";
 const xml = (s) =>

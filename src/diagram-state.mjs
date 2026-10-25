@@ -1,3 +1,4 @@
+import {diagramCoordinate} from "./workspace-geometry.mjs?v=20261025-placement";
 // Dependencies are injected by the entry controller; importing this module has no UI side effects.
 export function createDiagramState(scope) {
   function commit(next) {
@@ -52,10 +53,11 @@ export function createDiagramState(scope) {
   }
 
   function moveNode(id, dx, dy) {
+    scope.workspace?.beginMove();
     const n = scope.state.nodes.find((n) => n.id === id);
     changeNode(id, {
-      x: Math.max(0, Math.min(960, n.x + dx)),
-      y: Math.max(0, Math.min(680, n.y + dy)),
+      x: diagramCoordinate(n.x + dx),
+      y: diagramCoordinate(n.y + dy),
     });
   }
   return { commit, changeNode, selectedTask, addDevice, moveNode };

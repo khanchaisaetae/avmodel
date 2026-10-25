@@ -24,3 +24,11 @@ test('review never mutates hardware evidence or the learner drawing',()=>{const 
 test('export retains the full 4000-character explanation including its last paragraph',()=>{const d={...direct(),reason:'ก'.repeat(3950)+'\nข้อความท้ายสุดที่ต้องปรากฏในไฟล์ส่งออก'};const svg=exportDiagramSvg(d,catalog),text=[...svg.matchAll(/<text[^>]*>(.*?)<\/text>/gs)].map(m=>m[1]).join('');assert.ok(text.includes('ก'.repeat(3950)));assert.ok(text.includes('ข้อความท้ายสุดที่ต้องปรากฏในไฟล์ส่งออก'));assert.ok(Number(svg.match(/height="(\d+)"/)[1])>500);});
 test('diagram-only export separates a long explanation for multipage printing',()=>{const d={...direct(),reason:'EXPLANATION_FOR_PRINT_PAGE'};assert.ok(!exportDiagramSvg(d,catalog,{includeReason:false}).includes(d.reason));assert.ok(exportDiagramSvg(d,catalog).includes(d.reason));assert.ok(exportDiagramSvg(d,catalog,{includeReason:false}).includes('HDMI2'));});
 test('feasibility conclusion appears in exported learner work',()=>{const svg=exportDiagramSvg({...emptyDiagram('analysis-01'),conclusion:'impossible',reason:'Source Switch ไม่แปลง HDMI เป็น RGB'},catalog);assert.ok(svg.includes('ข้อสรุป: ทำไม่ได้ตามเงื่อนไข'));assert.ok(svg.includes('Source Switch'));});
+test('extended-grid positions survive JSON import and SVG export without cropping',()=>{
+ const d=direct();d.nodes[1].x=2400;d.nodes[1].y=1800;
+ const loaded=parseDiagram(JSON.parse(JSON.stringify(d)),catalog),svg=exportDiagramSvg(loaded,catalog);
+ assert.equal(loaded.nodes[1].x,2400);assert.equal(loaded.nodes[1].y,1800);
+ const dimensions=svg.match(/<svg[^>]*width="(\d+)" height="(\d+)"/);
+ assert.ok(Number(dimensions[1])>2600);assert.ok(Number(dimensions[2])>2000);
+ for(const coordinate of [Infinity,NaN,-1,100001]){const bad=direct();bad.nodes[0].x=coordinate;assert.throws(()=>parseDiagram(bad,catalog));}
+});

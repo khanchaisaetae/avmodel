@@ -5,6 +5,6 @@ export {
   getDiagramTask,
   emptyDiagram,
   parseDiagram,
-} from "./diagram-data.mjs";
+} from "./diagram-data.mjs?v=20261025-placement";
 export { diagramRoutes, reviewDiagram } from "./diagram-review.mjs";
 export { wrapDiagramText, exportDiagramSvg } from "./diagram-export.mjs";

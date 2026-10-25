@@ -1,5 +1,5 @@
 import {mountActivityNavigation,createWorkspaceTabs,openDetails,element} from './workspace-ui.mjs?v=20261025-four';
-import {canvasBounds,fitCanvas,arrangeDevices} from './workspace-geometry.mjs';
+import {canvasBounds,fitCanvas,arrangeDevices} from './workspace-geometry.mjs?v=20261025-placement';
 export function mountEditorWorkspace(scope){
  mountActivityNavigation();
  const props=document.querySelector('.properties'),stage=document.querySelector('.design-space'),canvas=scope.$('diagram-canvas'),scroll=document.querySelector('.canvas-scroll');
@@ -21,7 +21,12 @@ export function mountEditorWorkspace(scope){
  let scale=1,autoFit=true,bounds={x:0,y:0,width:1200,height:1100},frame;
  function apply(){
   frame=null;const nodes=[...document.querySelectorAll('#diagram-nodes .diagram-node,#diagram-wire-labels button')].map(n=>({x:n.offsetLeft,y:n.offsetTop,width:n.offsetWidth,height:n.offsetHeight}));
-  bounds=canvasBounds(nodes);if(autoFit)scale=fitCanvas(bounds,scroll.clientWidth,scroll.clientHeight);
+  const content=canvasBounds(nodes);
+  if(autoFit){bounds=content;scale=fitCanvas(bounds,scroll.clientWidth,scroll.clientHeight);}
+  else{const x=Math.min(bounds.x,content.x),y=Math.min(bounds.y,content.y);bounds={x,y,width:Math.max(content.x+content.width-x,scroll.clientWidth/scale),height:Math.max(content.y+content.height-y,scroll.clientHeight/scale)};}
+  const width=Math.max(1200,bounds.x+bounds.width),height=Math.max(1100,bounds.y+bounds.height);
+  canvas.style.width=width+'px';canvas.style.height=height+'px';
+  const svg=scope.$('diagram-wires');svg.setAttribute('viewBox','0 0 '+width+' '+height);svg.style.width=width+'px';svg.style.height=height+'px';
   canvas.style.transformOrigin='0 0';canvas.style.transform='scale('+scale+')';canvas.style.position='absolute';canvas.style.left=-bounds.x*scale+'px';canvas.style.top=-bounds.y*scale+'px';
   wrapper.style.width=bounds.width*scale+'px';wrapper.style.height=bounds.height*scale+'px';zoom.textContent=Math.round(scale*100)+'%';
   wrapper.scrollTop=0;wrapper.scrollLeft=0;fit.setAttribute('aria-pressed',String(autoFit));scope.drawWires();
@@ -34,7 +39,7 @@ export function mountEditorWorkspace(scope){
  const library=document.querySelector('.library'),deviceBox=scope.$('diagram-devices');deviceBox.classList.add('compact-devices');
  scope.$('diagram-json').textContent='↓ ผังสำหรับเปิดแก้ไข (JSON)';scope.$('diagram-svg').textContent='↓ ภาพผัง SVG';
  const hint=element('p','ลากชื่อเพื่อย้าย · คลิกสายเพื่อเลือกชนิด · ใช้ ＋ เพื่อขยายพอร์ต','workspace-help');stage.append(hint);
- return {get scale(){return scale;},render(){
+ return {get scale(){return scale;},beginMove(){autoFit=false;},render(){
   const state=scope.state;dock.hidden=!scope.selection;arrange.disabled=!state.nodes.length;
   if(!scope.pending){const incomplete=state.links.filter(l=>!l.cableId).length;scope.$('drawing-instruction').textContent=!state.nodes.length?'เริ่มจากเพิ่มอุปกรณ์ทางซ้าย':state.nodes.length<2?'เพิ่มอีกอุปกรณ์เพื่อเริ่มเชื่อมต่อ':!state.links.length?'เลือกเอาท์พุตพอร์ต แล้วเลือกอินพุตพอร์ตของปลายทาง':incomplete?'คลิกสายที่ยังไม่ครบ เพื่อเลือกชนิดสาย':'ตั้งค่าบนอุปกรณ์ แล้วทดลองภาพในแผงด้านขวา';}
   reviewButton.disabled=state.nodes.length<2&&state.taskId!=='analysis-01';

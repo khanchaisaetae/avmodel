@@ -32,9 +32,18 @@ test('every relative module dependency resolves and the static import graph has 
  for(const name of files){const url=new URL(name,dir),source=readFileSync(url,'utf8'),deps=[...source.matchAll(/(?:from\s*|import\s*)['"](\.\.?\/[^'"]+)['"]/g)].map(m=>new URL(m[1].split('?')[0],url));for(const dep of deps)assert.ok(existsSync(fileURLToPath(dep)),name+' missing '+dep.pathname);graph.set(url.pathname,deps.map(d=>d.pathname));}
  const visited=new Set(),active=new Set();function visit(file){assert.ok(!active.has(file),'circular import at '+file);if(visited.has(file))return;active.add(file);for(const dep of graph.get(file)||[])visit(dep);active.delete(file);visited.add(file);}for(const file of graph.keys())visit(file);
 });
-test('diagram-model facade preserves the original public API identities',async()=>{const api=await import('../src/diagram-model.mjs'),data=await import('../src/diagram-data.mjs'),review=await import('../src/diagram-review.mjs'),output=await import('../src/diagram-export.mjs');assert.equal(api.parseDiagram,data.parseDiagram);assert.equal(api.reviewDiagram,review.reviewDiagram);assert.equal(api.exportDiagramSvg,output.exportDiagramSvg);});
+test('diagram-model facade preserves the original public API identities',async()=>{const api=await import('../src/diagram-model.mjs'),data=await import('../src/diagram-data.mjs?v=20261025-placement'),review=await import('../src/diagram-review.mjs'),output=await import('../src/diagram-export.mjs');assert.equal(api.parseDiagram,data.parseDiagram);assert.equal(api.reviewDiagram,review.reviewDiagram);assert.equal(api.exportDiagramSvg,output.exportDiagramSvg);});
 test('lesson shell initializes all reviewed task options using its injected element lookup',async()=>{
  const {createLessonShell}=await import('../src/lesson-shell.mjs'),before=globalThis.document,selected=[];globalThis.document={body:{append(){}}};
  const create=()=>({setAttribute(){},append(...items){this.children.push(...items);},children:[]}),table={},pane={};
  try{const shell=createLessonShell({table,pane,create,SCENARIOS,$:id=>{assert.equal(id,'scenario-select');return {append:group=>selected.push(group)};}});assert.deepEqual(Object.keys(shell).sort(),['model','picker','pop','reset']);assert.equal(selected.flatMap(g=>g.children).length,18);assert.ok(table.innerHTML.includes('connection-board'));assert.ok(pane.innerHTML.includes('target-source'));}finally{if(before===undefined)delete globalThis.document;else globalThis.document=before;}
+});
+test('moving into the extended grid persists coordinates beyond the old limits and stays undoable',()=>{
+ let began=0;
+ const scope={state:emptyDiagram(),history:[],future:[],selection:null,review:null,copy:structuredClone,getDiagramTask,save(){},render(){},workspace:{beginMove(){began++;}}};
+ const api=createDiagramState(scope);api.addDevice('dell');api.moveNode('dell',1400,1200);
+ const loaded=parseDiagram(JSON.parse(JSON.stringify(scope.state)),catalog);
+ assert.equal(loaded.nodes[0].x,1450);assert.equal(loaded.nodes[0].y,1250);assert.equal(began,1);
+ assert.deepEqual(scope.history.at(-1).nodes.map(n=>[n.x,n.y]),[[50,50]]);
+ api.moveNode('dell',-2000,-2000);assert.deepEqual(scope.state.nodes.map(n=>[n.x,n.y]),[[0,0]]);
 });

@@ -1,8 +1,8 @@
-import { mountEditorWorkspace } from "./editor-workspace.mjs?v=20261025-four";
-import { createDiagramState } from "./diagram-state.mjs";
+import { mountEditorWorkspace } from "./editor-workspace.mjs?v=20261025-placement";
+import { createDiagramState } from "./diagram-state.mjs?v=20261025-placement";
 import { createDiagramStorage } from "./diagram-storage.mjs";
 import { createDiagramControls } from "./diagram-controls.mjs?v=20261025-ux";
-import { createDiagramCanvas } from "./diagram-canvas.mjs?v=20261025-ux";
+import { createDiagramCanvas } from "./diagram-canvas.mjs?v=20261025-placement";
 import { createDiagramResults } from "./diagram-results.mjs?v=20261025-ux";
 import { createDiagramView } from "./diagram-view.mjs?v=20261025-ux";
 import { createDiagramDownload } from "./diagram-download.mjs";
@@ -14,7 +14,7 @@ import {
   parseDiagram,
   reviewDiagram,
   exportDiagramSvg,
-} from "./diagram-model.mjs?v=20261024-modules";
+} from "./diagram-model.mjs?v=20261025-placement";
 import { DEVICE_NAMES, SOURCE_NAMES } from "./scenario-catalog.mjs";
 import {
   WIRE_CHOICES,
