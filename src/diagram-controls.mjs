@@ -81,7 +81,7 @@ export function createDiagramControls(scope) {
     scope.pending = null;
     scope.selection = { kind: "wire", id: link.id };
     scope.commit({ ...scope.state, links: [...scope.state.links, link] });
-    scope.notice("สร้างเส้นเชื่อมแล้ว เลือกชนิดสายที่แผงรายการที่เลือก");
+    scope.notice("สร้างเส้นเชื่อมแล้ว เลือกชนิดสายด้านบนผัง");
   }
 
   function cableSelect(link) {
@@ -124,6 +124,7 @@ export function createDiagramControls(scope) {
   }
 
   function renderProperties() {
+    scope.workspace?.showSelection();
     const box = scope.$("diagram-selection");
     box.replaceChildren();
     if (!scope.selection) {
@@ -192,12 +193,14 @@ export function createDiagramControls(scope) {
       ["→", 20, 0],
     ])
       moves.append(button(label, () => scope.moveNode(node.id, x, y)));
-    box.append(moves);
+    const moveDetails = scope.el("details");
+    moveDetails.append(scope.el("summary", "ย้ายด้วยปุ่ม"), moves);
+    box.append(moveDetails);
     box.append(
       button("ดูโมเดลและพอร์ต 3 มิติ ↗", () => {
         scope.$("model-title").textContent = scope.DEVICE_NAMES[node.id];
         scope.$("model-frame").src =
-          "index.html?device=" + encodeURIComponent(node.id);
+          "index.html?embedded=1&device=" + encodeURIComponent(node.id);
         scope.$("model-preview").showModal();
       }),
     );

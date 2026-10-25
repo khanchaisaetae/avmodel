@@ -78,3 +78,7 @@
 ## ยูสเคส 7 · ออกแบบและส่งมอบห้องเรียน
 
 `project.html` ใช้ตัวแก้ไขผังร่วมกับยูสเคส 3/6 แยกโจทย์ (`project-catalog.mjs`), กฎโครงการ/หลักฐาน/ไฟล์ (`project-model.mjs`), เอกสาร (`project-documents.mjs`), แผงกิจกรรม (`project-activity.mjs`) และรูปแบบ (`project.css`) บันทึกตามภารกิจในคีย์เฉพาะ ดู `PROJECT_LESSON_TH.md` ไม่มีคะแนนและไม่มีการส่งผลอัตโนมัติ
+
+## พื้นที่ทำงานร่วมของยูสเคส 3–7
+
+เพิ่ม `workspace-ui.mjs`, `editor-workspace.mjs`, `lesson-workspace.mjs`, `workspace-geometry.mjs` และ `workspace.css` เพื่อใช้เมนูกิจกรรม แท็บ พื้นที่เลือกสาย และการซูมผังร่วมกัน รายละเอียดอยู่ใน `UX_WORKSPACE_TH.md` โมดูลกฎและรูปแบบข้อมูลบันทึกเดิมยังใช้ร่วมตามเดิม

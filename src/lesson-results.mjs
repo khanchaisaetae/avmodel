@@ -140,6 +140,7 @@ export function createLessonResults(scope) {
     );
     scope.activity?.render(scope, live);
     scope.transferSender?.render();
+    scope.workspace?.render();
   }
   return { render };
 }

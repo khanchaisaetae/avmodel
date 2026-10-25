@@ -1,12 +1,13 @@
+import { mountEditorWorkspace } from "./editor-workspace.mjs";
 import { createProjectActivity } from "./project-activity.mjs";
 import { parseProjectDiagram } from "./project-model.mjs";
-import { createTransferActivity } from "./transfer-activity.mjs";
+import { createTransferActivity } from "./transfer-activity.mjs?v=20261025-ux";
 import { createDiagramState } from "./diagram-state.mjs";
 import { createDiagramStorage } from "./diagram-storage.mjs";
-import { createDiagramControls } from "./diagram-controls.mjs";
-import { createDiagramCanvas } from "./diagram-canvas.mjs";
-import { createDiagramResults } from "./diagram-results.mjs?v=20261025-transfer";
-import { createDiagramView } from "./diagram-view.mjs?v=20261025-transfer";
+import { createDiagramControls } from "./diagram-controls.mjs?v=20261025-ux";
+import { createDiagramCanvas } from "./diagram-canvas.mjs?v=20261025-ux";
+import { createDiagramResults } from "./diagram-results.mjs?v=20261025-ux";
+import { createDiagramView } from "./diagram-view.mjs?v=20261025-ux";
 import { createDiagramDownload } from "./diagram-download.mjs";
 import { bindDiagramEvents } from "./diagram-events.mjs?v=20261025-transfer";
 import {
@@ -36,6 +37,7 @@ const $ = (id) => document.getElementById(id),
   },
   copy = (s) => JSON.parse(JSON.stringify(s));
 let activity = null;
+let workspace = null;
 let storagePrefix = transferMode ? "av-port-lab.transfer.diagram.v1.sample-2-01." : "av-port-lab.diagram.v1.";
 let catalog,
   state,
@@ -78,6 +80,8 @@ async function init() {
     else if (transferMode) { activity = createTransferActivity(moduleScope); activity.mount(); }
     state = loadTask(activity?.initialTaskId || "2-01");
     render();
+    workspace = mountEditorWorkspace(moduleScope);
+    workspace.render();
     $("save-state").textContent = "บันทึกอัตโนมัติเมื่อแก้ไข · แยกแต่ละโจทย์";
   } catch (e) {
     $("diagram-result").textContent = e.message;
@@ -86,6 +90,7 @@ async function init() {
 }
 
 const moduleScope = {
+  get workspace() { return workspace; },
   get activity() { return activity; },
   get $() {
     return $;

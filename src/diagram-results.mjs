@@ -8,6 +8,7 @@ export function createDiagramResults(scope) {
         scope.el("p", "ผังฉบับแก้ไข · กดตรวจผังเมื่อพร้อม ไม่มีคะแนน"),
       );
       scope.activity?.renderReview();
+      scope.workspace?.render();
       return;
     }
     box.append(
@@ -48,6 +49,7 @@ export function createDiagramResults(scope) {
         scope.el("p", "เพิ่มเหตุผลประกอบเพื่อให้ผู้อื่นเข้าใจผังของคุณ"),
       );
     scope.activity?.renderReview();
+      scope.workspace?.render();
   }
   return { renderReview };
 }

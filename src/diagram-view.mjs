@@ -51,6 +51,7 @@ export function createDiagramView(scope) {
     scope.drawWires();
     scope.renderReview();
     scope.activity?.render();
+    scope.workspace?.render();
   }
   return { render };
 }

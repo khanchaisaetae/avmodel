@@ -1,3 +1,4 @@
+import { worldDelta } from "./workspace-geometry.mjs";
 // Dependencies are injected by the entry controller; importing this module has no UI side effects.
 export function createDiagramCanvas(scope) {
   function renderNode(node) {
@@ -154,11 +155,11 @@ export function createDiagramCanvas(scope) {
       if (!drag) return;
       drag.xNow = Math.max(
         0,
-        Math.min(960, drag.startX + event.clientX - drag.x),
+        Math.min(960, drag.startX + worldDelta(event.clientX - drag.x, scope.workspace?.scale || 1)),
       );
       drag.yNow = Math.max(
         0,
-        Math.min(680, drag.startY + event.clientY - drag.y),
+        Math.min(680, drag.startY + worldDelta(event.clientY - drag.y, scope.workspace?.scale || 1)),
       );
       card.style.left = drag.xNow + "px";
       card.style.top = drag.yNow + "px";
@@ -185,7 +186,7 @@ export function createDiagramCanvas(scope) {
     svg.innerHTML =
       '<defs><marker id="design-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#648b98"/></marker></defs>';
     labels.replaceChildren();
-    const board = scope.$("diagram-canvas").getBoundingClientRect();
+    const board = scope.$("diagram-canvas").getBoundingClientRect(), scale = scope.workspace?.scale || 1;
     scope.state.links.forEach((l, i) => {
       const a = scope.$("design-" + l.from).getBoundingClientRect(),
         b = scope.$("design-" + l.to).getBoundingClientRect(),
@@ -195,21 +196,22 @@ export function createDiagramCanvas(scope) {
         bTag = document
           .querySelector('[data-link-endpoint="' + l.id + '-in"]')
           ?.getBoundingClientRect(),
-        x = a.right - board.left,
+        x = (a.right - board.left) / scale,
         y =
           (aTag ? aTag.top + aTag.height / 2 : a.top + a.height / 2) -
           board.top,
-        tx = b.left - board.left,
+        tx = (b.left - board.left) / scale,
         ty =
           (bTag ? bTag.top + bTag.height / 2 : b.top + b.height / 2) -
           board.top,
         m = (x + tx) / 2;
+      const wy = worldDelta(y, scale), wty = worldDelta(ty, scale);
       const make = (cls) => {
         const p = document.createElementNS(
           "http://www.w3.org/2000/svg",
           "path",
         );
-        p.setAttribute("d", `M${x} ${y} C${m} ${y} ${m} ${ty} ${tx} ${ty}`);
+        p.setAttribute("d", `M${x} ${wy} C${m} ${wy} ${m} ${wty} ${tx} ${wty}`);
         p.setAttribute("class", cls);
         p.addEventListener("click", () => {
           scope.selection = { kind: "wire", id: l.id };
@@ -237,7 +239,7 @@ export function createDiagramCanvas(scope) {
         "canvas-wire-label" + (scope.selection?.id === l.id ? " selected" : ""),
       );
       label.style.left = m + "px";
-      label.style.top = (y + ty) / 2 - 24 + "px";
+      label.style.top = (wy + wty) / 2 - 24 + "px";
       label.title = "คลิกเพื่อเลือกชนิดสาย";
       label.setAttribute(
         "aria-label",

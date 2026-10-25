@@ -23,7 +23,7 @@ export function createTransferActivity(scope){
  }
  function model(id,portId){
   scope.$('model-title').textContent='ระบบอ้างอิง · '+DEVICE_NAMES[id];
-  scope.$('model-frame').src='index.html?device='+encodeURIComponent(id)+(portId?'&port='+encodeURIComponent(portId):'');
+  scope.$('model-frame').src='index.html?embedded=1&device='+encodeURIComponent(id)+(portId?'&port='+encodeURIComponent(portId):'');
   scope.$('model-preview').showModal();
  }
  function renderSources(){

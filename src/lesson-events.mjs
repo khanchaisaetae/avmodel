@@ -43,7 +43,8 @@ export function bindLessonEvents(scope) {
         ? "instant"
         : "smooth",
     });
-    scope.$("target-source").focus({ preventScroll: true });
+    if (scope.workspace) scope.workspace.focusPanel();
+    else scope.$("target-source").focus({ preventScroll: true });
   });
   scope
     .$("back-to-system")

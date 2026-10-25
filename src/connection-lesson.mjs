@@ -1,12 +1,13 @@
+import { mountLessonWorkspace } from "./lesson-workspace.mjs";
 import { mountTransferSender } from "./transfer-sender.mjs";
 import { createLessonState } from "./lesson-state.mjs";
 import { createLessonContext } from "./lesson-context.mjs";
 import { createLessonModel } from "./lesson-model.mjs";
 import { createLessonBoard } from "./lesson-board.mjs";
-import { createLessonResults } from "./lesson-results.mjs?v=20261025-transfer";
+import { createLessonResults } from "./lesson-results.mjs?v=20261025-ux";
 import { createLessonTasks } from "./lesson-tasks.mjs";
 import { createLessonShell } from "./lesson-shell.mjs";
-import { bindLessonEvents } from "./lesson-events.mjs";
+import { bindLessonEvents } from "./lesson-events.mjs?v=20261025-ux";
 import { reviewLearning as baseReviewLearning } from "./learning-mode.mjs?v=20261024-learning-ui";
 import {
   WIRE_CHOICES,
@@ -57,6 +58,7 @@ export function mountConnectionLesson({
   const initialScenario = activity?.initial || baseInitialScenario;
   const reviewLearning = activity?.review || baseReviewLearning;
   let transferSender = null;
+  let workspace = null;
   let learningMode = "practice",
     assessmentReviewed = false;
   let active = false,
@@ -112,6 +114,7 @@ export function mountConnectionLesson({
   document.body.append(reset);
 
   const moduleScope = {
+    get workspace() { return workspace; },
     get transferSender() { return transferSender; },
     get activity() { return activity; },
     get $() {
@@ -406,6 +409,7 @@ export function mountConnectionLesson({
   const { build, chooseTask, renderTaskPicker } =
     createLessonTasks(moduleScope);
   activity?.mount(moduleScope);
+  if (activity) workspace = mountLessonWorkspace(moduleScope);
   if (!activity) transferSender = mountTransferSender(moduleScope);
   bindLessonEvents(moduleScope);
   build();
