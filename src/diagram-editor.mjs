@@ -1,4 +1,4 @@
-import { mountEditorWorkspace } from "./editor-workspace.mjs?v=20261025-placement";
+import { mountEditorWorkspace } from "./editor-workspace.mjs?v=20261026-3d";
 import { createDiagramState } from "./diagram-state.mjs?v=20261025-placement";
 import { createDiagramStorage } from "./diagram-storage.mjs";
 import { createDiagramControls } from "./diagram-controls.mjs?v=20261025-ux";

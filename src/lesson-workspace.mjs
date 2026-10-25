@@ -1,4 +1,4 @@
-import {mountActivityNavigation,createWorkspaceTabs,openDetails,element} from './workspace-ui.mjs?v=20261025-four';
+import {mountActivityNavigation,createWorkspaceTabs,openDetails,element} from './workspace-ui.mjs?v=20261026-3d';
 export function mountLessonWorkspace(scope){
  mountActivityNavigation();
  const pane=scope.pane,footer=element('div',undefined,'workspace-actions');let tabs;

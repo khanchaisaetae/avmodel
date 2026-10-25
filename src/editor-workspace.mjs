@@ -1,4 +1,4 @@
-import {mountActivityNavigation,createWorkspaceTabs,openDetails,element} from './workspace-ui.mjs?v=20261025-four';
+import {mountActivityNavigation,createWorkspaceTabs,openDetails,element} from './workspace-ui.mjs?v=20261026-3d';
 import {canvasBounds,fitCanvas,arrangeDevices} from './workspace-geometry.mjs?v=20261025-placement';
 export function mountEditorWorkspace(scope){
  mountActivityNavigation();
