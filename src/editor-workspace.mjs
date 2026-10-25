@@ -36,7 +36,7 @@ export function mountEditorWorkspace(scope){
  const hint=element('p','ลากชื่อเพื่อย้าย · คลิกสายเพื่อเลือกชนิด · ใช้ ＋ เพื่อขยายพอร์ต','workspace-help');stage.append(hint);
  return {get scale(){return scale;},render(){
   const state=scope.state;dock.hidden=!scope.selection;arrange.disabled=!state.nodes.length;
-  if(!scope.pending){const incomplete=state.links.filter(l=>!l.cableId).length;scope.$('drawing-instruction').textContent=!state.nodes.length?'เริ่มจากเพิ่มอุปกรณ์ทางซ้าย':state.nodes.length<2?'เพิ่มอีกอุปกรณ์เพื่อเริ่มเชื่อมต่อ':!state.links.length?'เลือกเอาท์พุตพอร์ต แล้วเลือกอินพุตพอร์ตของปลายทาง':incomplete?'คลิกสายที่ยังไม่ครบ เพื่อเลือกชนิดสาย':'ตั้งค่าบนอุปกรณ์ แล้วทดลองภาพในแผงด้านขวา';}
+  if(!scope.pending){const incomplete=state.links.filter(l=>!l.cableId).length;scope.$('drawing-instruction').textContent=!state.nodes.length?'เริ่มจากเพิ่มอุปกรณ์ด้านบน':state.nodes.length<2?'เพิ่มอีกอุปกรณ์เพื่อเริ่มเชื่อมต่อ':!state.links.length?'เลือกเอาท์พุตพอร์ต แล้วเลือกอินพุตพอร์ตของปลายทาง':incomplete?'คลิกสายที่ยังไม่ครบ เพื่อเลือกชนิดสาย':'ตั้งค่าบนอุปกรณ์ แล้วทดลองภาพในแผงด้านขวา';}
   reviewButton.disabled=state.nodes.length<2&&state.taskId!=='analysis-01';
   schedule();
  },showSelection(){dock.hidden=!scope.selection;},focusPanel(){tabs.focus();},tabs};
