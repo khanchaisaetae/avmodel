@@ -1,11 +1,14 @@
-import {defaultLabPositions,parseLabPositions,moveLabDevice} from './lab3d-layout.mjs?v=20261026-move';
+import {checkPlugDrop,plugTypes} from './lab3d-plugs.mjs?v=20261026-plugs';
+import {createPlugUI} from './lab3d-plug-ui.mjs?v=20261026-plugs';
+import {defaultLabPositions,parseLabPositions,moveLabDevice} from './lab3d-layout.mjs?v=20261026-plugs';
 import {SCENARIOS,DEVICE_NAMES,SOURCE_NAMES} from './scenario-catalog.mjs';
 import {initialScenario,evaluateScenario,checkScenario,validateSegment} from './scenario-engine.mjs';
 import {WIRE_CHOICES,portDirection,portFunction,portSupportsSide} from './lesson-cables.mjs';
-import {LAB3D_KEY,selectLabPort,selectLabCable,labPackage,parseLabPackage} from './lab3d-model.mjs?v=20261026-move';
-import {createLabScene} from './lab3d-scene.mjs?v=20261026-move';
+import {LAB3D_KEY,selectLabPort,selectLabCable,labPackage,parseLabPackage} from './lab3d-model.mjs?v=20261026-plugs';
+import {createLabScene} from './lab3d-scene.mjs?v=20261026-plugs';
 const $=id=>document.getElementById(id),el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 let catalog,mappings,scene,task=SCENARIOS[0],state,segment=0,side='out',timer,loading=true,loadToken=0,arrangeMode=false;
+let plugs;
 const layoutHistory=[];
 const freshLabState=t=>({...initialScenario(t),positions:defaultLabPositions(t)});
 const portById=new Map();
@@ -15,7 +18,7 @@ function save(){try{localStorage.setItem(LAB3D_KEY+task.id,JSON.stringify(labPac
 function restore(t){try{const raw=localStorage.getItem(LAB3D_KEY+t.id);if(raw)return parseLabPackage(JSON.parse(raw),SCENARIOS,catalog).state;}catch{notice('เปิดงานเดิมไม่ได้ เริ่มด้วยโต๊ะว่าง สามารถนำเข้าไฟล์สำรองได้');}return freshLabState(t);}
 function commit(next){state=next;save();render();}
 function setArrange(value){
- if(loading)return;arrangeMode=!!value;document.body.classList.toggle('arrange-mode',arrangeMode);scene.setInteractionMode(arrangeMode);
+ if(loading)return;plugs?.clear();arrangeMode=!!value;document.body.classList.toggle('arrange-mode',arrangeMode);scene.setInteractionMode(arrangeMode);
  if(arrangeMode)scene.overview();render();
 }
 function changePosition(id,position){
@@ -28,14 +31,14 @@ function undoPosition(){if(!layoutHistory.length||loading)return;commit({...stat
 function resetPositions(){if(loading)return;layoutHistory.push(structuredClone(parseLabPositions(state.positions,task)));if(layoutHistory.length>30)layoutHistory.shift();commit({...state,positions:defaultLabPositions(task)});scene.overview();renderDeviceControls();}
 
 function choosePort(portId){
- if(loading||arrangeMode)return;const plan=task.segments[segment],id=portId.split(':')[0];
+ if(loading||arrangeMode)return;if(plugs?.choose(portId))return;const plan=task.segments[segment],id=portId.split(':')[0];
  const selectedSide=id===plan.from?'out':id===plan.to?'in':null;
  if(!selectedSide){notice('ช่วงสายนี้เชื่อม '+DEVICE_NAMES[plan.from]+' → '+DEVICE_NAMES[plan.to]);return;}
- try{const result=selectLabPort(task,state,segment,selectedSide,portId,catalog);side='in';commit(result.state);scene.select(portId);
+ try{const cable=WIRE_CHOICES.find(c=>c.id===state.links[segment].cableId);if(cable){const fit=checkPlugDrop({task,state,index:segment,side:selectedSide,port:portById.get(portId),cable});if(!fit.ok){notice(fit.message);return;}}const result=selectLabPort(task,state,segment,selectedSide,portId,catalog);side='in';commit(result.state);scene.select(portId);
   if(selectedSide==='out'){scene.focusDevice(plan.to);renderDeviceControls();renderReference();notice('เลือกต้นทางแล้ว · คลิกพอร์ตบน '+DEVICE_NAMES[plan.to]);}
  }catch(e){notice(e.message);}
 }
-function focusEndpoint(nextSide){if(arrangeMode)setArrange(false);side=nextSide;const plan=task.segments[segment];scene.focusDevice(plan[side==='out'?'from':'to']);render();}
+function focusEndpoint(nextSide){plugs?.clear();if(arrangeMode)setArrange(false);side=nextSide;const plan=task.segments[segment];scene.focusDevice(plan[side==='out'?'from':'to']);render();}
 function renderDeviceControls(){
  $('device-overlays').replaceChildren();
  for(const id of task.devices){
@@ -71,11 +74,11 @@ function render(){
  $('mode-wire').setAttribute('aria-pressed',String(!arrangeMode));$('mode-layout').setAttribute('aria-pressed',String(arrangeMode));
  $('mode-wire').disabled=loading;$('mode-layout').disabled=loading;$('layout-undo').disabled=loading||!layoutHistory.length;
  $('layout-reset').disabled=loading||JSON.stringify(parseLabPositions(state.positions,task))===JSON.stringify(defaultLabPositions(task));
- $('layout-help').textContent=arrangeMode?'ลากตัวอุปกรณ์เพื่อย้ายบนโต๊ะ · คลิกชื่อแล้วใช้ปุ่มลูกศรได้ · Escape กลับไปเชื่อมต่อ':'คลิกพอร์ตบนตัวเครื่องเพื่อเชื่อมสาย';
+ $('layout-help').textContent=arrangeMode?'ลากตัวอุปกรณ์เพื่อย้ายบนโต๊ะ · คลิกชื่อแล้วใช้ปุ่มลูกศรได้ · Escape กลับไปเชื่อมต่อ':'เลือกชนิดสาย แล้วลากหัวจากถาดไปเสียบพอร์ต · หรือแตะหัวสายแล้วแตะพอร์ต';
  $('lab-mouse-help').textContent=arrangeMode?'ลากตัวเครื่อง: ย้าย · ลากพื้นว่าง: หมุน · ล้อเมาส์: ซูม · ลากขวา: เลื่อน':'ลากซ้าย: หมุน · ล้อเมาส์: ซูม · ลากขวา: เลื่อน · คลิกพอร์ตบนเครื่องเพื่อเลือก';
  const link=state.links[segment],plan=task.segments[segment];$('lab-task').value=task.id;$('lab-goal').textContent=task.goal;
  $('lab-segment').replaceChildren();task.segments.forEach((s,i)=>option($('lab-segment'),String(i),(i+1)+' · '+DEVICE_NAMES[s.from]+' → '+DEVICE_NAMES[s.to]));$('lab-segment').value=String(segment);
- $('pick-instruction').textContent=arrangeMode?'กำลังจัดวาง · กดเชื่อมต่อเพื่อเลือกพอร์ต':'คลิก'+(side==='out'?'เอาท์พุตพอร์ตบน '+DEVICE_NAMES[plan.from]:'อินพุตพอร์ตบน '+DEVICE_NAMES[plan.to]);
+ $('pick-instruction').textContent=arrangeMode?'กำลังจัดวาง · กดเชื่อมต่อเพื่อเลือกพอร์ต':(plugs?.armed?'แตะพอร์ตสำหรับหัวสายที่เลือก · ':'ลากหัวสายจากถาด หรือคลิก')+(side==='out'?'เอาท์พุตพอร์ตบน '+DEVICE_NAMES[plan.from]:'อินพุตพอร์ตบน '+DEVICE_NAMES[plan.to]);
  $('out-label').textContent=portById.get(link.sourcePortId)?.label||'ยังไม่เลือก';$('in-label').textContent=portById.get(link.sinkPortId)?.label||'ยังไม่เลือก';
  $('pick-out').setAttribute('aria-pressed',String(side==='out'));$('pick-in').setAttribute('aria-pressed',String(side==='in'));$('lab-cable').value=link.cableId;
  const checked=validateSegment(task,state,segment,catalog);$('link-result').textContent=checked.message;
@@ -84,10 +87,10 @@ function render(){
  for(const id of ['lab-segment','lab-cable','pick-out','pick-in','disconnect','lab-check','lab-reset'])$(id).disabled=loading;
  $('disconnect').disabled=loading||!(link.sourcePortId||link.sinkPortId||link.cableId);
  try{$('lab-backup').hidden=!localStorage.getItem(LAB3D_KEY+'import-backup');}catch{$('lab-backup').hidden=true;}
- scene.wires(state.links,task.segments,segment);renderDeviceControls();renderReference();
+ plugs?.render();scene.wires(state.links,task.segments,segment);renderDeviceControls();renderReference();
 }
 async function openTask(id,incoming=null){
- const t=SCENARIOS.find(t=>t.id===id);if(!t)return;const token=++loadToken;task=t;state=incoming||restore(t);layoutHistory.length=0;arrangeMode=false;document.body.classList.remove('arrange-mode');scene.setInteractionMode(false);segment=0;side='out';loading=true;$('lab-loading').hidden=false;$('lab-retry').hidden=true;$('lab-task').disabled=true;render();
+ const t=SCENARIOS.find(t=>t.id===id);if(!t)return;plugs?.clear();const token=++loadToken;task=t;state=incoming||restore(t);layoutHistory.length=0;arrangeMode=false;document.body.classList.remove('arrange-mode');scene.setInteractionMode(false);segment=0;side='out';loading=true;$('lab-loading').hidden=false;$('lab-retry').hidden=true;$('lab-task').disabled=true;render();
  $('device-tabs').replaceChildren();for(const id of t.devices){const b=el('button',DEVICE_NAMES[id]);b.type='button';b.addEventListener('click',()=>{if(arrangeMode)scene.selectDevice(id);else scene.focusDevice(id);renderDeviceControls();renderReference();});$('device-tabs').append(b);}
  try{const ready=await scene.load(t,state.positions);if(token!==loadToken||!ready)return;loading=false;$('lab-loading').hidden=true;$('lab-task').disabled=false;render();if(scene.software)notice('กำลังใช้ตัวแสดงผลสามมิติสำรอง อาจช้าบนอุปกรณ์บางรุ่น');}
  catch(e){if(token!==loadToken)return;$('loading-detail').textContent=e.message;$('lab-loading').querySelector('strong').textContent='เปิดโต๊ะทดลองไม่สำเร็จ';$('lab-retry').hidden=false;$('lab-task').disabled=false;notice(e.message);}
@@ -97,16 +100,22 @@ async function init(){
  try{
   const responses=await Promise.all([fetch('data/port-catalog.json'),fetch('data/model-mappings.json')]);if(responses.some(r=>!r.ok))throw Error('โหลดข้อมูลอุปกรณ์ไม่สำเร็จ');[catalog,mappings]=await Promise.all(responses.map(r=>r.json()));catalog.devices.forEach(d=>d.ports.forEach(p=>portById.set(p.id,p)));
   for(const t of SCENARIOS)option($('lab-task'),t.id,t.id+' · '+t.title);option($('lab-cable'),'','ยังไม่เลือกสาย');for(const c of WIRE_CHOICES)option($('lab-cable'),c.id,c.label+(c.engineSupported?'':' · ยังไม่จำลอง'));
-  scene=createLabScene({canvas:$('lab-scene'),viewport:$('lab-viewport'),overlay:$('device-overlays'),catalog,mappings,onPort:choosePort,onDevice(){renderDeviceControls();renderReference();},onWire(index){segment=index;side='out';render();notice('เลือกสายช่วงที่ '+(index+1));},onHover(id,event){const tip=$('port-tooltip');tip.hidden=!id;if(id){tip.textContent=portById.get(id).label+' · '+portDirection(portById.get(id));const rect=$('lab-viewport').getBoundingClientRect();tip.style.left=Math.min(rect.width-190,Math.max(8,event.clientX-rect.left+12))+'px';tip.style.top=Math.max(8,event.clientY-rect.top-40)+'px';}},onProgress(text){$('loading-detail').textContent=text;},onMove:changePosition});
+  scene=createLabScene({canvas:$('lab-scene'),viewport:$('lab-viewport'),overlay:$('device-overlays'),catalog,mappings,onPort:choosePort,onDevice(){renderDeviceControls();renderReference();},onWire(index){plugs?.clear();segment=index;side='out';render();notice('เลือกสายช่วงที่ '+(index+1));},onHover(id,event){const tip=$('port-tooltip');tip.hidden=!id;if(id){tip.textContent=portById.get(id).label+' · '+portDirection(portById.get(id));const rect=$('lab-viewport').getBoundingClientRect();tip.style.left=Math.min(rect.width-190,Math.max(8,event.clientX-rect.left+12))+'px';tip.style.top=Math.max(8,event.clientY-rect.top-40)+'px';}},onProgress(text){$('loading-detail').textContent=text;},onMove:changePosition,onPlugDrag(index,nextSide,e){if(arrangeMode||loading)return;if(segment!==index){segment=index;render();}plugs.start(index,nextSide,e);}});
+  plugs=createPlugUI({tray:$('plug-tray'),hint:$('plug-drop-hint'),cancel:$('plug-cancel'),scene,
+   getContext:()=>({index:segment,link:state?.links[segment],cable:WIRE_CHOICES.find(c=>c.id===state?.links[segment]?.cableId),disabled:loading||arrangeMode}),
+   validate:(a,id)=>checkPlugDrop({task,state,index:a?.index,side:a?.side,port:portById.get(id),cable:WIRE_CHOICES.find(c=>c.id===state.links[a?.index]?.cableId)}),
+   drop(a,id){try{side=a.side==='out'?'in':'out';commit(selectLabPort(task,state,a.index,a.side,id,catalog).state);scene.select(id);notice('เสียบ '+portById.get(id).label+' แล้ว · '+(!state.links[a.index].sourcePortId||!state.links[a.index].sinkPortId?'ลากหัวอีกด้านไปเสียบ':'ตั้งค่าอุปกรณ์แล้วตรวจภาพได้'));}catch(e){notice(e.message);}},
+   detach(index,nextSide){const key=nextSide==='out'?'sourcePortId':'sinkPortId';const next={...state,observedSources:[],links:state.links.map((l,i)=>i===index?{...l,[key]:'',connected:false}:l)};commit(next);notice('ถอดหัวสายแล้ว · ลากหัวจากถาดไปเสียบใหม่ได้');},notice,onArm(a){if(a){side=a.side;renderReference();}}
+  });
   $('mode-wire').addEventListener('click',()=>setArrange(false));$('mode-layout').addEventListener('click',()=>setArrange(true));$('layout-undo').addEventListener('click',undoPosition);$('layout-reset').addEventListener('click',resetPositions);window.addEventListener('keydown',e=>{if(e.key==='Escape'&&arrangeMode)setArrange(false);});
   $('lab-task').addEventListener('change',()=>openTask($('lab-task').value));$('lab-segment').addEventListener('change',()=>{segment=Number($('lab-segment').value);focusEndpoint('out');});
   $('pick-out').addEventListener('click',()=>focusEndpoint('out'));$('pick-in').addEventListener('click',()=>focusEndpoint('in'));
-  $('lab-cable').addEventListener('change',()=>{try{commit(selectLabCable(task,state,segment,$('lab-cable').value,catalog).state);}catch(e){notice(e.message);}});
-  $('disconnect').addEventListener('click',()=>{let next=selectLabCable(task,state,segment,'',catalog).state;next={...next,links:next.links.map((l,i)=>i===segment?{sourcePortId:'',sinkPortId:'',cableId:'',connected:false}:l)};side='out';commit(next);});
+  $('lab-cable').addEventListener('change',()=>{plugs.clear();try{const id=$('lab-cable').value,cable=WIRE_CHOICES.find(c=>c.id===id),types=plugTypes(cable);let next=structuredClone(state);for(const [i,key]of ['sourcePortId','sinkPortId'].entries())if(portById.get(next.links[segment][key])?.connector!==types[i])next.links[segment][key]='';commit(selectLabCable(task,next,segment,id,catalog).state);}catch(e){notice(e.message);}});
+  $('disconnect').addEventListener('click',()=>{plugs.clear();let next=selectLabCable(task,state,segment,'',catalog).state;next={...next,links:next.links.map((l,i)=>i===segment?{sourcePortId:'',sinkPortId:'',cableId:'',connected:false}:l)};side='out';commit(next);});
   $('lab-source').addEventListener('change',()=>commit({...state,requestedSource:$('lab-source').value}));
   $('lab-check').addEventListener('click',()=>{const checked=checkScenario(task,state,catalog);commit(checked.state);notice(checked.result.complete?'✓ ทดลองครบทุกแหล่งภาพของโจทย์นี้แล้ว':checked.result.message);});
   $('view-all').addEventListener('click',()=>{scene.overview();renderDeviceControls();renderReference();});for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{scene.focusDevice(scene.focused||task.segments[segment][side==='out'?'from':'to'],b.dataset.view);renderDeviceControls();renderReference();});
-  $('lab-reset').addEventListener('click',()=>$('reset-confirm').showModal());$('reset-cancel').addEventListener('click',()=>$('reset-confirm').close());$('reset-ok').addEventListener('click',()=>{$('reset-confirm').close();layoutHistory.length=0;commit(freshLabState(task));scene.overview();renderDeviceControls();});$('lab-retry').addEventListener('click',()=>openTask(task.id,state));
+  $('lab-reset').addEventListener('click',()=>$('reset-confirm').showModal());$('reset-cancel').addEventListener('click',()=>$('reset-confirm').close());$('reset-ok').addEventListener('click',()=>{$('reset-confirm').close();plugs.clear();layoutHistory.length=0;commit(freshLabState(task));scene.overview();renderDeviceControls();});$('lab-retry').addEventListener('click',()=>openTask(task.id,state));
   $('lab-export').addEventListener('click',()=>download('AV-3D-'+task.id+'.json',labPackage(task,state)));
   $('lab-backup').addEventListener('click',()=>{try{const value=JSON.parse(localStorage.getItem(LAB3D_KEY+'import-backup'));parseLabPackage(value,SCENARIOS,catalog);download('AV-3D-before-import.json',value);}catch{notice('ไม่พบสำเนาที่เปิดได้');}});
   $('lab-import').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>1000000)throw Error('ไฟล์ใหญ่เกิน 1 MB');const imported=parseLabPackage(JSON.parse(await file.text()),SCENARIOS,catalog);const old=localStorage.getItem(LAB3D_KEY+imported.task.id);if(old)localStorage.setItem(LAB3D_KEY+'import-backup',old);await openTask(imported.task.id,imported.state);save();notice('เปิดงานสามมิติแล้ว · สำเนาก่อนนำเข้าเก็บในเบราว์เซอร์');}catch(error){notice(error.message);}e.target.value='';});

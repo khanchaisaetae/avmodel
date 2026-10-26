@@ -1,7 +1,9 @@
+import {WIRE_CHOICES} from './lesson-cables.mjs';
+import {plugTypes} from './lab3d-plugs.mjs?v=20261026-plugs';
 import {parseLabPositions,LAB_TABLE_LIMIT} from './lab3d-layout.mjs?v=20261026-move';
 import {assetHash} from './asset-hash.mjs';
 import {SoftwareRenderer} from './software-view.mjs';
-export function createLabScene({canvas,viewport,overlay,catalog,mappings,onPort,onDevice,onWire,onHover,onProgress,onMove=()=>{}}){
+export function createLabScene({canvas,viewport,overlay,catalog,mappings,onPort,onDevice,onWire,onHover,onProgress,onMove=()=>{},onPlugDrag=()=>{}}){
  const T=window.THREE;if(!T)throw Error('โหลดเครื่องมือสามมิติไม่สำเร็จ');
  const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,1,.01,150),actors=new Map(),cache=new Map(),ray=new T.Raycaster();
  let renderer;try{renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:true});}catch{renderer=new SoftwareRenderer(canvas);}
@@ -9,7 +11,7 @@ export function createLabScene({canvas,viewport,overlay,catalog,mappings,onPort,
  scene.add(new T.HemisphereLight(0xffffff,0x70818c,1.3));const light=new T.DirectionalLight(0xffffff,1.15);light.position.set(3,8,-5);scene.add(light);const fill=new T.DirectionalLight(0xe4efff,.7);fill.position.set(-5,4,7);scene.add(fill);
  const grid=new T.GridHelper(32,64,0xabbec8,0xc4d1d8);scene.add(grid);
  const controls=new T.OrbitControls(camera,canvas);controls.enableDamping=!renderer.isSoftware;controls.minDistance=.18;controls.maxDistance=45;controls.maxPolarAngle=Math.PI*.92;controls.screenSpacePanning=true;
- let serial=0,focused=null,selectedPort=null,down=null,wireMeshes=[],task=null,disposed=false,viewMode="overview",deviceView="back",moveMode=false,drag=null,wireConfig=null,wiresDirty=false;
+ let serial=0,focused=null,selectedPort=null,down=null,wireMeshes=[],plugMeshes=[],plugGesture=false,task=null,disposed=false,viewMode="overview",deviceView="back",moveMode=false,drag=null,wireConfig=null,wiresDirty=false;
  const marker=new T.Mesh(new T.SphereGeometry(.045,12,8),new T.MeshBasicMaterial({color:0x09978b,depthTest:false}));marker.renderOrder=999;marker.visible=false;scene.add(marker);
  const halo=new T.Mesh(new T.TorusGeometry(1.7,.025,6,48),new T.MeshBasicMaterial({color:0x258d80}));halo.rotation.x=Math.PI/2;halo.visible=false;scene.add(halo);
  const plane=new T.Plane(new T.Vector3(0,1,0),0);
@@ -55,26 +57,48 @@ export function createLabScene({canvas,viewport,overlay,catalog,mappings,onPort,
  }
  function focusPort(portId){const p=point(portId);if(!p)return;focused=portId.split(':')[0];viewMode='port';selectedPort=portId;marker.position.copy(p);marker.visible=true;controls.target.copy(p);camera.position.copy(p).addScaledVector(normal(portId),1.1).add(new T.Vector3(0,.18,0));controls.update();updateOverlays();}
  function select(portId){selectedPort=portId;const p=point(portId);marker.visible=!!p;if(p)marker.position.copy(p);}
- function clearWires(){for(const mesh of wireMeshes){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose();}wireMeshes=[];}
+ function clearWires(){for(const mesh of [...wireMeshes,...plugMeshes]){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose();}wireMeshes=[];plugMeshes=[];}
  function wires(links,segments,active){
   wireConfig={links,segments,active};wiresDirty=false;clearWires();links.forEach((l,i)=>{
-   if(!l.sourcePortId||!l.sinkPortId||!l.cableId)return;const a=point(l.sourcePortId),b=point(l.sinkPortId);if(!a||!b)return;
-   const leadA=a.clone().addScaledVector(normal(l.sourcePortId),.3),leadB=b.clone().addScaledVector(normal(l.sinkPortId),.3),bendA=leadA.clone(),bendB=leadB.clone();bendA.y=Math.max(.12,Math.min(leadA.y,leadB.y)*.3);bendB.y=bendA.y;
+   if(!l.cableId)return;
+   const a=point(l.sourcePortId||''),b=point(l.sinkPortId||'');if(!a&&!b)return;
+   const start=a||b.clone().add(new T.Vector3(.7,-.1,-.5)),end=b||a.clone().add(new T.Vector3(.7,-.1,-.5));if(!a)start.y=Math.max(.15,start.y);if(!b)end.y=Math.max(.15,end.y);
+   const types=plugTypes(WIRE_CHOICES.find(c=>c.id===l.cableId));
+   for(const [j,side,key,pos]of [[0,'out','sourcePortId',start],[1,'in','sinkPortId',end]]){
+    const type=types[j],round=['rca','mini_jack_3_5','phone_jack_6_35','mini_din4'].includes(type);
+    let geometry;
+    if(round)geometry=new T.CylinderGeometry(.055,.055,.18,12).rotateX(Math.PI/2);
+    else{const shape=new T.Shape(),coords=type==='hdmi'?[[-.09,-.04],[.09,-.04],[.09,.01],[.06,.05],[-.06,.05],[-.09,.01]]:type==='vga'?[[-.12,-.05],[.12,-.05],[.09,.05],[-.09,.05]]:[[-.065,-.04],[.065,-.04],[.065,.04],[-.065,.04]];coords.forEach(([x,y],k)=>k?shape.lineTo(x,y):shape.moveTo(x,y));shape.closePath();geometry=new T.ExtrudeGeometry(shape,{depth:.16,bevelEnabled:false});}
+    const mesh=new T.Mesh(geometry,new T.MeshStandardMaterial({color:i===active?0x305e69:0x56656d,roughness:.6}));mesh.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),l[key]?normal(l[key]):new T.Vector3(0,0,-1));mesh.position.copy(pos);mesh.userData.labPlug={index:i,side};scene.add(mesh);plugMeshes.push(mesh);
+   }
+   const aNormal=a?normal(l.sourcePortId):new T.Vector3(0,0,-1),bNormal=b?normal(l.sinkPortId):new T.Vector3(0,0,-1);
+   const leadA=start.clone().addScaledVector(aNormal,.3),leadB=end.clone().addScaledVector(bNormal,.3),bendA=leadA.clone(),bendB=leadB.clone();bendA.y=Math.max(.12,Math.min(leadA.y,leadB.y)*.3);bendB.y=bendA.y;
    // The leads follow the verified port normals; the middle runs above the table.
-   const curve=new T.CatmullRomCurve3([a,leadA,bendA,bendB,leadB,b],false,'centripetal');
+   const curve=new T.CatmullRomCurve3([start,leadA,bendA,bendB,leadB,end],false,'centripetal');
    const mesh=new T.Mesh(new T.TubeGeometry(curve,48,i===active ? .035 : .025,6,false),new T.MeshStandardMaterial({color:l.connected?0x276e68:0xa7793e,roughness:.8}));mesh.userData.labWire=i;scene.add(mesh);wireMeshes.push(mesh);
   });
  }
  function meshes(){const result=[];for(const a of actors.values())a.root.traverse(o=>{if(o.isMesh)result.push(o);});return result;}
  function pick(event,includeWires=true){
   const rect=canvas.getBoundingClientRect();ray.setFromCamera(new T.Vector2((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1),camera);
-  const hit=ray.intersectObjects([...meshes(),...(includeWires?wireMeshes:[])],false)[0];if(!hit)return null;
+  const hit=ray.intersectObjects([...meshes(),...(includeWires?[...plugMeshes,...wireMeshes]:[])],false)[0];if(!hit)return null;
+  if(hit.object.userData.labPlug)return {plug:hit.object.userData.labPlug};
   if(hit.object.userData.labWire!==undefined)return {wire:hit.object.userData.labWire};
   const id=hit.object.userData.labDevice,a=actors.get(id),ancestors=hit.object.userData.labAncestors||[],local=a.wrapper.worldToLocal(hit.point.clone());
   const ports=catalog.devices.find(d=>d.id===id).ports.filter(p=>{const m=mappings.mappings[p.id];return m&&ancestors.includes(m.node_index);});
   ports.sort((a,b)=>new T.Vector3(...mappings.mappings[a.id].anchor).distanceToSquared(local)-new T.Vector3(...mappings.mappings[b.id].anchor).distanceToSquared(local));
   return {device:id,port:ports[0]?.id};
  }
+
+ function dropPort(event){
+  const rect=canvas.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)return null;
+  camera.updateMatrixWorld();let best=null,distance=26;
+  for(const d of catalog.devices)for(const p of d.ports){const world=point(p.id);if(!world)continue;const toward=camera.position.clone().sub(world).normalize();if(normal(p.id).dot(toward)<-.15)continue;const v=world.clone().project(camera);if(v.z< -1||v.z>1)continue;const dist=Math.hypot(rect.left+(v.x+1)*rect.width/2-event.clientX,rect.top+(1-v.y)*rect.height/2-event.clientY);if(dist<distance){best=p.id;distance=dist;}}
+  const front=best&&pick(event,false);if(front?.device&&front.device!==best.split(':')[0])return null;return best;
+ }
+ function screenPort(id){const p=point(id);if(!p)return null;const rect=canvas.getBoundingClientRect(),v=p.project(camera);return {x:rect.left+(v.x+1)*rect.width/2,y:rect.top+(1-v.y)*rect.height/2};}
+ function previewPort(id,valid=true){const p=id&&point(id);marker.visible=!!p;if(p){marker.position.copy(p);marker.material.color.setHex(valid?0x09978b:0xb16e3c);}invalidate();}
+ function setPlugGesture(value){plugGesture=!!value;controls.enabled=!value;if(value)down=null;else{marker.material.color.setHex(0x09978b);marker.visible=false;}invalidate();}
  function tablePoint(event){const rect=canvas.getBoundingClientRect();ray.setFromCamera(new T.Vector2((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1),camera);return ray.ray.intersectPlane(plane,new T.Vector3());}
  function finishDrag(commit){
   const current=drag;if(!current)return;drag=null;controls.enabled=true;canvas.style.cursor='grab';
@@ -86,6 +110,9 @@ export function createLabScene({canvas,viewport,overlay,catalog,mappings,onPort,
  }
  // Capture the device gesture before OrbitControls receives it. Empty table still rotates.
  canvas.addEventListener('pointerdown',e=>{
+  if(!moveMode&&e.button===0){const id=dropPort(e);let plugged=null;
+   wireConfig?.links.forEach((l,index)=>{if(!l.cableId)return;if(id&&l.sourcePortId===id)plugged={index,side:'out'};else if(id&&l.sinkPortId===id)plugged={index,side:'in'};});
+   const h=plugged||pick(e)?.plug;if(h){onPlugDrag(h.index,h.side,e);return;}}
   if(!moveMode||e.button!==0||drag)return;const hit=pick(e,false),p=tablePoint(e);if(!hit?.device||!p)return;
   e.preventDefault();e.stopImmediatePropagation();down=null;focused=hit.device;const actor=actors.get(focused);
   drag={id:focused,pointer:e.pointerId,start:actor.group.position.clone(),offset:actor.group.position.clone().sub(p)};
@@ -100,7 +127,7 @@ export function createLabScene({canvas,viewport,overlay,catalog,mappings,onPort,
  canvas.addEventListener('lostpointercapture',()=>{if(drag)finishDrag(false);});
  canvas.addEventListener('pointerdown',e=>{down=e.button===0?[e.clientX,e.clientY]:null;});
  canvas.addEventListener('pointerup',e=>{if(e.button!==0||!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;down=null;const hit=pick(e,!moveMode);if(moveMode){if(hit?.device){selectDevice(hit.device);onDevice(hit.device);}return;}if(hit?.wire!==undefined)onWire(hit.wire);else if(hit?.port){select(hit.port);onPort(hit.port);}else if(hit?.device){focusDevice(hit.device);onDevice(hit.device);}});
- canvas.addEventListener('pointermove',e=>{if(e.buttons||drag)return;const hit=pick(e,!moveMode);canvas.style.cursor=moveMode?(hit?.device?'grab':'auto'):(hit?.port||hit?.wire!==undefined?'pointer':'grab');onHover(moveMode?null:hit?.port||null,e);});
+ canvas.addEventListener('pointermove',e=>{if(e.buttons||drag||plugGesture)return;const hit=pick(e,!moveMode);canvas.style.cursor=moveMode?(hit?.device?'grab':'auto'):(hit?.port||hit?.plug||hit?.wire!==undefined?'pointer':'grab');onHover(moveMode?null:hit?.port||null,e);});
  canvas.addEventListener('pointerleave',()=>onHover(null));
  function updateOverlays(){
   updateHalo();if(!viewport.clientWidth)return;camera.updateMatrixWorld();
@@ -111,7 +138,7 @@ export function createLabScene({canvas,viewport,overlay,catalog,mappings,onPort,
  }
  function resize(){const w=viewport.clientWidth,h=viewport.clientHeight;if(w<=0||h<=0)return;renderer.setSize(w,h,false);const changed=Math.abs(camera.aspect-w/h)>.01;camera.aspect=w/h;camera.updateProjectionMatrix();if(changed&&actors.size){if(viewMode==='overview')overview();else if(viewMode==='device')focusDevice(focused,deviceView);}updateOverlays();}
  const observer=new ResizeObserver(resize);observer.observe(viewport);controls.addEventListener('change',updateOverlays);
- function animate(){if(disposed)return;requestAnimationFrame(animate);if(document.hidden)return;if(!drag)controls.update();if(wiresDirty&&wireConfig)wires(wireConfig.links,wireConfig.segments,wireConfig.active);renderer.render(scene,camera);}
+ function animate(){if(disposed)return;requestAnimationFrame(animate);if(document.hidden)return;if(!drag&&!plugGesture)controls.update();if(wiresDirty&&wireConfig)wires(wireConfig.links,wireConfig.segments,wireConfig.active);renderer.render(scene,camera);}
  resize();overview();animate();
- return {load,overview,focusDevice,focusPort,select,wires,setPositions,setInteractionMode,selectDevice,refresh:updateOverlays,get focused(){return focused;},get software(){return !!renderer.isSoftware;},dispose(){disposed=true;serial++;observer.disconnect();controls.dispose();clearWires();renderer.dispose?.();}};
+ return {screenPort,dropPort,previewPort,setPlugGesture,load,overview,focusDevice,focusPort,select,wires,setPositions,setInteractionMode,selectDevice,refresh:updateOverlays,get focused(){return focused;},get software(){return !!renderer.isSoftware;},dispose(){disposed=true;serial++;observer.disconnect();controls.dispose();clearWires();renderer.dispose?.();}};
 }

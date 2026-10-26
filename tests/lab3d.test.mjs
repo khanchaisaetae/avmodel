@@ -53,3 +53,49 @@ test('layout-only undo and reset preserve the latest connection and device setti
  const undone={...latest,positions:old};assert.equal(undone.power.dell,false);assert.deepEqual(undone.links,state.links);assert.deepEqual(undone.positions,old);
  const packet=labPackage(task,latest);packet.state.positions.epson.x=Infinity;assert.throws(()=>parseLabPackage(packet,SCENARIOS,catalog));
 });
+
+import {plugTypes,checkPlugDrop} from '../src/lab3d-plugs.mjs';
+import {WIRE_CHOICES} from '../src/lesson-cables.mjs';
+const physical=(task,state,index,side,id,cableId='hdmi')=>checkPlugDrop({task,state,index,side,port:catalog.devices.flatMap(d=>d.ports).find(p=>p.id===id),cable:WIRE_CHOICES.find(c=>c.id===cableId)});
+test('all cable choices specify both physical heads including directional adapters',()=>{
+ for(const c of WIRE_CHOICES)assert.equal(plugTypes(c).length,2,c.id);
+ assert.deepEqual(plugTypes(WIRE_CHOICES.find(c=>c.id==='usb-c-hdmi')),['usb_c','hdmi']);
+});
+test('plug fit rejects mismatched sockets and wrong devices without changing existing work',()=>{
+ const t=SCENARIOS[0],s=wired(t),before=JSON.stringify(s);
+ assert.equal(physical(t,s,0,'out','dell:hdmi').ok,true);
+ assert.equal(physical(t,s,0,'out','dell:usb-a-1').ok,false);
+ assert.equal(physical(t,s,0,'out','epson:hdmi1').ok,false);
+ assert.equal(physical(t,s,0,'in',null).ok,false);
+ assert.equal(JSON.stringify(s),before);
+});
+test('occupied physical ports are reserved even on an unvalidated or unsupported cable',()=>{
+ const t=SCENARIOS.find(t=>t.id==='3-05'),s=initialScenario(t);
+ s.links[0]={sourcePortId:'dell:hdmi',sinkPortId:'epson:hdmi1',cableId:'hdmi-vga',connected:false};
+ assert.equal(physical(t,s,1,'in','epson:hdmi1').ok,false);
+ assert.equal(physical(t,s,1,'in','epson:hdmi2').ok,true);
+});
+test('physical insertion allows audio-only HDMI and wrong signal direction for diagnosis',()=>{
+ const t=SCENARIOS.find(t=>t.id==='2-03'),s=initialScenario(t);
+ assert.equal(physical(t,s,0,'out','bluray:hdmi2').ok,true);
+ let next=selectLabCable(t,s,0,'hdmi',catalog).state;
+ next=selectLabPort(t,next,0,'out','bluray:hdmi2',catalog).state;
+ next=selectLabPort(t,next,0,'in','epson:hdmi1',catalog).state;
+ assert.equal(next.links[0].connected,false);
+ assert.equal(physical(SCENARIOS.find(t=>t.id==='3-01'),initialScenario(SCENARIOS.find(t=>t.id==='3-01')),0,'in','vertex:hdmi-out').ok,true);
+});
+test('USB and directional adapter heads fit their own ends only',()=>{
+ const t=SCENARIOS[0],s=initialScenario(t);
+ assert.equal(physical(t,s,0,'out','dell:usb-a-1','usb').ok,true);
+ assert.equal(physical(t,s,0,'in','epson:usb-b','usb').ok,true);
+ assert.equal(physical(t,s,0,'in','epson:usb-a','usb').ok,false);
+ assert.equal(physical(t,s,0,'out','dell:usb-c','usb-c-hdmi').ok,true);
+ assert.equal(physical(t,s,0,'out','dell:hdmi','usb-c-hdmi').ok,false);
+});
+test('detaching one head persists as a partial cable and preserves device positions/settings',()=>{
+ const t=SCENARIOS[0],s=wired(t);s.positions={dell:{x:-1,z:2},epson:{x:3,z:1}};
+ const partial={...s,observedSources:[],links:s.links.map(l=>({...l,sinkPortId:'',connected:false}))};
+ const restored=parseLabPackage(JSON.parse(JSON.stringify(labPackage(t,partial))),SCENARIOS,catalog).state;
+ assert.equal(restored.links[0].sourcePortId,'dell:hdmi');assert.equal(restored.links[0].sinkPortId,'');assert.equal(restored.links[0].cableId,'hdmi');assert.equal(restored.links[0].connected,false);
+ assert.deepEqual(restored.positions,s.positions);assert.deepEqual(restored.power,s.power);assert.deepEqual(restored.sourceEnabled,s.sourceEnabled);
+});
