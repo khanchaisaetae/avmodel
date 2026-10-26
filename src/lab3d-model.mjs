@@ -1,3 +1,4 @@
+import {parseLabPositions} from './lab3d-layout.mjs?v=20261026-move';
 import {initialScenario,updateSegmentSelection,evaluateScenario} from './scenario-engine.mjs';
 import {WIRE_CHOICES} from './lesson-cables.mjs';
 export const LAB3D_KEY='av-port-lab.lab3d.v1.';
@@ -10,11 +11,11 @@ export function selectLabCable(task,state,index,cableId,catalog){
  if(cableId!==''&&!WIRE_CHOICES.some(c=>c.id===cableId))throw Error('ไม่พบชนิดสายนี้');
  return updateSegmentSelection(task,state,index,{cableId},catalog);
 }
-export function labPackage(task,state){return {schema:'av-port-lab.lab3d',version:1,taskId:task.id,state:structuredClone(state)};}
+export function labPackage(task,state){return {schema:'av-port-lab.lab3d',version:1,taskId:task.id,state:structuredClone({...state,positions:parseLabPositions(state.positions,task)})};}
 export function parseLabPackage(value,tasks,catalog){
  const task=tasks.find(t=>t.id===value?.taskId),input=value?.state;
  if(value?.schema!=='av-port-lab.lab3d'||value.version!==1||!task||!input||!Array.isArray(input.links)||input.links.length!==task.segments.length)throw Error('ไฟล์ไม่ใช่งานทดลองสามมิติที่รองรับ');
- let state=initialScenario(task);
+ let state={...initialScenario(task),positions:parseLabPositions(input.positions,task)};
  for(let i=0;i<input.links.length;i++){
   const l=input.links[i];if(!l||typeof l!=='object')throw Error('ข้อมูลสายไม่ครบ');
   for(const [side,key]of [['out','sourcePortId'],['in','sinkPortId']])if(l[key])state=selectLabPort(task,state,i,side,l[key],catalog).state;

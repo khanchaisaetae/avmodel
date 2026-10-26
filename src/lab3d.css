@@ -3,3 +3,6 @@
 .device-control:not(.compact)>button{display:none}
 
 .device-control.compact{width:170px}.device-control.compact button{line-height:1.6}@media(max-width:550px){.device-control.compact{width:140px}}
+
+.layout-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;border:1px solid #cbdce0;background:#f9fcfc;border-radius:10px;padding:8px 10px}.layout-tools>div{display:flex;gap:5px;flex-wrap:wrap}.layout-tools p{flex:1;min-width:180px;font-size:11px;line-height:1.7;color:#4c6d77;margin:0}.layout-tools button{font-size:11px;min-height:36px}.arrange-mode #lab-scene{cursor:grab}.arrange-mode .device-control{width:170px}.arrange-mode .device-control>button{display:block}.arrange-mode .device-settings{display:none}.arrange-mode .device-control[data-selected="true"]{border:2px solid #218c7d;background:#e5f4ed}.layout-tools button:disabled{opacity:.45}
+@media(max-width:550px){.layout-tools{gap:8px}.layout-tools>div{width:100%}.layout-tools button{min-height:44px}.layout-tools p{min-width:0;width:100%;flex:auto}.arrange-mode .device-control{width:140px}}

@@ -34,3 +34,22 @@ test('3D keeps unsupported adapters indeterminate and rejects audio-only HDMI fo
  const task=SCENARIOS[0];let state=selectLabPort(task,wired(task),0,'out','dell:usb-c',catalog).state;state=selectLabCable(task,state,0,'usb-c-hdmi',catalog).state;assert.equal(state.links[0].connected,false);
  const blu=SCENARIOS.find(t=>t.id==='2-03');const r=selectLabPort(blu,wired(blu),0,'out','bluray:hdmi2',catalog);assert.equal(r.result.code,'NO_VIDEO');assert.equal(r.state.links[0].connected,false);
 });
+
+const {defaultLabPositions,parseLabPositions,moveLabDevice,LAB_TABLE_LIMIT}=await import('../src/lab3d-layout.mjs');
+test('old 3D files receive default positions and moved positions survive JSON without altering signals',()=>{
+ const task=SCENARIOS.find(t=>t.id==='4-01'),state=wired(task),packet=labPackage(task,state);delete packet.state.positions;
+ assert.deepEqual(parseLabPackage(packet,SCENARIOS,catalog).state.positions,defaultLabPositions(task));
+ const before=structuredClone(state),moved=moveLabDevice(state,task,'dell',4.5,-2.25),parsed=parseLabPackage(labPackage(task,moved),SCENARIOS,catalog);
+ assert.deepEqual(state,before);assert.deepEqual(parsed.state.positions.dell,{x:4.5,z:-2.25});assert.deepEqual(moved.links,state.links);assert.deepEqual(moved.power,state.power);assert.equal(evaluateScenario(task,moved,catalog).status,evaluateScenario(task,state,catalog).status);
+ const afterCable=selectLabCable(task,moved,0,'hdmi',catalog).state;assert.deepEqual(afterCable.positions,moved.positions);
+});
+test('table movement stays on the table and rejects unknown or invalid positions',()=>{
+ const task=SCENARIOS[0],state=initialScenario(task);assert.deepEqual(moveLabDevice(state,task,'dell',99,-99).positions.dell,{x:LAB_TABLE_LIMIT,z:-LAB_TABLE_LIMIT});
+ for(const args of [['matrix',0,0],['dell',NaN,0],['dell',0,Infinity]])assert.throws(()=>moveLabDevice(state,task,...args));
+ for(const value of [null,[],{dell:{x:0,z:0}},{...defaultLabPositions(task),matrix:{x:0,z:0}},{...defaultLabPositions(task),dell:{x:13,z:0}},{...defaultLabPositions(task),dell:{x:0,z:'0'}}])assert.throws(()=>parseLabPositions(value,task));
+});
+test('layout-only undo and reset preserve the latest connection and device settings',()=>{
+ const task=SCENARIOS[0],state=wired(task),old=defaultLabPositions(task),moved=moveLabDevice(state,task,'epson',2,3),latest={...moved,power:{...moved.power,dell:false}};
+ const undone={...latest,positions:old};assert.equal(undone.power.dell,false);assert.deepEqual(undone.links,state.links);assert.deepEqual(undone.positions,old);
+ const packet=labPackage(task,latest);packet.state.positions.epson.x=Infinity;assert.throws(()=>parseLabPackage(packet,SCENARIOS,catalog));
+});
