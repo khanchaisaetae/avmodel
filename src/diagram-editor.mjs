@@ -1,12 +1,12 @@
 import { mountEditorWorkspace } from "./editor-workspace.mjs?v=20261026-3d";
 import { createDiagramState } from "./diagram-state.mjs?v=20261025-placement";
-import { createDiagramStorage } from "./diagram-storage.mjs";
+import { createDiagramStorage } from "./diagram-storage.mjs?v=20261026-resume";
 import { createDiagramControls } from "./diagram-controls.mjs?v=20261025-ux";
 import { createDiagramCanvas } from "./diagram-canvas.mjs?v=20261025-placement";
 import { createDiagramResults } from "./diagram-results.mjs?v=20261025-ux";
 import { createDiagramView } from "./diagram-view.mjs?v=20261025-ux";
 import { createDiagramDownload } from "./diagram-download.mjs";
-import { bindDiagramEvents } from "./diagram-events.mjs?v=20261025-transfer";
+import { bindDiagramEvents } from "./diagram-events.mjs?v=20261026-resume";
 import {
   DIAGRAM_TASKS,
   getDiagramTask,
@@ -75,7 +75,7 @@ async function init() {
     render();
     workspace = mountEditorWorkspace(moduleScope);
     workspace.render();
-    $("save-state").textContent = "บันทึกอัตโนมัติเมื่อแก้ไข · แยกแต่ละโจทย์";
+
   } catch (e) {
     $("diagram-result").textContent = e.message;
     notice(e.message);
@@ -151,6 +151,7 @@ const moduleScope = {
   get history() {
     return history;
   },
+  get resumeTask() { return resumeTask; },
   get loadTask() {
     return loadTask;
   },
@@ -235,7 +236,7 @@ const moduleScope = {
 };
 const { commit, changeNode, selectedTask, addDevice, moveNode } =
   createDiagramState(moduleScope);
-const { save, loadTask } = createDiagramStorage(moduleScope);
+const { save, loadTask, resumeTask } = createDiagramStorage(moduleScope);
 const { ask, openPorts, choosePort, cableSelect, button, renderProperties } =
   createDiagramControls(moduleScope);
 const { renderNode, drawWires } = createDiagramCanvas(moduleScope);

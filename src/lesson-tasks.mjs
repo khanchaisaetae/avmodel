@@ -19,6 +19,9 @@ export function createLessonTasks(scope) {
     scope.closeContext();
     scope.closeModel();
     scope.task = scope.SCENARIOS.find((t) => t.id === id) || scope.SCENARIOS[0];
+    if(scope.learningMode==='assessment'){
+      scope.states.delete(scope.stateKey());scope.histories.delete(scope.stateKey());scope.reasons.delete(scope.stateKey());
+    }
     scope.activeSegment = 0;
     scope.lastResult = null;
     scope.assessmentReviewed = false;

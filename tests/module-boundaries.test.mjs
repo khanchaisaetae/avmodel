@@ -14,9 +14,13 @@ test('separate editor instances do not share state or undo history',()=>{
  aa.addDevice('dell');bb.addDevice('epson');aa.moveNode('dell',100,50);
  assert.deepEqual(a.state.nodes.map(n=>n.id),['dell']);assert.deepEqual(b.state.nodes.map(n=>n.id),['epson']);assert.equal(a.state.nodes[0].x,150);assert.equal(b.state.nodes[0].x,50);assert.equal(a.history.length,2);assert.equal(b.history.length,1);assert.deepEqual(a.history[0].nodes,[]);assert.deepEqual(a.future,[]);assert.equal(a.review,null);
 });
-test('diagram storage preserves existing browser keys and round-trips the prior save format',()=>{
- const before=globalThis.localStorage,values=new Map(),messages=[];globalThis.localStorage={setItem:(k,v)=>values.set(k,v),getItem:k=>values.get(k)||null};
- try{const scope={state:{...emptyDiagram(),reason:'งานเดิมของนิสิต'},storagePrefix:'av-port-lab.diagram.v1.',catalog,parseDiagram,emptyDiagram,notice:m=>messages.push(m),$:()=>({textContent:''})},api=createDiagramStorage(scope);api.save();assert.ok(values.has('av-port-lab.diagram.v1.2-01'));assert.deepEqual(api.loadTask('2-01'),scope.state);assert.deepEqual(api.loadTask('2-02'),emptyDiagram('2-02'));assert.deepEqual(messages,[]);}finally{if(before===undefined)delete globalThis.localStorage;else globalThis.localStorage=before;}
+test('diagram storage preserves prior format and keys but restores only after explicit resume',()=>{
+ const before=globalThis.localStorage,values=new Map(),messages=[],controls=new Map();globalThis.localStorage={setItem:(k,v)=>values.set(k,v),getItem:k=>values.get(k)||null};
+ try{const old={...emptyDiagram(),reason:'งานเดิมของนิสิต'},scope={state:emptyDiagram(),history:[],future:[],storagePrefix:'av-port-lab.diagram.v1.',catalog,parseDiagram,emptyDiagram,notice:m=>messages.push(m),render(){},$(id){if(!controls.has(id))controls.set(id,{textContent:''});return controls.get(id);}},api=createDiagramStorage(scope);
+  scope.state=api.loadTask('2-01');scope.state=old;api.save();const raw=values.get('av-port-lab.diagram.v1.2-01');assert.deepEqual(JSON.parse(raw),old);
+  scope.state=api.loadTask('2-01');assert.deepEqual(scope.state,emptyDiagram());assert.equal(controls.get('diagram-resume').hidden,false);assert.equal(values.get('av-port-lab.diagram.v1.2-01'),raw);
+  api.resumeTask();assert.deepEqual(scope.state,old);assert.equal(controls.get('diagram-resume').hidden,true);assert.deepEqual(api.loadTask('2-02'),emptyDiagram('2-02'));assert.equal(controls.get('diagram-resume').hidden,true);
+ }finally{if(before===undefined)delete globalThis.localStorage;else globalThis.localStorage=before;}
 });
 test('lesson controller updates current state through injected dependencies and keeps prior snapshots',()=>{
  const task=SCENARIOS[0];let current=initialScenario(task),renders=0;const scope={task,catalog,activeSegment:0,histories:new Map(),stateKey:()=>task.id+':practice',getState:()=>current,put:s=>{current=s;},clone:structuredClone,render:()=>renders++,lastResult:{old:true},assessmentReviewed:true,updateSegmentSelection},api=createLessonState(scope);

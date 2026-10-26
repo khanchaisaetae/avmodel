@@ -1,16 +1,17 @@
 // Dependencies are injected by the entry controller; importing this module has no UI side effects.
 export function bindDiagramEvents(scope) {
-  scope.$("diagram-task").addEventListener("change", () => {
-    scope.state = scope.loadTask(scope.$("diagram-task").value);
+  scope.$("diagram-resume").addEventListener("click", scope.resumeTask);
+  function startTask(id) {
+    scope.state = scope.loadTask(id);
     scope.selection = null;
     scope.pending = null;
     scope.review = null;
     scope.history.length = 0;
     scope.future.length = 0;
     scope.render();
-    scope.$("save-state").textContent =
-      "เปิดผังของโจทย์นี้แล้ว · บันทึกอัตโนมัติเมื่อแก้ไข";
-  });
+  }
+  scope.$("diagram-task").addEventListener("change",()=>startTask(scope.$("diagram-task").value));
+  window.addEventListener("pageshow",event=>{if(event.persisted&&scope.state)startTask(scope.state.taskId);});
   scope.$("diagram-reason").addEventListener("input", () => {
     scope.state = { ...scope.state, reason: scope.$("diagram-reason").value };
     scope.review = null;

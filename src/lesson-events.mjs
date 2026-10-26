@@ -4,6 +4,9 @@ export function bindLessonEvents(scope) {
     scope.closeContext();
     scope.closeModel();
     scope.learningMode = scope.$("learning-mode").value;
+    if(scope.learningMode==='assessment'){
+      scope.states.delete(scope.stateKey());scope.histories.delete(scope.stateKey());scope.reasons.delete(scope.stateKey());
+    }
     scope.activeSegment = 0;
     scope.lastResult = null;
     scope.assessmentReviewed = false;

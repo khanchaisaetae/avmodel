@@ -5,7 +5,7 @@ import { createExplorerScene } from "./explorer-scene.mjs";
 import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
-import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261025-four";
+import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261026-resume";
 import { TROUBLESHOOT_TASKS } from "./troubleshoot-catalog.mjs";
 import { createTroubleshootActivity } from "./troubleshoot-activity.mjs";
 import { assetHash } from "./asset-hash.mjs";

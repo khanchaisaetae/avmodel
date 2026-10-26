@@ -4,9 +4,9 @@ import { createLessonContext } from "./lesson-context.mjs";
 import { createLessonModel } from "./lesson-model.mjs";
 import { createLessonBoard } from "./lesson-board.mjs";
 import { createLessonResults } from "./lesson-results.mjs?v=20261025-five";
-import { createLessonTasks } from "./lesson-tasks.mjs";
+import { createLessonTasks } from "./lesson-tasks.mjs?v=20261026-resume";
 import { createLessonShell } from "./lesson-shell.mjs";
-import { bindLessonEvents } from "./lesson-events.mjs?v=20261025-ux";
+import { bindLessonEvents } from "./lesson-events.mjs?v=20261026-resume";
 import { reviewLearning as baseReviewLearning } from "./learning-mode.mjs?v=20261024-learning-ui";
 import {
   WIRE_CHOICES,
@@ -408,10 +408,16 @@ export function mountConnectionLesson({
   activity?.mount(moduleScope);
   if (activity) workspace = mountLessonWorkspace(moduleScope);
   bindLessonEvents(moduleScope);
+  window.addEventListener('pageshow',event=>{
+    if(event.persisted&&active&&learningMode==='assessment'){
+      put(initialScenario(task));histories.delete(stateKey());reasons.delete(stateKey());lastResult=null;assessmentReviewed=false;activeSegment=0;$('reason-error').hidden=true;closeContext();closeModel();build();
+    }
+  });
   build();
   return {
     enter() {
       active = true;
+      if(learningMode==='assessment'){put(initialScenario(task));histories.delete(stateKey());reasons.delete(stateKey());lastResult=null;assessmentReviewed=false;activeSegment=0;$('reason-error').hidden=true;}
       render();
     },
     leave() {
