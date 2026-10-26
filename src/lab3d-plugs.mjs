@@ -7,8 +7,22 @@ export function checkPlugDrop({task,state,index,side,port,cable}){
  if(!['out','in'].includes(side)||!task.segments[index]||!cable)return {ok:false,message:'เลือกชนิดสายก่อนลากหัวสาย'};
  if(!port)return {ok:false,message:'ยังไม่ตรงพอร์ต · หมุนหรือซูมให้เห็นช่องต่อแล้วลองใหม่'};
  if(port.connector!==plugTypes(cable)[side==='out'?0:1])return {ok:false,message:'หัว '+plugLabel(plugTypes(cable)[side==='out'?0:1])+' ไม่ตรงกับช่อง '+plugLabel(port.connector)};
- const plan=task.segments[index];if(port.id.split(':')[0]!==plan[side==='out'?'from':'to'])return {ok:false,message:'หัวด้านนี้ต้องเสียบที่อุปกรณ์'+(side==='out'?'ต้นทาง':'ปลายทาง')+'ของช่วงสายที่เลือก'};
+ const plan=task.segments[index];if(port.id.split(':')[0]!==plan[side==='out'?'from':'to'])return {ok:false,message:'หัวด้านนี้ต้องเสียบที่อุปกรณ์'+(side==='out'?'ต้นทาง':'ปลายทาง')+'ของสายเส้นนี้'};
  const occupied=state.links.some((l,i)=>i!==index&&[l.sourcePortId,l.sinkPortId].includes(port.id));
  if(occupied)return {ok:false,message:'พอร์ตนี้มีหัวสายอื่นเสียบอยู่แล้ว · ถอดหัวสายเดิมก่อน'};
  return {ok:true,message:'ปล่อยเพื่อเสียบ '+port.label};
+}
+// Infer the task branch from the actual device touched; never overwrite another cable.
+export function resolvePlugDrop({task,state,index,side,port,cable}){
+ if(!port||!cable||!['out','in'].includes(side)||!state.links[index])return checkPlugDrop({task,state,index,side,port,cable});
+ const key=side==='out'?'sourcePortId':'sinkPortId',other=side==='out'?'sinkPortId':'sourcePortId',deviceKey=side==='out'?'from':'to',otherKey=side==='out'?'to':'from',current=state.links[index];
+ const matches=(plan)=>plan[deviceKey]===port.id.split(':')[0]&&(!current[other]||plan[otherKey]===current[other].split(':')[0]);
+ let target=matches(task.segments[index])?index:task.segments.findIndex((plan,i)=>matches(plan)&&!state.links[i].sourcePortId&&!state.links[i].sinkPortId);
+ // A fully inserted cable is edited in place. Partial cables can move to the inferred branch.
+ if(current.sourcePortId&&current.sinkPortId)target=index;
+ if(target<0)return {ok:false,message:'อุปกรณ์สองด้านไม่ตรงเส้นทางของโจทย์ หรือมีสายเชื่อมอยู่แล้ว'};
+ let draft=state;
+ if(target!==index)draft={...state,links:state.links.map((l,i)=>i===target?{...current}:i===index?{sourcePortId:'',sinkPortId:'',cableId:'',connected:false}:l)};
+ const fit=checkPlugDrop({task,state:draft,index:target,side,port,cable});
+ return {...fit,index:target,state:draft};
 }

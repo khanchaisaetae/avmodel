@@ -99,3 +99,23 @@ test('detaching one head persists as a partial cable and preserves device positi
  assert.equal(restored.links[0].sourcePortId,'dell:hdmi');assert.equal(restored.links[0].sinkPortId,'');assert.equal(restored.links[0].cableId,'hdmi');assert.equal(restored.links[0].connected,false);
  assert.deepEqual(restored.positions,s.positions);assert.deepEqual(restored.power,s.power);assert.deepEqual(restored.sourceEnabled,s.sourceEnabled);
 });
+
+import {resolvePlugDrop} from '../src/lab3d-plugs.mjs';
+function infer(t,s,index,side,id){return resolvePlugDrop({task:t,state:s,index,side,port:catalog.devices.flatMap(d=>d.ports).find(p=>p.id===id),cable:WIRE_CHOICES.find(c=>c.id===s.links[index].cableId)});}
+test('3D infers every branch from device ports without a branch selector',()=>{
+ for(const t of SCENARIOS){let s=initialScenario(t);for(let target=t.segments.length-1;target>=0;target--){
+  const empty=s.links.findIndex(l=>!l.sourcePortId&&!l.sinkPortId);s=selectLabCable(t,s,empty,'hdmi',catalog).state;
+  const source={dell:'dell:hdmi',bluray:'bluray:hdmi1',vertex:'vertex:hdmi-out'}[t.segments[target].from];
+  const fit=infer(t,s,empty,'out',source);assert.equal(fit.ok,true,t.id);assert.equal(fit.index,target,t.id);
+  s=selectLabPort(t,fit.state,fit.index,'out',source,catalog).state;
+  const to=t.segments[target].to,used=s.links.filter(l=>l.sinkPortId.startsWith(to+':')).length;
+  const sink=to==='vertex'?'vertex:hdmi-in':to==='epson'?'epson:hdmi'+(used+1):used?'tv:hdmi-side':'tv:hdmi-rear';
+  const end=infer(t,s,target,'in',sink);assert.equal(end.ok,true,t.id);s=selectLabPort(t,end.state,end.index,'in',sink,catalog).state;
+ }assert.ok(s.links.every(l=>l.connected),t.id);}
+});
+test('destination-first cable migrates to the inferred source branch without overwriting another cable',()=>{
+ const t=SCENARIOS.find(t=>t.id==='3-05');let s=selectLabCable(t,initialScenario(t),0,'hdmi',catalog).state;
+ s=selectLabPort(t,s,0,'in','epson:hdmi1',catalog).state;
+ const fit=infer(t,s,0,'out','bluray:hdmi1');assert.equal(fit.ok,true);assert.equal(fit.index,1);assert.equal(fit.state.links[0].sinkPortId,'');assert.equal(fit.state.links[1].sinkPortId,'epson:hdmi1');
+ const original=JSON.stringify(s);const bad=infer(t,s,0,'out','vertex:hdmi-out');assert.equal(bad.ok,false);assert.equal(JSON.stringify(s),original);
+});
