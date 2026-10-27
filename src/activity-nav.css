@@ -3,12 +3,19 @@
 .av-header .brand{display:flex;align-items:center;gap:11px;flex-shrink:0;margin:0;text-decoration:none;color:#fff;font:19px system-ui,sans-serif;letter-spacing:1px;white-space:nowrap}
 .av-header .brand b{font-weight:500}.av-header .brand small{display:block;font:10px "Leelawadee UI",Tahoma,sans-serif;letter-spacing:.1px;color:#b6c6d2;margin:4px 0 0}
 .av-header .brand-icon{display:grid;place-items:center;box-sizing:border-box;width:41px;height:43px;border:1px solid #507382;border-radius:11px;font-size:29px;color:#69cfcb}
-.av-header .course{display:block;border-left:1px solid #354354;padding-left:30px;color:#e5ebef;font-size:12px;line-height:1.8}.av-header .course span{display:block;color:#8399aa;font-size:11px}
+.av-header.topbar .course{display:block;min-width:0;overflow-wrap:anywhere;border-left:1px solid #354354;padding-left:30px;color:#e5ebef;font-size:12px;line-height:1.8}.av-header .course span{display:block;color:#8399aa;font-size:11px}
 .av-header nav.mode-switch{display:flex;align-items:center;justify-content:flex-start;gap:4px;flex-wrap:nowrap;box-sizing:border-box;width:auto;max-width:100%;margin:0 0 0 auto;padding:4px;border:1px solid #435564;border-radius:9px;white-space:nowrap}
 .av-header .mode-switch a,.av-header .mode-switch button{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:36px;margin:0;padding:8px 11px;border:0;border-radius:5px;background:transparent;color:#c6d3dc;font:11px "Noto Sans Thai","Leelawadee UI",Tahoma,system-ui,sans-serif;line-height:1.5;letter-spacing:0;text-decoration:none;white-space:nowrap;cursor:pointer}
 .av-header .mode-switch a:hover,.av-header .mode-switch button:hover{background:#ffffff12}.av-header .mode-switch [aria-current=page],.av-header .mode-switch [aria-pressed=true]{background:#e2efed;color:#145d61}.av-header .mode-switch :focus-visible{outline:3px solid #d2a258;outline-offset:2px}
-@media(max-width:1500px){.av-header .course{display:none}.av-header.topbar{gap:22px;padding:0 20px}}
-@media(max-width:1000px){.av-header.topbar{height:auto;min-height:90px;padding:14px 20px;gap:12px;flex-wrap:wrap}.av-header nav.mode-switch{flex-wrap:wrap}.av-header .mode-switch a,.av-header .mode-switch button{min-height:40px}}
+@media(min-width:1001px) and (max-width:1500px){
+ .av-header.topbar{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;height:132px;min-height:132px;gap:8px 22px;padding:12px 20px}
+ .av-header.topbar .course{grid-column:1/-1;grid-row:2;border-left:0;padding-left:0}
+ .av-header nav.mode-switch{grid-column:2;grid-row:1;justify-self:end}
+ .av-header + .workspace{height:calc(100dvh - 132px)}
+ .av-header + .editor{min-height:calc(100dvh - 132px)}
+ .av-header + .lab-layout{height:calc(100dvh - 132px)}
+}
+@media(max-width:1000px){.av-header.topbar .course{order:2;flex-basis:100%;border-left:0;padding-left:0}.av-header nav.mode-switch{order:3;margin-left:0}.av-header.topbar{height:auto;min-height:90px;padding:14px 20px;gap:12px;flex-wrap:wrap}.av-header nav.mode-switch{flex-wrap:wrap}.av-header .mode-switch a,.av-header .mode-switch button{min-height:40px}}
 @media(max-width:520px){.av-header.topbar{padding:14px 16px;gap:10px}.av-header .brand{font-size:16px}.av-header .brand-icon{display:none}.av-header .brand small{font-size:9px}.av-header nav.mode-switch{width:100%;margin:0;gap:3px}.av-header .mode-switch a,.av-header .mode-switch button{font-size:10px;padding:8px;min-height:44px}}
-@media(min-width:1000px){.av-header + .lab-layout{height:calc(100dvh - 90px)}}
+@media(min-width:1501px){.av-header + .lab-layout{height:calc(100dvh - 90px)}}
 @media print{.av-header{display:none!important}}

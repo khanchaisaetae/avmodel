@@ -11,7 +11,7 @@
 .trouble-help,.trouble-files{border-top:1px solid #d6e1e2;margin-top:20px;padding-top:15px}
 .trouble-help p:not(:empty){background:#f3f0e8;border-radius:8px;padding:12px;color:#67572f}
 .trouble-panel button:disabled{opacity:.65;cursor:default}
-@media(min-width:1100px){.troubleshoot-mode .topbar .course{display:none}}
+
 @media(max-width:800px){.troubleshoot-mode .topbar{flex-wrap:wrap}.troubleshoot-mode .mode-switch{flex-wrap:wrap}}
 .trouble-panel .test-summary{margin:12px 0}.trouble-panel .test-summary p{margin-bottom:0}
 .trouble-panel .trouble-help{border:0;margin:0 0 12px;padding:0}.trouble-panel .trouble-help button{margin-top:0}
