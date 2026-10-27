@@ -35,7 +35,7 @@ export function exportDiagramSvg(d, catalog, { includeReason = true } = {}) {
     lines = [],
     width = Math.max(760, ...d.nodes.map((n) => n.x + 260)),
     titleLines = wrapDiagramText(
-      "AV Port Lab · " + task.id + " " + task.title,
+      "VIRTUAL AV LAB · " + task.id + " " + task.title,
       Math.floor((width - 60) / 13),
     ),
     headerHeight = 35 + titleLines.length * 27;

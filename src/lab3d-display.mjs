@@ -21,7 +21,7 @@ export function renderLabDisplay({root,caption,screen,status,input},task,state,c
  if(result.imageVisible){
   const source=result.actualSource,visual=make('div',undefined,'sim-picture sim-'+source);visual.setAttribute('aria-hidden','true');
   if(source==='dell'){
-   const window=make('div',undefined,'sim-window');window.append(make('div','● ● ●','sim-window-bar'),make('strong','AV PORT LAB'),make('span','สื่อการเรียนรู้','sim-document-title'));visual.append(window,make('div','▦    ▰    ▧','sim-taskbar'));
+   const window=make('div',undefined,'sim-window');window.append(make('div','● ● ●','sim-window-bar'),make('strong','VIRTUAL AV LAB'),make('span','สื่อการเรียนรู้','sim-document-title'));visual.append(window,make('div','▦    ▰    ▧','sim-taskbar'));
   }else if(source==='bluray'){
    visual.append(make('div','▶','sim-play'),make('span','Blu-ray · กำลังเล่น','sim-video-label'));
   }else{
