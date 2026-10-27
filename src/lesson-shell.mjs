@@ -20,7 +20,7 @@ export function createLessonShell({ table, pane, create, SCENARIOS, $ }) {
   picker.id = "task-dialog";
   picker.setAttribute("aria-labelledby", "task-title");
   picker.innerHTML =
-    '<header><div><span class="tiny-title">ยูสเคส 2 · ฝึกเชื่อมต่อ</span><h2 id="task-title">เลือกโจทย์ทดลอง</h2></div><button id="close-tasks" type="button" class="quiet-button" autofocus>ปิด ×</button></header><label for="scenario-select">โจทย์ที่ต้องการฝึก</label><select id="scenario-select" class="scenario-select"></select><p id="scenario-progress"></p><div id="task-preview"></div><button id="start-task" type="button" class="primary">เริ่มโจทย์นี้</button><details><summary>ประวัติโจทย์ที่สำเร็จ</summary><div id="completion-list"></div></details>';
+    '<header><div><span class="tiny-title">เลือกโจทย์กิจกรรม</span><h2 id="task-title">เลือกโจทย์ทดลอง</h2></div><button id="close-tasks" type="button" class="quiet-button" autofocus>ปิด ×</button></header><label for="scenario-select">โจทย์ที่ต้องการฝึก</label><select id="scenario-select" class="scenario-select"></select><p id="scenario-progress"></p><div id="task-preview"></div><button id="start-task" type="button" class="primary">เริ่มโจทย์นี้</button><details><summary>ประวัติโจทย์ที่สำเร็จ</summary><div id="completion-list"></div></details>';
   document.body.append(picker);
   for (const n of [2, 3, 4]) {
     const group = create("optgroup");

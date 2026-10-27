@@ -5,7 +5,6 @@ import { createExplorerScene } from "./explorer-scene.mjs";
 import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
-import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261027-nav";
 import { TROUBLESHOOT_TASKS } from "./troubleshoot-catalog.mjs";
 import { createTroubleshootActivity } from "./troubleshoot-activity.mjs";
 import { assetHash } from "./asset-hash.mjs";
@@ -14,6 +13,12 @@ import { validateCalibration, mappingCounts } from "./mapping-model.mjs";
 if (new URLSearchParams(location.search).get("embedded") === "1") document.body.classList.add("embedded-view");
 const troubleshooting = document.body.dataset.activity === "troubleshoot";
 const activityPage = troubleshooting;
+// Retired UC2 links open the port explorer; only UC5 mounts the shared lesson UI.
+if (!troubleshooting && new URLSearchParams(location.search).has("mode")) {
+  const url = new URL(location.href);
+  url.searchParams.delete("mode");
+  history.replaceState(null, "", url);
+}
 const $ = (id) => document.getElementById(id);
 
 const text = (tag, value, cls) => {
@@ -81,6 +86,8 @@ async function init() {
     }
     bind();
     setup3D();
+    if (troubleshooting) {
+    const { mountConnectionLesson } = await import("./connection-lesson.mjs?v=20261027-remove-uc2");
     lesson = mountConnectionLesson({
       catalog,
       ...(troubleshooting ? { scenarios: TROUBLESHOOT_TASKS, progressKey: "av-port-lab.troubleshoot-progress.v1", activity: createTroubleshootActivity() } : {}),
@@ -102,8 +109,8 @@ async function init() {
           lesson.deviceIds.length + " โมเดล";
       },
     });
+    }
     $("mode-explore").addEventListener("click", () => activityPage ? location.assign("index.html") : setAppMode("explore"));
-    $("mode-connect").addEventListener("click", () => activityPage ? location.assign("index.html?mode=practice") : setAppMode("practice"));
     const launch = new URLSearchParams(location.search),
       requested = launch.get("device");
     await loadDevice(
@@ -111,7 +118,7 @@ async function init() {
     );
     const requestedPort = launch.get("port");
     if (requestedPort && device.ports.some(p => p.id === requestedPort)) selectPort(requestedPort);
-    if (activityPage || launch.get("mode") === "practice") setAppMode("practice");
+    if (activityPage) setAppMode("practice");
   } catch (error) {
     $("load-message").textContent = error.message;
     $("retry").hidden = false;
@@ -126,8 +133,7 @@ function setAppMode(mode) {
   const practice = mode === "practice";
   document.body.classList.toggle("practice-mode", practice);
   $("mode-explore").setAttribute("aria-pressed", String(!practice));
-  $("mode-connect").setAttribute("aria-pressed", String(practice && !activityPage));
-  for(const [id,current] of [['mode-explore',!practice&&!activityPage],['mode-connect',practice&&!activityPage]]){
+  for(const [id,current] of [['mode-explore',!practice&&!activityPage]]){
     if(current)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');
   }
   $("lesson-pane").hidden = !practice;
@@ -141,16 +147,16 @@ function setAppMode(mode) {
     ? lesson.deviceIds.length + " โมเดล"
     : "5 โมเดล";
   document.querySelector(".library h1").textContent = practice
-    ? (troubleshooting ? "แก้ปัญหาภาพไม่ขึ้น" : "ต่อภาพให้ขึ้นจอ")
+    ? "แก้ปัญหาภาพไม่ขึ้น"
     : "เริ่มจากอุปกรณ์ที่อยากสำรวจ";
   document.querySelector(".library .intro").textContent = practice
-    ? (troubleshooting ? "สังเกตอาการ ตรวจจากต้นทางถึงจอ แล้วคืนภาพพร้อมอธิบายสาเหตุ" : "เลือกโจทย์และช่วงสาย แล้วตั้งค่าให้แสดงภาพจากแหล่งที่กำหนด")
+    ? "สังเกตอาการ ตรวจจากต้นทางถึงจอ แล้วคืนภาพพร้อมอธิบายสาเหตุ"
     : "เลือกโมเดล แล้วหมุนดูช่องต่อ หรือเลือกพอร์ตเพื่อดูรายละเอียด";
   document.querySelector(".library-foot p").textContent = practice
     ? "เลือก OUT → IN · เลือกสาย · ตั้งค่าเครื่อง"
     : "รู้จักพอร์ต · เข้าใจ IN / OUT";
   document.querySelector(".library-foot small").textContent = practice
-    ? (troubleshooting ? "ยูสเคส 5 · แก้ปัญหาภาพ" : "ยูสเคส 2 · เชื่อมแหล่งภาพกับจอ")
+    ? "ยูสเคส 5 · แก้ปัญหาภาพ"
     : "ยูสเคส 1 · สำรวจพอร์ต";
   if (practice) {
     lesson.enter();

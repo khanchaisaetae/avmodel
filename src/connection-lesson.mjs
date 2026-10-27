@@ -5,7 +5,7 @@ import { createLessonModel } from "./lesson-model.mjs";
 import { createLessonBoard } from "./lesson-board.mjs";
 import { createLessonResults } from "./lesson-results.mjs?v=20261025-five";
 import { createLessonTasks } from "./lesson-tasks.mjs?v=20261026-resume";
-import { createLessonShell } from "./lesson-shell.mjs";
+import { createLessonShell } from "./lesson-shell.mjs?v=20261027-remove-uc2";
 import { bindLessonEvents } from "./lesson-events.mjs?v=20261026-resume";
 import { reviewLearning as baseReviewLearning } from "./learning-mode.mjs?v=20261024-learning-ui";
 import {
