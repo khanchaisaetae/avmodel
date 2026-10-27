@@ -1,13 +1,8 @@
 export const ACTIVITIES=[['index.html','1 · สำรวจพอร์ต'],['index.html?mode=practice','2 · ฝึกเชื่อมต่อ'],['diagram.html','3 · เขียนผังระบบ'],['lab3d.html','4 · ทดลองสามมิติ'],['troubleshoot.html','5 · แก้ปัญหาภาพ']];
 export function element(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
 export function mountActivityNavigation(){
+ // Keep workspace layout behavior while using the same visible navigation as use case 1.
  document.body.classList.add('ux-workspace');
- const header=document.querySelector('.topbar'),old=header.querySelector('nav');if(old)old.hidden=true;
- const nav=element('nav',undefined,'activity-navigation');nav.setAttribute('aria-label','เปลี่ยนกิจกรรม');
- const label=element('label','กิจกรรม');label.htmlFor='workspace-activity';const select=element('select');select.id='workspace-activity';
- const current=location.pathname.split('/').pop()||'index.html';
- for(const[url,title]of ACTIVITIES){const option=element('option',title);option.value=url;select.append(option);}select.value=current;
- select.addEventListener('change',()=>{if(ACTIVITIES.some(([url])=>url===select.value))location.assign(select.value);});nav.append(label,select);header.append(nav);
 }
 let tabCounter=0;
 export function createWorkspaceTabs(root,definitions,label){

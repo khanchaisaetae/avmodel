@@ -5,7 +5,7 @@ import { createExplorerScene } from "./explorer-scene.mjs";
 import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
-import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261026-resume";
+import { mountConnectionLesson } from "./connection-lesson.mjs?v=20261027-nav";
 import { TROUBLESHOOT_TASKS } from "./troubleshoot-catalog.mjs";
 import { createTroubleshootActivity } from "./troubleshoot-activity.mjs";
 import { assetHash } from "./asset-hash.mjs";
@@ -127,6 +127,9 @@ function setAppMode(mode) {
   document.body.classList.toggle("practice-mode", practice);
   $("mode-explore").setAttribute("aria-pressed", String(!practice));
   $("mode-connect").setAttribute("aria-pressed", String(practice && !activityPage));
+  for(const [id,current] of [['mode-explore',!practice&&!activityPage],['mode-connect',practice&&!activityPage]]){
+    if(current)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');
+  }
   $("lesson-pane").hidden = !practice;
   $("lesson-visual").hidden = !practice;
   document.querySelector(".inspector-tabs").hidden = practice;
