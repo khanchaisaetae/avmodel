@@ -1,9 +1,10 @@
+import {evaluateLabDisplay,renderLabDisplay} from './lab3d-display.mjs?v=20261027-display';
 import {createWorkSession} from './work-session.mjs?v=20261026-resume';
 import {resolvePlugDrop,plugTypes} from './lab3d-plugs.mjs?v=20261026-resume';
 import {createPlugUI} from './lab3d-plug-ui.mjs?v=20261026-resume';
 import {defaultLabPositions,parseLabPositions,moveLabDevice} from './lab3d-layout.mjs?v=20261026-resume';
-import {SCENARIOS,DEVICE_NAMES,SOURCE_NAMES} from './scenario-catalog.mjs';
-import {initialScenario,evaluateScenario,checkScenario} from './scenario-engine.mjs';
+import {SCENARIOS,DEVICE_NAMES} from './scenario-catalog.mjs';
+import {initialScenario} from './scenario-engine.mjs';
 import {WIRE_CHOICES,portDirection,portFunction,portSupportsSide} from './lesson-cables.mjs';
 import {LAB3D_KEY,selectLabPort,selectLabCable,labPackage,parseLabPackage} from './lab3d-model.mjs?v=20261026-resume';
 import {createLabScene} from './lab3d-scene.mjs?v=20261026-resume';
@@ -94,9 +95,9 @@ function render(){
  $('layout-reset').disabled=loading||JSON.stringify(parseLabPositions(state.positions,task))===JSON.stringify(defaultLabPositions(task));
  $('layout-help').textContent=arrangeMode?'ลากตัวอุปกรณ์เพื่อย้ายบนโต๊ะ · คลิกชื่อแล้วใช้ปุ่มลูกศรได้ · Escape กลับไปเชื่อมต่อ':'เลือกชนิดสาย แล้วลากหัวจากถาดไปเสียบพอร์ต · หรือแตะหัวสายแล้วแตะพอร์ต';
  $('lab-mouse-help').textContent=arrangeMode?'ลากตัวเครื่อง: ย้าย · ลากพื้นว่าง: หมุน · ล้อเมาส์: ซูม · ลากขวา: เลื่อน':'ลากซ้าย: หมุน · ล้อเมาส์: ซูม · ลากขวา: เลื่อน · คลิกพอร์ตบนเครื่องเพื่อเลือก';
- const link=state.links[segment],plan=task.segments[segment];$('lab-task').value=task.id;$('lab-goal').textContent=task.goal;
+ const link=state.links[segment],plan=task.segments[segment];$('lab-task').value=task.id;$('lab-goal').textContent='ต่ออุปกรณ์ตามโจทย์ แล้วทดลองสังเกตภาพบน '+(task.displayId==='tv'?'Sony TV':'Epson Projector');
  $('lab-cable').value=link.cableId;
- $('source-progress').textContent='ตรวจภาพตามเป้าหมายแล้ว '+state.observedSources.length+' / '+task.sources.length+' แหล่ง · ไม่มีคะแนน';$('lab-source').replaceChildren();task.sources.forEach(id=>option($('lab-source'),id,SOURCE_NAMES[id]));$('lab-source').value=state.requestedSource;
+ renderLabDisplay({root:$('lab-display-output'),caption:$('lab-display-title'),screen:$('lab-screen-content'),status:$('lab-display-status'),input:$('lab-screen-input')},task,state,catalog,{loading});
  for(const id of ['lab-cable','disconnect','lab-check','lab-reset'])$(id).disabled=loading;
  $('disconnect').disabled=loading||!(link.sourcePortId||link.sinkPortId||link.cableId);
  try{$('lab-backup').hidden=!localStorage.getItem(LAB3D_KEY+'import-backup');}catch{$('lab-backup').hidden=true;}
@@ -134,8 +135,7 @@ async function init(){
    if(cable&&!cable.engineSupported)notice(cable.label+' · '+cable.availability,'info',true);
   }catch(e){reportError(e.message);}});
   $('disconnect').addEventListener('click',()=>{plugs.clear();let next=selectLabCable(task,state,segment,'',catalog).state;next={...next,links:next.links.map((l,i)=>i===segment?{sourcePortId:'',sinkPortId:'',cableId:'',connected:false}:l)};side='out';commit(next);});
-  $('lab-source').addEventListener('change',()=>commit({...state,requestedSource:$('lab-source').value}));
-  $('lab-check').addEventListener('click',()=>{const checked=checkScenario(task,state,catalog);commit(checked.state);notice((checked.result.complete?'✓ ทดลองครบทุกแหล่งภาพแล้ว · ':'')+checked.result.message,checked.result.status==='ready'?'ready':'error',true);});
+  $('lab-check').addEventListener('click',()=>{const result=evaluateLabDisplay(task,state,catalog);notice(result.message,result.imageVisible?'ready':result.status==='indeterminate'?'info':'error',true);});
   $('view-all').addEventListener('click',()=>{scene.overview();renderDeviceControls();renderReference();});for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{scene.focusDevice(scene.focused||task.segments[segment][side==='out'?'from':'to'],b.dataset.view);renderDeviceControls();renderReference();});
   $('lab-reset').addEventListener('click',()=>$('reset-confirm').showModal());$('reset-cancel').addEventListener('click',()=>$('reset-confirm').close());$('reset-ok').addEventListener('click',()=>{$('reset-confirm').close();plugs.clear();clearTimeout(timer);$('feedback-panel').hidden=true;layoutHistory.length=0;state=freshLabState(task);save(true);render();scene.overview();renderDeviceControls();});$('lab-retry').addEventListener('click',()=>openTask(task.id,state));
   $('lab-export').addEventListener('click',()=>download('AV-3D-'+task.id+'.json',labPackage(task,state)));

@@ -119,3 +119,29 @@ test('destination-first cable migrates to the inferred source branch without ove
  const fit=infer(t,s,0,'out','bluray:hdmi1');assert.equal(fit.ok,true);assert.equal(fit.index,1);assert.equal(fit.state.links[0].sinkPortId,'');assert.equal(fit.state.links[1].sinkPortId,'epson:hdmi1');
  const original=JSON.stringify(s);const bad=infer(t,s,0,'out','vertex:hdmi-out');assert.equal(bad.ok,false);assert.equal(JSON.stringify(s),original);
 });
+
+import {evaluateLabDisplay} from '../src/lab3d-display.mjs';
+test('3D display observes every selected source without a target or mutating the saved work',()=>{
+ for(const t of SCENARIOS){const s=wired(t);for(const source of t.sources){const route=t.routes.find(r=>r.source===source);s.displayInput=s.links[route.segments.at(-1)].sinkPortId;
+  // A legacy target can disagree with the selected source; it must never constrain observation.
+  s.requestedSource='legacy-unselected-source';const before=JSON.stringify(s),r=evaluateLabDisplay(t,s,catalog);
+  assert.equal(r.status,'signal',t.id);assert.equal(r.actualSource,source,t.id);assert.equal(r.imageVisible,true);assert.equal(r.complete,false);assert.equal(JSON.stringify(s),before);
+ }}
+});
+test('a working route displays even when another source branch is unplugged',()=>{
+ const t=SCENARIOS.find(t=>t.id==='3-05'),s=wired(t);s.links[1]={sourcePortId:'',sinkPortId:'',cableId:'',connected:false};
+ const r=evaluateLabDisplay(t,s,catalog);assert.equal(r.imageVisible,true);assert.equal(r.actualSource,'dell');assert.equal(r.status,'signal');assert.doesNotMatch(r.message,/เป้าหมาย|ครบ|ผิด/);
+});
+test('Vertex camera and pass-through follow its device SOURCE switch rather than task target',()=>{
+ const t=SCENARIOS.find(t=>t.id==='3-01'),s=wired(t);s.vertexSource='CAMERA';s.requestedSource='dell';s.links[0]={sourcePortId:'',sinkPortId:'',cableId:'',connected:false};
+ assert.equal(evaluateLabDisplay(t,s,catalog).actualSource,'vertex');
+ s.vertexSource='HDMI IN';assert.equal(evaluateLabDisplay(t,s,catalog).imageVisible,false);
+ s.vertexSource='PC1';assert.equal(evaluateLabDisplay(t,s,catalog).imageVisible,false);
+});
+test('TV and projector power, wrong input and unsupported cables never produce invented pictures',()=>{
+ for(const id of ['2-01','2-02']){const t=SCENARIOS.find(t=>t.id===id),s=wired(t);s.power[t.displayId]=false;assert.equal(evaluateLabDisplay(t,s,catalog).status,'off');
+  s.power[t.displayId]=true;s.displayInput='';assert.equal(evaluateLabDisplay(t,s,catalog).imageVisible,false);
+  s.displayInput=s.links[0].sinkPortId;s.links[0].cableId='usb-c-hdmi';s.links[0].connected=false;
+  const r=evaluateLabDisplay(t,s,catalog);assert.equal(r.status,'indeterminate');assert.equal(r.imageVisible,false);
+ }
+});
