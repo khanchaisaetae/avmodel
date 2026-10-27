@@ -1,4 +1,4 @@
-export const ACTIVITIES=[['index.html','1 · สำรวจพอร์ต'],['diagram.html','3 · เขียนผังระบบ'],['lab3d.html','4 · ทดลองสามมิติ'],['troubleshoot.html','5 · แก้ปัญหาภาพ']];
+export const ACTIVITIES=[['index.html','1 · สำรวจพอร์ต'],['lab3d.html','4 · จำลองการเชื่อมต่อ'],['diagram.html','3 · เขียนผังระบบ'],['troubleshoot.html','5 · แก้ปัญหาภาพ']];
 export function element(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
 export function mountActivityNavigation(){
  // Keep workspace layout behavior while using the same visible navigation as use case 1.

@@ -15,4 +15,4 @@ test('arranging is geometry only and preserves port choices, power and object id
  assert.equal(JSON.stringify(old),snapshot);assert.equal(next[0].power,true);assert.equal(next[1].input,'epson:hdmi2');assert.notEqual(next[0],old[0]);assert.ok(next.every(n=>n.x>=0&&n.x<=960&&n.y>=0&&n.y<=680));
 });
 test('empty canvas and narrow screens produce bounded, usable scale values',()=>{assert.equal(fitCanvas(canvasBounds([]),2000,2000),1);const b=canvasBounds([]),scale=fitCanvas(b,120,100);assert.ok(scale>=.1&&b.width*scale<=120&&b.height*scale<=100);});
-test('activity navigation has one stable route per use case',()=>{assert.deepEqual(ACTIVITIES.map(([url])=>url),['index.html','diagram.html','lab3d.html','troubleshoot.html']);assert.equal(new Set(ACTIVITIES.map(([url])=>url)).size,4);});
+test('activity navigation has one stable route per use case',()=>{assert.deepEqual(ACTIVITIES.map(([url])=>url),['index.html','lab3d.html','diagram.html','troubleshoot.html']);assert.equal(new Set(ACTIVITIES.map(([url])=>url)).size,4);});
