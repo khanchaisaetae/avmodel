@@ -1,7 +1,7 @@
 import { mountEditorWorkspace } from "./editor-workspace.mjs?v=20261027-nav";
 import { createDiagramState } from "./diagram-state.mjs?v=20261025-placement";
 import { createDiagramStorage } from "./diagram-storage.mjs?v=20261026-resume";
-import { createDiagramControls } from "./diagram-controls.mjs?v=20261030-recheck";
+import { createDiagramControls } from "./diagram-controls.mjs?v=20261030-cables";
 import { createDiagramCanvas } from "./diagram-canvas.mjs?v=20261025-placement";
 import { createDiagramResults } from "./diagram-results.mjs?v=20261030-recheck";
 import { createDiagramView } from "./diagram-view.mjs?v=20261025-ux";

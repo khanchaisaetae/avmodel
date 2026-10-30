@@ -1,3 +1,4 @@
+import {DIAGRAM_CABLE_LABELS} from "./diagram-cable-rules.mjs";
 // Dependencies are injected by the entry controller; importing this module has no UI side effects.
 export function createDiagramControls(scope) {
   function ask(title, detail, action) {
@@ -109,7 +110,7 @@ export function createDiagramControls(scope) {
       for (const c of scope.WIRE_CHOICES.filter((c) => c.group === groupName)) {
         const option = scope.el(
           "option",
-          c.label + (c.engineSupported ? "" : " · ยังไม่จำลอง"),
+          c.label + (scope.activity ? (c.engineSupported ? "" : " · ยังไม่รองรับการตรวจผล") : " · " + (DIAGRAM_CABLE_LABELS[c.id] || "ยังไม่รองรับการตรวจผล")),
         );
         option.value = c.id;
         option.title = c.description;
