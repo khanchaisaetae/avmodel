@@ -1,6 +1,7 @@
 import { getDiagramTask } from "./diagram-data.mjs?v=20261025-placement";
 import { DEVICE_NAMES } from "./scenario-catalog.mjs";
 import { validateSegment, evaluateScenario } from "./scenario-engine.mjs";
+import {validateDiagramSegment, traceDiagramDisplay} from "./diagram-signal.mjs";
 export function diagramRoutes(diagram, source, display) {
   const routes = [];
   function walk(id, path, seen) {
@@ -47,7 +48,7 @@ export function reviewDiagram(diagram, catalog, sourceId, taskOverride = null) {
       use.set(id, [...(use.get(id) || []), i]);
   });
   const linkResults = diagram.links.map((l, i) => {
-    let r = validateSegment(dynamic, state, i, catalog);
+    let r = taskOverride ? validateSegment(dynamic, state, i, catalog) : validateDiagramSegment(dynamic, state, i, catalog);
     if ([l.sourcePortId, l.sinkPortId].some((id) => use.get(id).length > 1))
       r = {
         status: "invalid",
@@ -67,28 +68,11 @@ export function reviewDiagram(diagram, catalog, sourceId, taskOverride = null) {
     ...l,
     connected: linkResults[i].status === "compatible",
   }));
-  if (task.id === "analysis-01")
-    return {
-      issues,
-      linkResults,
-      state,
-      live: null,
-      structureReady: false,
-      message:
-        diagram.conclusion === "impossible"
-          ? "ข้อสรุปสอดคล้องกับเงื่อนไข: Vertex ไม่แปลง HDMI IN ออก RGB/VGA พร้อม HDMI OUT ให้เขียนเหตุผลประกอบ"
-          : "พิจารณาฟังก์ชัน Source Switch: HDMI IN ส่งออก HDMI OUT ส่วน RGB IN ส่งออก RGB OUT ไม่แปลงข้ามประเภท",
-    };
-  if (task.id === "free")
-    return {
-      issues,
-      linkResults,
-      state,
-      live: null,
-      structureReady: false,
-      message:
-        "ตรวจพอร์ตและสายรายช่วงแล้ว ผังอิสระยังไม่ตรวจเป้าหมายภาพทั้งระบบ ให้ระบุความต้องการในเหตุผลประกอบ",
-    };
+  const displayResults = taskOverride ? [] : diagram.nodes.filter(n => ["tv", "epson"].includes(n.id)).map(n => traceDiagramDisplay(diagram, catalog, linkResults, n.id, sourceId));
+  if (task.id === "free") return {
+    issues, linkResults, state, live: null, displayResults, structureReady: false,
+    message: displayResults.length ? "ตรวจพอร์ต สาย และภาพแยกแต่ละจอแล้ว · ผังอิสระไม่มีคำตอบตายตัว ให้เทียบผลกับความต้องการที่เขียนไว้" : "เพิ่มจอ Sony TV หรือ Epson เพื่อทดลองเส้นทางภาพ · ตรวจสายที่มีอยู่ได้ ไม่มีคะแนน",
+  };
   const missing = task.devices.filter(
       (id) => !diagram.nodes.some((n) => n.id === id),
     ),
@@ -133,12 +117,13 @@ export function reviewDiagram(diagram, catalog, sourceId, taskOverride = null) {
       });
   const structureReady =
     !missing.length && !extra.length && same && issues.length === 0;
-  const live = evaluateScenario({ ...dynamic, routes }, state, catalog);
+  const live = taskOverride ? evaluateScenario({ ...dynamic, routes }, state, catalog) : traceDiagramDisplay(diagram, catalog, linkResults, task.displayId, sourceId || task.sources[0]);
   return {
     issues,
     linkResults,
     state,
     live,
+    displayResults,
     structureReady,
     message: structureReady
       ? live.status === "ready"

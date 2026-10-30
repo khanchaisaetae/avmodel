@@ -1,0 +1,18 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {reviewDiagram} from '../src/diagram-review.mjs';
+import {emptyDiagram} from '../src/diagram-data.mjs';
+const catalog=JSON.parse(readFileSync(new URL('../data/port-catalog.json',import.meta.url)));
+const node=(id,input='',source='CAMERA')=>({id,x:0,y:0,power:true,enabled:true,input,source});
+const wire=(from,to,sourcePortId,sinkPortId,cableId='hdmi')=>({id:'w'+sourcePortId,from,to,sourcePortId,sinkPortId,cableId});
+const review=d=>reviewDiagram({...emptyDiagram('free'),...d},catalog);
+const vga=()=>({nodes:[node('vertex'),node('epson','epson:computer1')],links:[wire('vertex','epson','vertex:rgb-out1','epson:computer1','vga')]});
+test('Vertex CAMERA to Epson Computer1 supports VGA logical route',()=>{const r=review(vga());assert.equal(r.linkResults[0].status,'compatible');assert.equal(r.displayResults[0].status,'ready');assert.equal(r.displayResults[0].actualSource,'vertex');});
+test('HDMI source cannot cross-convert to RGB output',()=>{const d=vga();d.nodes[0].source='HDMI IN';assert.equal(review(d).displayResults[0].code,'VERTEX_SIGNAL_TYPE');});
+for(const [source,label] of [['PC1','RGB IN 1'],['PC2','RGB IN 2']])test(source+' traces its own input, not camera',()=>{const d=vga();d.nodes[0].source=source;const r=review(d).displayResults[0];assert.equal(r.imageVisible,false);assert.match(r.message,new RegExp(label));});
+test('configurable Epson socket stays indeterminate without a port mode',()=>{const d=vga();d.nodes[1].input='epson:computer2-monitor';d.links[0].sinkPortId=d.nodes[1].input;assert.equal(review(d).displayResults[0].status,'indeterminate');});
+test('free design reports every display independently',()=>{const d={nodes:[node('dell'),node('tv','tv:hdmi-rear'),node('epson','epson:hdmi1')],links:[wire('dell','tv','dell:hdmi','tv:hdmi-rear'),wire('dell','epson','dell:usb-c','epson:hdmi1','usb-c-hdmi')]};d.nodes[1].power=false;const r=review(d);assert.equal(r.displayResults.length,2);assert.equal(r.displayResults[0].code,'DISPLAY_OFF');assert.equal(r.displayResults[1].status,'ready');assert.equal(r.linkResults[1].conditional,true);});
+test('USB-C adapter cannot be reversed or attached to HDMI output',()=>{const d={nodes:[node('dell'),node('tv')],links:[wire('tv','dell','tv:hdmi-rear','dell:usb-c','usb-c-hdmi')]};assert.equal(review(d).linkResults[0].code,'ADAPTER_DIRECTION');});
+test('unsupported active HDMI to VGA remains indeterminate',()=>{const d={nodes:[node('dell'),node('epson','epson:computer1')],links:[wire('dell','epson','dell:hdmi','epson:computer1','hdmi-vga')]};assert.equal(review(d).displayResults[0].status,'indeterminate');});
+test('duplicate source socket prevents both display routes',()=>{const d={nodes:[node('dell'),node('tv','tv:hdmi-rear'),node('epson','epson:hdmi1')],links:[wire('dell','tv','dell:hdmi','tv:hdmi-rear'),wire('dell','epson','dell:hdmi','epson:hdmi1')]};assert.ok(review(d).displayResults.every(r=>r.code==='PORT_OCCUPIED'));});

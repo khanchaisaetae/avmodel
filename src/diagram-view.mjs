@@ -47,7 +47,7 @@ export function createDiagramView(scope) {
       source.append(option);
     }
     if (sources.includes(selected)) source.value = selected;
-    source.disabled = !task.sources.length;
+    source.disabled = !sources.length;
     scope.drawWires();
     scope.renderReview();
     scope.activity?.render();

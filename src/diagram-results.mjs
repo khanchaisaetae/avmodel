@@ -28,6 +28,20 @@ export function createDiagramResults(scope) {
           "ภาพปัจจุบัน: " + scope.SOURCE_NAMES[scope.review.live.actualSource],
         ),
       );
+    for (const r of scope.review.displayResults || []) {
+      const title = r.displayId === "tv" ? "Sony TV" : "Epson Projector";
+      const status = r.status === "ready" ? "ภาพถึงจอ" : r.status === "indeterminate" ? "ยังตรวจยืนยันไม่ได้" : r.imageVisible ? "มีภาพจากแหล่งอื่น" : "ยังไม่มีภาพ";
+      const item = scope.el("div", `${title} · ${status}: ${r.message}`, "result-item " + r.status);
+      if (r.path.length) item.append(scope.el("p", "เส้นทางที่ตรวจ: " + r.path.join(" → ")));
+      box.append(item);
+    }
+    const goodLinks = (scope.review.linkResults || []).filter(r => r.status === "compatible");
+    if (goodLinks.length) {
+      const details = scope.el("details");
+      details.append(scope.el("summary", `ช่วงสายที่ต่อได้ ${goodLinks.length} ช่วง · ดูเงื่อนไข`));
+      for (const r of goodLinks) details.append(scope.el("p", r.message));
+      box.append(details);
+    }
     for (const issue of scope.review.issues) {
       const item = scope.el("div", issue.message, "result-item " + issue.kind);
       if (issue.linkId)
