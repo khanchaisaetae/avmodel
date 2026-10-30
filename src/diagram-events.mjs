@@ -27,12 +27,15 @@ export function bindDiagramEvents(scope) {
       }),
     );
   scope.$("diagram-review").addEventListener("click", () => {
-    scope.review = scope.reviewDiagram(
-      scope.state,
-      scope.catalog,
-      scope.$("preview-source").value,
-    );
-    scope.renderReview();
+    try {
+      scope.review = scope.reviewDiagram(scope.state, scope.catalog, scope.$("preview-source").value);
+      scope.renderReview();
+    } catch (error) {
+      console.error("Diagram review failed", error);
+      scope.review = null;
+      scope.$("diagram-result").textContent = "ตรวจผังไม่สำเร็จ คุณยังแก้พอร์ตหรือสายแล้วตรวจใหม่ได้";
+      scope.notice("ตรวจผังไม่สำเร็จ · งานยังอยู่และแก้ไขต่อได้");
+    }
   });
   scope.$("preview-source").addEventListener("change", () => {
     scope.review = null;

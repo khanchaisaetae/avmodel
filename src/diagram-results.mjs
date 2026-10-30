@@ -32,7 +32,7 @@ export function createDiagramResults(scope) {
       const title = r.displayId === "tv" ? "Sony TV" : "Epson Projector";
       const status = r.status === "ready" ? "ภาพถึงจอ" : r.status === "indeterminate" ? "ยังตรวจยืนยันไม่ได้" : r.imageVisible ? "มีภาพจากแหล่งอื่น" : "ยังไม่มีภาพ";
       const item = scope.el("div", `${title} · ${status}: ${r.message}`, "result-item " + r.status);
-      if (r.path.length) item.append(scope.el("p", "เส้นทางที่ตรวจ: " + r.path.join(" → ")));
+      if (r.path?.length) item.append(scope.el("p", "เส้นทางที่ตรวจ: " + r.path.join(" → ")));
       box.append(item);
     }
     const goodLinks = (scope.review.linkResults || []).filter(r => r.status === "compatible");
@@ -42,7 +42,7 @@ export function createDiagramResults(scope) {
       for (const r of goodLinks) details.append(scope.el("p", r.message));
       box.append(details);
     }
-    for (const issue of scope.review.issues) {
+    for (const issue of scope.review.issues || []) {
       const item = scope.el("div", issue.message, "result-item " + issue.kind);
       if (issue.linkId)
         item.append(

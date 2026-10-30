@@ -9,7 +9,10 @@ export function createDiagramControls(scope) {
   }
 
   function openPorts(id, side) {
-    scope.picker = { id, side };
+    const selectedLink = !scope.pending && scope.selection?.kind === "wire"
+      ? scope.state.links.find(l => l.id === scope.selection.id && l[side === "out" ? "from" : "to"] === id)
+      : null;
+    scope.picker = { id, side, editLinkId: selectedLink?.id };
     scope.$("picker-side").textContent =
       side === "in" ? "อินพุตพอร์ต" : "เอาท์พุตพอร์ต";
     scope.$("picker-title").textContent = scope.DEVICE_NAMES[id];
@@ -20,6 +23,7 @@ export function createDiagramControls(scope) {
           ? "เลือกพอร์ตรับภาพสำหรับสายจาก " +
             scope.DEVICE_NAMES[scope.pending.id]
           : "เลือกได้เพื่อเริ่มจากปลายรับ แล้วไปเลือกเอาท์พุตพอร์ตต้นทาง";
+    if (selectedLink) scope.$("picker-help").textContent = "แก้พอร์ตของสายที่เลือก · เลือกพอร์ตใหม่เพื่อแทนปลายเดิม โดยไม่เพิ่มสาย";
     scope.$("picker-list").replaceChildren();
     for (const port of scope.catalog.devices
       .find((d) => d.id === id)
@@ -44,6 +48,15 @@ export function createDiagramControls(scope) {
 
   function choosePort(id, side, portId) {
     scope.$("port-picker").close();
+    const editLinkId = scope.picker?.editLinkId;
+    scope.picker = null;
+    if (editLinkId) {
+      const key = side === "out" ? "sourcePortId" : "sinkPortId";
+      scope.pending = null;
+      scope.commit({...scope.state, links: scope.state.links.map(l => l.id === editLinkId ? {...l, [key]: portId} : l)});
+      scope.notice("เปลี่ยนพอร์ตของสายเดิมแล้ว · ตรวจผังใหม่ได้");
+      return;
+    }
     if (!scope.pending || scope.pending.side === side) {
       scope.pending = { id, side, portId };
       scope.render();
