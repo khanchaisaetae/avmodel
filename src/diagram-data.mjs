@@ -11,14 +11,7 @@ export const DIAGRAM_TASKS = [
     sources: [],
     displayId: null,
   },
-  {
-    id: "analysis-01",
-    title: "วิเคราะห์ข้อจำกัดของ Vertex",
-    goal: "Dell เข้า HDMI IN ของ Vertex แล้วต้องการภาพเดียวกันออก HDMI OUT และ RGB OUT พร้อมกันไปยัง Sony TV และ Epson โดยไม่มี Matrix หรืออุปกรณ์แยกภาพ ทำได้หรือไม่? อธิบายเหตุผล ไม่จำเป็นต้องวาดระบบที่ทำไม่ได้",
-    devices: [],
-    sources: [],
-    displayId: null,
-  },
+
 ];
 
 export const getDiagramTask = (id) => DIAGRAM_TASKS.find((t) => t.id === id);
