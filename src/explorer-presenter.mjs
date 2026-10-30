@@ -27,7 +27,7 @@ export function createExplorerPresenter(scope) {
   }
 
   function direction(p) {
-    const d = p.video_direction || p.direction;
+    const d = p.id === "dell:usb-c" ? p.direction : p.video_direction || p.direction;
     return d === "out"
       ? "OUT"
       : d === "in"
@@ -144,7 +144,9 @@ export function createExplorerPresenter(scope) {
     el.append(
       infoRow(
         "ทิศทางสัญญาณ",
-        p.video_direction
+        p.id === "dell:usb-c"
+          ? "รับ–ส่งข้อมูล · I/O"
+          : p.video_direction
           ? "ภาพส่งออก (OUT) / ข้อมูล USB รับ–ส่ง"
           : p.direction === "out"
             ? "ส่งออก · OUT"
@@ -177,7 +179,9 @@ export function createExplorerPresenter(scope) {
       ),
       infoRow(
         "ความสามารถด้านภาพ",
-        p.connection_kind === "usb_media"
+        p.id === "dell:usb-c"
+          ? "ส่งภาพไปยัง HDMI ผ่านอะแดปเตอร์ USB-C to HDMI"
+          : p.connection_kind === "usb_media"
           ? "เล่นไฟล์สื่อ · ไม่ใช่อินพุตภาพสด"
           : p.video_capable === true
             ? "รองรับตามเงื่อนไข"
@@ -188,6 +192,10 @@ export function createExplorerPresenter(scope) {
       infoRow("ตำแหน่งบนโมเดล", positionLabel(m)),
     );
     const descriptions = [];
+    if (p.id === "dell:usb-c")
+      descriptions.push(
+        "พอร์ต Type-C นี้เป็น I/O สำหรับรับ–ส่งข้อมูล การส่งภาพไปยังช่อง HDMI ของ Sony TV หรือ Epson Projector ต้องใช้อุปกรณ์แปลงสัญญาณ USB-C to HDMI ที่รองรับ DisplayPort over USB-C แล้วต่อจาก HDMI OUT ของอะแดปเตอร์ไปยัง HDMI IN ของจอ พอร์ตนี้ไม่ใช่ HDMI OUT โดยตรง และ I/O ไม่ได้หมายความว่ารับภาพจากอุปกรณ์อื่นเข้าจอแล็ปท็อปได้",
+      );
     if (p.evidence[0]?.detail_th) descriptions.push(p.evidence[0].detail_th);
     if (p.requirements)
       descriptions.push(
