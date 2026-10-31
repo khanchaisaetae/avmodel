@@ -1,6 +1,6 @@
 import {printTroubleshootReport} from "./troubleshoot-print.mjs";
 import { CHECK_CATEGORIES } from './troubleshoot-catalog.mjs';
-import { initialTroubleshoot,lastTroubleshootResult,runTroubleshootCheck,preserveTroubleshootAttempts,reviewTroubleshoot,completionRequirements,recordCheck,confirmTroubleshoot,troubleHint,troubleshootReport } from './troubleshoot-model.mjs?v=20261031-manual-check';
+import { initialTroubleshoot,lastTroubleshootResult,runTroubleshootCheck,preserveTroubleshootAttempts,reviewTroubleshoot,completionRequirements,recordCheck,confirmTroubleshoot,troubleHint,troubleshootReport } from './troubleshoot-model.mjs?v=20261031-notes';
 
 export function createTroubleshootActivity(){
   let checkButton,attemptCount,category,observation,log,conclusion,confirm,hint,hintButton,instruction,status,caseTitle,previous,previousReport=null,currentTask=null;
@@ -31,10 +31,10 @@ export function createTroubleshootActivity(){
       const catLabel=create('label','จุดที่ตรวจ');catLabel.htmlFor='trouble-category';
       category=create('select');category.id='trouble-category';
       for(const[id,text]of CHECK_CATEGORIES){const o=create('option',text);o.value=id;category.append(o);}
-      const obsLabel=create('label','พบอะไรจากการตรวจ');obsLabel.htmlFor='trouble-observation';
+      const obsLabel=create('label','พบอะไรจากการตรวจ/สาเหตุและวิธีแก้ปัญหา');obsLabel.htmlFor='trouble-observation';
       observation=create('textarea');observation.id='trouble-observation';observation.rows=2;observation.maxLength=1000;
-      observation.placeholder='เช่น ตรวจชื่อช่องรับภาพเทียบกับสายที่เสียบ พบว่า…';
-      const add=create('button','＋ บันทึกผลตรวจ','quiet-button full-width');add.id='trouble-add-check';add.type='button';
+      observation.placeholder='พบว่า… สาเหตุคือ… แก้ไขโดย… ผลหลังตรวจคือ…';
+      const add=create('button','บันทึกผลตรวจ','quiet-button full-width');add.id='trouble-add-check';add.type='button';
       const logStatus=create('p','','small');logStatus.id='trouble-log-status';logStatus.setAttribute('role','status');
       add.addEventListener('click',()=>{
         const checked=recordCheck(scope.task,scope.getState(),scope.catalog,category.value,observation.value);
@@ -82,9 +82,9 @@ export function createTroubleshootActivity(){
       attemptCount.textContent='ตรวจแล้ว '+(n.attemptLog?.length||0)+' ครั้ง';
       const complete=reviewTroubleshoot(scope.task,s,scope.catalog).result.complete;
       caseTitle.textContent=scope.task.level+' · '+scope.short(s.requestedSource)+' → '+scope.short(scope.task.displayId);
-      const remaining=[...(!r.hasChecks?['บันทึกผลตรวจอย่างน้อย 1 รายการ']:[]),...(!r.hasConclusion?['สรุปสาเหตุและวิธีแก้อย่างน้อย 10 ตัวอักษร']:[])];
+      const remaining=[...(!r.hasChecks?['บันทึกผลตรวจอย่างน้อย 1 รายการ']:[]),...(!r.hasConclusion?['บันทึกสาเหตุและวิธีแก้อย่างน้อย 10 ตัวอักษร']:[])];
       instruction.textContent=complete?'✓ ยืนยันคืนภาพแล้ว ทบทวนบันทึกและดาวน์โหลดรายงานได้':
-        live.status==='pending'?'แก้ไขที่อุปกรณ์แล้วกดตรวจเพื่อบันทึกผลครั้งถัดไป':live.status==='ready'?(remaining.length?'ภาพกลับมาแล้ว · '+remaining.join(' · '):'ภาพตรงเป้าหมายแล้ว ไปขั้น 3 เพื่อพิมพ์/บันทึก PDF'):
+        live.status==='pending'?'แก้ไขที่อุปกรณ์แล้วกดตรวจเพื่อบันทึกผลครั้งถัดไป':live.status==='ready'?(remaining.length?'ภาพกลับมาแล้ว · '+remaining.join(' · '):'ภาพตรงเป้าหมายแล้ว ไปเมนูบันทึกเพื่อพิมพ์/บันทึก PDF'):
         'ตรวจจากต้นทางไปปลายทาง แล้วปรับที่อุปกรณ์บนผัง บันทึกสิ่งที่พบก่อนหรือหลังแก้ได้';
       confirm.disabled=!r.ready;confirm.textContent='พิมพ์/บันทึก PDF';
       if(document.activeElement!==conclusion)conclusion.value=n.conclusion;

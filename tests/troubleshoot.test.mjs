@@ -98,3 +98,11 @@ test('only explicit check evaluates and counts; edit, render, notes, hints and e
  report.attemptLog[0].snapshot.power.epson=true;assert.equal(s.troubleshoot.attemptLog[0].snapshot.power.epson,false);
  const reset=initialTroubleshoot(t);assert.equal(reset.troubleshoot.attemptLog.length,0);assert.notEqual(reset.troubleshoot.runId,s.troubleshoot.runId);
 });
+
+test('combined observation supplies the cause and remedy for printing without a separate finish form',()=>{
+ const t=TROUBLESHOOT_TASKS[0];let s=runTroubleshootCheck(t,fix(t,initialTroubleshoot(t)),catalog);
+ s=recordCheck(t,s,catalog,'power','พบว่าเครื่องฉายปิดอยู่ จึงเปิดเครื่องแล้วตรวจภาพอีกครั้ง').state;
+ assert.equal(s.troubleshoot.conclusion,s.troubleshoot.checks.at(-1).observation);
+ assert.equal(confirmTroubleshoot(t,s,catalog).accepted,true);
+ assert.equal(s.troubleshoot.attemptLog.length,1);
+});

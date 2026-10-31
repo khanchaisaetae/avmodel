@@ -73,7 +73,7 @@ export function recordCheck(task,s,catalog,category,observation,timestamp=new Da
     imageVisible:live.imageVisible,actualSource:live.actualSource||null,resultCode:live.code,
     settingsSignature:systemSignature(s)};
   return {accepted:true,state:{...s,troubleshoot:{...s.troubleshoot,
-    checks:[...s.troubleshoot.checks,check],confirmedSignature:null}}};
+    checks:[...s.troubleshoot.checks,check],conclusion:check.observation,confirmedSignature:null}}};
 }
 export function confirmTroubleshoot(task,s,catalog) {
   const r=completionRequirements(task,s,catalog);
