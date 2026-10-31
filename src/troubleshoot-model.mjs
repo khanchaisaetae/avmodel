@@ -31,11 +31,28 @@ export function initialTroubleshoot(task) {
     if(fault==='rgb-selected')s.vertexSource='PC1';
     if(fault==='occupied-input')s.links[1].sinkPortId=s.links[0].sinkPortId;
   }
-  s.troubleshoot={checks:[],conclusion:'',hintLevel:0,confirmedSignature:null};
+  s.troubleshoot={runId:globalThis.crypto?.randomUUID?.() || String(Date.now())+Math.random(),attemptLog:[],checks:[],conclusion:'',hintLevel:0,confirmedSignature:null};
   return s;
 }
+export function lastTroubleshootResult(task,s,catalog) {
+  const last=s.troubleshoot.attemptLog?.at(-1);
+  if(!last || last.settingsSignature!==systemSignature(s))return {status:'pending',code:'AWAITING_CHECK',imageVisible:false,complete:false,message:'มีการแก้ไขหรือยังไม่ได้ตรวจ · กดตรวจเพื่อดูผล'};
+  return structuredClone(last.result);
+}
+export function runTroubleshootCheck(task,s,catalog,timestamp=new Date().toISOString()) {
+  const attempts=s.troubleshoot.attemptLog || [];
+  const result=evaluateScenario(task,s,catalog);
+  const entry={number:attempts.length+1,timestamp,settingsSignature:systemSignature(s),
+    snapshot:structuredClone({links:s.links,power:s.power,sourceEnabled:s.sourceEnabled,displayInput:s.displayInput,vertexSource:s.vertexSource,requestedSource:s.requestedSource}),
+    hintsUsed:s.troubleshoot.hintLevel,result:structuredClone(result)};
+  return {...s,troubleshoot:{...s.troubleshoot,attemptLog:[...attempts,entry],confirmedSignature:null}};
+}
+export function preserveTroubleshootAttempts(previous,next) {
+  if(!previous.troubleshoot)return next;
+  return {...next,troubleshoot:{...next.troubleshoot,runId:previous.troubleshoot.runId,attemptLog:previous.troubleshoot.attemptLog || [],confirmedSignature:null}};
+}
 export function completionRequirements(task,s,catalog) {
-  const live=evaluateScenario(task,s,catalog),notes=s.troubleshoot;
+  const live=lastTroubleshootResult(task,s,catalog),notes=s.troubleshoot;
   return {live,hasChecks:notes.checks.length>0,hasConclusion:notes.conclusion.trim().length>=10,
     ready:live.status==='ready'&&notes.checks.length>0&&notes.conclusion.trim().length>=10};
 }
@@ -51,7 +68,7 @@ export function reviewTroubleshoot(task,s,catalog) {
 export function recordCheck(task,s,catalog,category,observation,timestamp=new Date().toISOString()) {
   if(!CHECK_CATEGORIES.some(([id])=>id===category)||observation.trim().length<3||s.troubleshoot.checks.length>=30)
     return {state:s,accepted:false};
-  const live=evaluateScenario(task,s,catalog);
+  const live=lastTroubleshootResult(task,s,catalog);
   const check={category,observation:observation.trim().slice(0,1000),timestamp,
     imageVisible:live.imageVisible,actualSource:live.actualSource||null,resultCode:live.code,
     settingsSignature:systemSignature(s)};
@@ -64,7 +81,7 @@ export function confirmTroubleshoot(task,s,catalog) {
   return {accepted:true,state:{...s,troubleshoot:{...s.troubleshoot,confirmedSignature:confirmationSignature(s)}}};
 }
 export function troubleHint(task,s,catalog) {
-  const n=s.troubleshoot.hintLevel,r=evaluateScenario(task,s,catalog);
+  const n=s.troubleshoot.hintLevel,r=lastTroubleshootResult(task,s,catalog);
   if(!n)return '';
   if(n===1)return 'ตรวจตามลำดับ: เปิดเครื่อง → เปิดส่งภาพ / เล่นสื่อ → พอร์ต OUT ไป IN และสาย → SOURCE ของอุปกรณ์กลาง → Input ของจอ';
   if(n===2){
@@ -79,11 +96,11 @@ export function troubleHint(task,s,catalog) {
 }
 export function troubleshootReport(task,s,catalog) {
   const checked=reviewTroubleshoot(task,s,catalog);
-  return {schema:'av-port-lab.troubleshoot-report',version:1,taskId:task.id,title:task.title,symptom:task.symptom,
+  return {schema:'av-port-lab.troubleshoot-report',version:2,runId:s.troubleshoot.runId,attemptCount:(s.troubleshoot.attemptLog||[]).length,attemptLog:structuredClone(s.troubleshoot.attemptLog||[]),taskId:task.id,title:task.title,symptom:task.symptom,
     complete:checked.result.complete,checks:structuredClone(s.troubleshoot.checks),
     conclusion:s.troubleshoot.conclusion,hintsUsed:s.troubleshoot.hintLevel,
     links:structuredClone(s.links),settings:{power:{...s.power},sourceEnabled:{...s.sourceEnabled},
       displayInput:s.displayInput,vertexSource:s.vertexSource},
-    currentResult:evaluateScenario(task,s,catalog),
-    note:'ผลจำลองการแก้ปัญหา ไม่มีคะแนน ตรวจการคืนภาพอัตโนมัติ ข้อความเหตุผลต้องตรวจโดยผู้สอน ไม่ส่งผลอัตโนมัติ'};
+    currentResult:lastTroubleshootResult(task,s,catalog),
+    note:'ผลจำลองการแก้ปัญหา ไม่มีคะแนน ตรวจภาพเฉพาะเมื่อกดตรวจ จำนวนครั้งนับทุกการกดรวมการตรวจซ้ำโดยไม่แก้ไข ข้อความเหตุผลต้องตรวจโดยผู้สอน ไม่ส่งผลอัตโนมัติ'};
 }

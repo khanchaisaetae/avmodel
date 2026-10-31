@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {TROUBLESHOOT_TASKS} from '../src/troubleshoot-catalog.mjs';
-import {initialTroubleshoot,reviewTroubleshoot,recordCheck,confirmTroubleshoot,troubleHint,troubleshootReport} from '../src/troubleshoot-model.mjs';
+import {initialTroubleshoot,runTroubleshootCheck,lastTroubleshootResult,preserveTroubleshootAttempts,reviewTroubleshoot,recordCheck,confirmTroubleshoot,troubleHint,troubleshootReport} from '../src/troubleshoot-model.mjs';
 import {evaluateScenario,updateSegmentSelection} from '../src/scenario-engine.mjs';
 const catalog=JSON.parse(readFileSync(new URL('../data/port-catalog.json',import.meta.url)));
 function fix(task,state){
@@ -20,6 +20,7 @@ function fix(task,state){
  return s;
 }
 function notes(task,s){
+ s=runTroubleshootCheck(task,s,catalog);
  const checked=recordCheck(task,s,catalog,'system','ตรวจเส้นทางและเปรียบเทียบสถานะอุปกรณ์');
  return {...checked.state,troubleshoot:{...checked.state.troubleshoot,conclusion:'ตรวจพบการตั้งค่าหรือการเชื่อมต่อไม่ตรง จึงปรับแก้และตรวจภาพซ้ำ'}};
 }
@@ -58,7 +59,7 @@ test('checking does not alter the physical system; observations are bounded and 
 test('hints are opt-in and progress from a checklist to the current diagnostic',()=>{
  const t=TROUBLESHOOT_TASKS[0],s=initialTroubleshoot(t);assert.equal(troubleHint(t,s,catalog),'');
  s.troubleshoot.hintLevel=1;assert.match(troubleHint(t,s,catalog),/ตรวจตามลำดับ/);
- s.troubleshoot.hintLevel=2;assert.match(troubleHint(t,s,catalog),/ไฟเลี้ยง/);
+ Object.assign(s,runTroubleshootCheck(t,s,catalog));s.troubleshoot.hintLevel=2;assert.match(troubleHint(t,s,catalog),/ไฟเลี้ยง/);
  s.troubleshoot.hintLevel=3;assert.equal(troubleHint(t,s,catalog),evaluateScenario(t,s,catalog).message);
 });
 test('later changes to settings or explanation invalidate an earlier confirmation',()=>{
@@ -75,8 +76,25 @@ test('report preserves diagnosis, ordered checks and hints without scores or sha
  const t=TROUBLESHOOT_TASKS[6],before=JSON.stringify(catalog),taskBefore=JSON.stringify(t);
  let s=initialTroubleshoot(t);s=recordCheck(t,s,catalog,'ports','ตรวจชื่อ HDMI OUT บนเครื่องเล่น').state;s=fix(t,s);
  s.troubleshoot.conclusion='เปลี่ยนจากช่องส่งเฉพาะเสียง ไปช่องส่งภาพและเสียง';s.troubleshoot.hintLevel=2;
- s=confirmTroubleshoot(t,s,catalog).state;const r=troubleshootReport(t,s,catalog);
+ s=runTroubleshootCheck(t,s,catalog);s=confirmTroubleshoot(t,s,catalog).state;const r=troubleshootReport(t,s,catalog);
  assert.equal(r.complete,true);assert.equal(r.hintsUsed,2);assert.equal(r.checks.length,1);assert.equal('score' in r,false);
  r.links[0].sourcePortId='bad';r.checks[0].observation='แก้สำเนา';assert.equal(s.links[0].sourcePortId,'bluray:hdmi1');assert.notEqual(s.troubleshoot.checks[0].observation,'แก้สำเนา');
  assert.equal(JSON.stringify(catalog),before);assert.equal(JSON.stringify(t),taskBefore);
+});
+
+test('only explicit check evaluates and counts; edit, render, notes, hints and export never count',()=>{
+ const t=TROUBLESHOOT_TASKS[0];let s=initialTroubleshoot(t);
+ assert.equal(lastTroubleshootResult(t,s,catalog).status,'pending');
+ s=runTroubleshootCheck(t,s,catalog,'2026-10-31T01:00:00Z');
+ const previous=structuredClone(s);s=fix(t,s);
+ assert.equal(lastTroubleshootResult(t,s,catalog).status,'pending');
+ reviewTroubleshoot(t,s,catalog);troubleHint(t,s,catalog);troubleshootReport(t,s,catalog);
+ assert.equal(s.troubleshoot.attemptLog.length,1);
+ assert.equal(confirmTroubleshoot(t,s,catalog).accepted,false);
+ s=runTroubleshootCheck(t,s,catalog);assert.equal(lastTroubleshootResult(t,s,catalog).status,'ready');
+ s=runTroubleshootCheck(t,s,catalog);assert.equal(s.troubleshoot.attemptLog.length,3);
+ const undo=preserveTroubleshootAttempts(s,previous);assert.equal(undo.troubleshoot.attemptLog.length,3);assert.equal(lastTroubleshootResult(t,undo,catalog).status,'pending');
+ const report=troubleshootReport(t,s,catalog);assert.equal(report.attemptCount,3);assert.equal(report.attemptLog[0].timestamp,'2026-10-31T01:00:00Z');
+ report.attemptLog[0].snapshot.power.epson=true;assert.equal(s.troubleshoot.attemptLog[0].snapshot.power.epson,false);
+ const reset=initialTroubleshoot(t);assert.equal(reset.troubleshoot.attemptLog.length,0);assert.notEqual(reset.troubleshoot.runId,s.troubleshoot.runId);
 });

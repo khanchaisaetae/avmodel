@@ -115,7 +115,7 @@ export function bindLessonEvents(scope) {
     scope.closeContext();
     const entry = scope.histories.get(scope.stateKey())?.pop();
     if (!entry) return;
-    scope.put(entry.state);
+    scope.put(scope.activity?.preserveHistory ? scope.activity.preserveHistory(scope.getState(),entry.state) : entry.state);
     scope.activeSegment = entry.activeSegment;
     scope.lastResult = null;
     scope.assessmentReviewed = false;
