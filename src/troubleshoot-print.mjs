@@ -17,9 +17,9 @@ export function printTroubleshootReport(report,catalog){
  const table=add('table',''),head=add('thead','',table),hr=add('tr','',head);for(const label of ['ครั้ง','วัน–เวลา','ผลตรวจ'])add('th',label,hr);
  const body=add('tbody','',table);
  for(const attempt of report.attemptLog){const row=add('tr','',body);for(const text of [attempt.number,new Date(attempt.timestamp).toLocaleString('th-TH',{timeZone:'Asia/Bangkok'}),attempt.result.message])add('td',text,row);}
- add('h2','บันทึกสิ่งที่พบและการแก้ไข');
+ 
  report.checks.forEach((check,i)=>add('p',`${i+1}. ${check.observation}`));
- add('h2','สรุปสาเหตุและวิธีแก้');add('p',report.conclusion||'ยังไม่ได้ระบุ');
+ add('h2','สิ่งที่พบจากการตรวจ/สรุปสาเหตุและวิธีแก้');add('p',report.conclusion||'ยังไม่ได้ระบุ');
  add('h2','การเชื่อมต่อสุดท้าย');
  const ports=new Map(catalog.devices.flatMap(d=>d.ports.map(p=>[p.id,p.label])));
  report.links.forEach((l,i)=>add('p',`${i+1}. ${DEVICE_NAMES[l.sourcePortId?.split(':')[0]]||''} / ${ports.get(l.sourcePortId)||'ยังไม่เลือก'} → ${DEVICE_NAMES[l.sinkPortId?.split(':')[0]]||''} / ${ports.get(l.sinkPortId)||'ยังไม่เลือก'} · ${l.cableId||'ยังไม่เลือกสาย'}`));
