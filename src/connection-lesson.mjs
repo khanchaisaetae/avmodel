@@ -1,4 +1,4 @@
-import { mountLessonWorkspace } from "./lesson-workspace.mjs?v=20261031-clear-steps";
+import { mountLessonWorkspace } from "./lesson-workspace.mjs?v=20261031-print";
 import { createLessonState } from "./lesson-state.mjs";
 import { createLessonContext } from "./lesson-context.mjs";
 import { createLessonModel } from "./lesson-model.mjs";

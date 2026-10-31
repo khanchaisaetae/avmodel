@@ -7,7 +7,7 @@ export function mountLessonWorkspace(scope){
  observe.append(heading,scope.$('lesson-screen'),instruction,scope.$('trouble-run-check'),scope.$('trouble-attempt-count'),element('p','ปรับอุปกรณ์แล้วกดตรวจภาพ ทุกการกดนับ 1 ครั้ง การเขียนบันทึกและจบงานไม่นับเพิ่ม','small'),hint);
  const conclusion=scope.$('trouble-conclusion'),label=panel.querySelector('label[for="trouble-conclusion"]'),confirm=scope.$('trouble-confirm'),files=pane.querySelector('.trouble-files');
  const requirements=element('p','','small');requirements.id='trouble-finish-requirements';requirements.setAttribute('role','status');
- finish.append(element('h2','สรุปและจบงาน'),label,conclusion,requirements,confirm,element('p','จบงานเป็นการบันทึกว่าฝึกเสร็จ ไม่ใช่การตรวจภาพซ้ำหรือส่งงานให้ผู้สอน','small'),files);
+ finish.append(element('h2','สรุปและจบงาน'),label,conclusion,requirements,confirm,element('p','เปิดหน้าพิมพ์ แล้วเลือกเครื่องพิมพ์หรือบันทึกเป็น PDF การพิมพ์ไม่นับเป็นการตรวจเพิ่ม และไม่ส่งงานให้ผู้สอนอัตโนมัติ','small'),files);
  for(const n of [...panel.children]){if(n.matches('.tiny-title,small'))n.remove();else form.append(n);}
  form.prepend(element('p','บันทึกสิ่งที่ตรวจพบและสิ่งที่แก้ไข เพิ่มได้หลายรายการ โดยไม่เพิ่มจำนวนครั้งที่กดตรวจภาพ','small'));
  const tabs=createWorkspaceTabs(panel,[['1 ตรวจภาพ',[observe]],['2 บันทึก',[form]],['3 จบงาน',[finish]]],'ขั้นตอนตรวจปัญหา');
@@ -25,6 +25,6 @@ export function mountLessonWorkspace(scope){
   tabs.buttons[1].textContent='2 บันทึก'+(n.checks.length?' · '+n.checks.length:'');
   const fresh=last?.settingsSignature===JSON.stringify([s.links,s.power,s.sourceEnabled,s.displayInput,s.vertexSource,s.requestedSource]);
   const missing=[...(!fresh||last?.result.status!=='ready'?['กลับไปขั้น 1 และตรวจภาพให้ตรงเป้าหมาย']:[]),...(!n.checks.length?['เพิ่มบันทึกในขั้น 2 อย่างน้อย 1 รายการ']:[]),...(n.conclusion.trim().length<10?['เขียนสรุปอย่างน้อย 10 ตัวอักษร']:[])];
-  requirements.textContent=missing.length?'ก่อนจบงาน: '+missing.join(' · '):'ครบแล้ว สามารถบันทึกจบงานและดาวน์โหลดรายงานได้';
+  requirements.textContent=missing.length?'ก่อนจบงาน: '+missing.join(' · '):'ครบแล้ว สามารถพิมพ์/บันทึก PDF ได้';
  },focusPanel(){tabs.focus();},tabs};
 }
