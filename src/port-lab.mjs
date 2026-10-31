@@ -6,7 +6,7 @@ import { createExplorerModel } from "./explorer-model.mjs";
 import { createExplorerControls } from "./explorer-controls.mjs";
 import { createExplorerCables } from "./explorer-cables.mjs";
 import { TROUBLESHOOT_TASKS } from "./troubleshoot-catalog.mjs";
-import { createTroubleshootActivity } from "./troubleshoot-activity.mjs?v=20261031-manual-check";
+import { createTroubleshootActivity } from "./troubleshoot-activity.mjs?v=20261031-clear-steps";
 import { assetHash } from "./asset-hash.mjs";
 import { SoftwareRenderer } from "./software-view.mjs";
 import { validateCalibration, mappingCounts } from "./mapping-model.mjs";
@@ -87,7 +87,7 @@ async function init() {
     bind();
     setup3D();
     if (troubleshooting) {
-    const { mountConnectionLesson } = await import("./connection-lesson.mjs?v=20261031-manual-check");
+    const { mountConnectionLesson } = await import("./connection-lesson.mjs?v=20261031-clear-steps");
     lesson = mountConnectionLesson({
       catalog,
       ...(troubleshooting ? { scenarios: TROUBLESHOOT_TASKS, progressKey: "av-port-lab.troubleshoot-progress.v1", activity: createTroubleshootActivity() } : {}),

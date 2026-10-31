@@ -47,10 +47,10 @@ export function createTroubleshootActivity(){
       conclusion.addEventListener('input',()=>{
         const s=scope.getState();scope.put({...s,troubleshoot:{...s.troubleshoot,conclusion:conclusion.value,confirmedSignature:null}});scope.render();
       });
-      confirm=create('button','ยืนยันการแก้ปัญหา','primary full-width');confirm.id='trouble-confirm';confirm.type='button';
+      confirm=create('button','บันทึกจบงาน','primary full-width');confirm.id='trouble-confirm';confirm.type='button';
       confirm.addEventListener('click',()=>{const checked=confirmTroubleshoot(scope.task,scope.getState(),scope.catalog);
         if(checked.accepted){scope.closeContext();scope.mutate(checked.state);}});
-      checkButton=create('button','ตรวจ','primary full-width');checkButton.id='trouble-run-check';checkButton.type='button';
+      checkButton=create('button','ตรวจภาพ','primary full-width');checkButton.id='trouble-run-check';checkButton.type='button';
       attemptCount=create('p','','small');attemptCount.id='trouble-attempt-count';attemptCount.setAttribute('role','status');
       checkButton.addEventListener('click',()=>{scope.put(runTroubleshootCheck(scope.task,scope.getState(),scope.catalog));scope.render();});
       const note=create('small','ตรวจภาพเมื่อกดปุ่มตรวจเท่านั้น · ทุกการกดนับเป็น 1 ครั้ง รวมการตรวจซ้ำโดยไม่แก้ไข · ข้อความสาเหตุเก็บให้ผู้สอนตรวจ ไม่ได้ตัดสินความถูกต้องของข้อความหรือให้คะแนน');
@@ -83,9 +83,9 @@ export function createTroubleshootActivity(){
       caseTitle.textContent=scope.task.level+' · '+scope.short(s.requestedSource)+' → '+scope.short(scope.task.displayId);
       const remaining=[...(!r.hasChecks?['บันทึกผลตรวจอย่างน้อย 1 รายการ']:[]),...(!r.hasConclusion?['สรุปสาเหตุและวิธีแก้อย่างน้อย 10 ตัวอักษร']:[])];
       instruction.textContent=complete?'✓ ยืนยันคืนภาพแล้ว ทบทวนบันทึกและดาวน์โหลดรายงานได้':
-        live.status==='pending'?'แก้ไขที่อุปกรณ์แล้วกดตรวจเพื่อบันทึกผลครั้งถัดไป':live.status==='ready'?(remaining.length?'ภาพกลับมาแล้ว · '+remaining.join(' · '):'ภาพตรงเป้าหมายแล้ว กดยืนยันการแก้ปัญหา'):
+        live.status==='pending'?'แก้ไขที่อุปกรณ์แล้วกดตรวจเพื่อบันทึกผลครั้งถัดไป':live.status==='ready'?(remaining.length?'ภาพกลับมาแล้ว · '+remaining.join(' · '):'ภาพตรงเป้าหมายแล้ว ไปขั้น 3 เพื่อบันทึกจบงาน'):
         'ตรวจจากต้นทางไปปลายทาง แล้วปรับที่อุปกรณ์บนผัง บันทึกสิ่งที่พบก่อนหรือหลังแก้ได้';
-      confirm.disabled=complete||!r.ready;confirm.textContent=complete?'✓ ยืนยันการแก้ปัญหาแล้ว':'ยืนยันการแก้ปัญหา';
+      confirm.disabled=complete||!r.ready;confirm.textContent=complete?'✓ บันทึกจบงานแล้ว':'บันทึกจบงาน';
       if(document.activeElement!==conclusion)conclusion.value=n.conclusion;
       log.replaceChildren();for(const check of n.checks){const item=create('li');
         item.append(create('strong',CHECK_CATEGORIES.find(([id])=>id===check.category)?.[1]||''),
