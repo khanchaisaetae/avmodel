@@ -157,6 +157,10 @@
         "USB camera ต้องใช้ซอฟต์แวร์/ไดรเวอร์ตามหน้า 14-16"
       ],
       "sha256": "37f0150ef55ee0b43698900d21084341aef5d92e9364a9be93e59e0050b2aede"
+    },
+    "hdbaset_alliance": {
+      "model": "HDBaseT Alliance · มาตรฐานทั่วไป",
+      "path": "https://hdbaset.org/hdbaset-technology/"
     }
   },
   "policy": {
@@ -1137,9 +1141,18 @@
                 30,
                 208
               ]
+            },
+            {
+              "source_id": "hdbaset_alliance",
+              "basis": "standards_body_web",
+              "url": "https://hdbaset.org/hdbaset-technology/",
+              "detail_th": "อ้างอิงความสามารถทั่วไปของมาตรฐาน HDBaseT; ไม่ใช้แทนข้อกำหนดเฉพาะรุ่นอุปกรณ์"
             }
           ],
-          "notes_th": [],
+          "notes_th": [
+            "HDBaseT เป็นมาตรฐานการเชื่อมต่อสัญญาณภาพและเสียงดิจิทัลความละเอียดสูง รวมถึงระดับ 4K ผ่านสาย Category เช่น Cat 5e / Cat 6 / Cat 7 เพียงเส้นเดียว ได้ไกลสูงสุดถึง 100 เมตร โดยส่งสัญญาณแบบไม่บีบอัด (Uncompressed) ตามรุ่นมาตรฐาน อุปกรณ์ ความละเอียด และประเภทสายที่รองรับ",
+            "ความสามารถ 4K และระยะ 100 เมตรเป็นข้อมูลของมาตรฐานโดยทั่วไป ไม่ใช่การยืนยันว่า Epson EB-2165W รองรับทุกเงื่อนไข ต้องตรวจคู่มือตัวส่งและโปรเจกเตอร์ร่วมกัน และใช้ตัวส่ง HDBaseT ไม่ใช่ต่อจากพอร์ต LAN ของคอมพิวเตอร์โดยตรง"
+          ],
           "model_mapping": {
             "status": "registry_reference",
             "registry": "data/model-mappings.json",
